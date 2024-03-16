@@ -1,0 +1,22 @@
+
+.layoutOuterMostScrollableCont{
+    transition: height 0.2s;
+}
+.layoutOuterMostScrollableCont::-webkit-scrollbar {
+    width: 7px;
+}
+
+.layoutOuterMostScrollableCont::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px white;
+    /* background-color: #dee2e5; */
+}
+
+.layoutOuterMostScrollableCont::-webkit-scrollbar-thumb {
+    /* background: #dee2e5; */
+    background: #fff;
+    border-radius: 5px;
+}
+
+.layoutOuterMostScrollableCont::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
