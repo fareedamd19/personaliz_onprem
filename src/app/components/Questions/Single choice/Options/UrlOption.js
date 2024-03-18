@@ -3,10 +3,27 @@ import Link from 'next/link'
 import React from 'react'
 
 const UrlOption = ({option,index}) => {
-    const {fontThemeObj,optionThemeObj,isQuestionOnTopOfVideo,numberThemeObj,returnNumberOrAlpabet,getUrlLinkToBeRedirectedTo,campaignName} = useGlobalStoreContext();
+    const {fontThemeObj,optionThemeObj,isQuestionOnTopOfVideo,numberThemeObj,returnNumberOrAlpabet,getUrlLinkToBeRedirectedTo,campaignName,hanleJumpForURL} = useGlobalStoreContext();
+
+  function pauseAllVideos() {
+    // Select all video elements on the page
+    const videos = document.querySelectorAll('video');
+    
+    // Iterate through each video element and pause it
+    videos.forEach(video => {
+        video.pause();
+    });
+
+  }
+
+function handleOptionClick(){
+  pauseAllVideos()
+  hanleJumpForURL(option.text)
+}
+
   return (
    <>
-    <Link style={{
+    <Link onClick={handleOptionClick} style={{
     fontFamily:fontThemeObj?.font_name,
     backgroundColor:optionThemeObj?.option_background_color,
     border:`1px solid ${optionThemeObj?.option_border_color}`,
@@ -14,13 +31,13 @@ const UrlOption = ({option,index}) => {
     color:optionThemeObj?.option_text_color,
     fontSize:`${+fontThemeObj?.font_size-3}px`,
     }} href={getUrlLinkToBeRedirectedTo(option?.url,campaignName,'?')} target='_blank' 
-    className={`${isQuestionOnTopOfVideo?'w-[80%] md:w-[40%] mx-auto':'w-[80%]'} h-max p-4 py-3 md:-mb-2 cursor-pointer hover:scale-105`}>
+    className={`${isQuestionOnTopOfVideo?'w-[80%] md:w-[40%] mx-auto':'w-[80%]'} h-max p-4 py-3 md:-mb-2 cursor-pointer hover:scale-105 flex items-center`}>
     <span style={{
         backgroundColor:numberThemeObj?.numbered_background_color,
         border:`1px solid ${numberThemeObj?.numbered_border_color}`,
         borderRadius:`${numberThemeObj.numbered_border_radius}px`,
         color:numberThemeObj?.numbered_text_color,
-    }} className={`${isQuestionOnTopOfVideo?'m-auto':''} px-2 py-1 mr-4`}>{returnNumberOrAlpabet(index)}</span>{option.text}
+    }} className={`w-[28px] h-[28px] flex items-center justify-center mr-4`}>{returnNumberOrAlpabet(index)}</span>{option.text}
     </Link>
    </>
   )

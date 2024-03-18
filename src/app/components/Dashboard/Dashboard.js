@@ -4,19 +4,23 @@ import Loader from '../Loader/Loader'
 import Navbar from '../Navbar'
 import LayoutContainer from '../Layout Container/LayoutContainer'
 import { useGlobalStoreContext } from '@/app/context/GlobalStoreContext'
+import ErrorModal from '../Error Modal/ErrorModal'
+import ThankYouPage from '../Thank you Page/ThankYouPage'
 
-const Dashboard = () => {
+const Dashboard = ({server_personaliz_branding}) => {
 
-    const {firstLoadData}=useGlobalStoreContext()
+    const {firstLoadData,isLoading,showErrorModal,showThankYouPage}=useGlobalStoreContext()
 
   return (
   <>
 <ChecksAndFirstDataOnLoad/>
-{!firstLoadData&&<Loader/>}
-{firstLoadData&&<section className="w-full h-screen overflow-hidden">
+{isLoading&&<Loader server_personaliz_branding={server_personaliz_branding}/>}
+{firstLoadData&&!isLoading&&!showThankYouPage&&!showErrorModal&&<section className="w-full h-screen overflow-hidden">
 <Navbar/>
 <LayoutContainer/>
 </section>}
+{!isLoading&&showErrorModal&&<ErrorModal/>}
+{!isLoading&&showThankYouPage&&<ThankYouPage/>}
   </>
   )
 }

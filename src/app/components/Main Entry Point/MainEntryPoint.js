@@ -4,14 +4,14 @@ import React from 'react'
 import { GlobalStoreProvider } from '@/app/context/GlobalStoreContext'
 import Dashboard from '../Dashboard/Dashboard'
 
-const MainEntryPoint = () => {
+const MainEntryPoint = ({server_personaliz_branding}) => {
    
    
 
   return (
    <>
   <GlobalStoreProvider> 
-<Dashboard/>
+<Dashboard server_personaliz_branding={server_personaliz_branding}/>
 </GlobalStoreProvider>
    </>
   )

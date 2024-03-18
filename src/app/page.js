@@ -1,5 +1,6 @@
 import MainEntryPoint from "./components/Main Entry Point/MainEntryPoint";
 
+let server_personaliz_branding=null
 
 export async function generateMetadata({searchParams}) {
   
@@ -24,6 +25,7 @@ export async function generateMetadata({searchParams}) {
  try {
   const response = await fetch(options.url, options)
  const finalData=await response.json()
+ server_personaliz_branding=finalData.personaliz_branding
  return {
   title:'Personaliz',
   description:finalData?.wid_thumbnail_description,
@@ -65,7 +67,7 @@ export default function Home() {
 
   return (
    <>
-<MainEntryPoint/>
+<MainEntryPoint server_personaliz_branding={server_personaliz_branding}/>
    </>
   );
 }

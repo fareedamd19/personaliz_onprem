@@ -2,6 +2,7 @@ import { useGlobalStoreContext } from '@/app/context/GlobalStoreContext'
 import Image from 'next/image'
 import React, {  useEffect, useRef, useState } from 'react'
 import styles from "./VideoContainer.module.css"
+import { Tooltip } from "react-tooltip";
 
 const websiteSrollContPosition={
   bottom_left:'bottom-[0.5rem] left-[0.5rem]',
@@ -17,8 +18,8 @@ const websiteSrollContShape={
 
 
 const VideoContainer = () => {
-  const {currentQuestionData,isFirstTimeVideoClicked,setIsFirstTimeVideoClicked,website_scroll_config}=useGlobalStoreContext()
-  
+  const {currentQuestionData,website_scroll_config,target_video_element,personaliz_branding,isVideoClickedOnFirstLoad}=useGlobalStoreContext()
+ 
     const personalizVideoSetInterval=useRef(null)
     const videoElm=useRef(null)
     const scrollVideoElm=useRef(null)
@@ -26,6 +27,7 @@ const VideoContainer = () => {
     const [isVideoPlaying,setIsVideoPlaying]=useState(false)
     const [videoProgress,setVideoProgress]=useState(0)
     const [isMuted,setIsMuted]=useState(true)
+    const posterUrl=personaliz_branding==="none"?"https://d2p77m460qjhbw.cloudfront.net/interactly_circular_loader_none.gif":"https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
  
 function getVideoElementToTarget(){
   let video 
@@ -34,6 +36,11 @@ if(website_scroll_config){
 }
 else{
   video=videoElm.current
+}
+target_video_element.current=video
+if(isVideoClickedOnFirstLoad.current){
+  video.muted=false
+  setIsVideoPlaying(true)
 }
 return video
 }
@@ -69,7 +76,18 @@ personalizVideoSetInterval.current=setInterval(()=>{
             videoElm.current.pause()
           }
         }
-    }  
+    } 
+    if(video.paused){
+      setIsVideoPlaying(false)
+    }
+    else{
+      if(isVideoClickedOnFirstLoad.current){
+        setIsVideoPlaying(true)
+      }
+      else{
+        setIsVideoPlaying(false)
+      }
+    }
 },10)  
 }
 function removeVideoTracking(){
@@ -82,7 +100,7 @@ function handleVideoClick(){
     personalizPlayVideoFunction()
   }
   else {
-    if(!isFirstTimeVideoClicked){personalizPlayVideoFunction()}
+    if(!isVideoClickedOnFirstLoad.current){personalizPlayVideoFunction()}
     else{
       personalizPauseVideoFunction()
     }
@@ -92,8 +110,8 @@ function handleVideoClick(){
 
 function personalizPlayVideoFunction(){
   setIsVideoPlaying(true)
-  if(!isFirstTimeVideoClicked){
-    setIsFirstTimeVideoClicked(true)
+  if(!isVideoClickedOnFirstLoad.current){
+    isVideoClickedOnFirstLoad.current=true
     setIsMuted(false)
     videoElm.current.currentTime=0
     if(website_scroll_config){
@@ -153,11 +171,11 @@ const percentage = (offsetX / width) ;
   return (
     <>
         <section className='w-full h-full relative'>
-        <video onClick={handleVideoClick} muted autoPlay ref={videoElm} poster='https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif' onError={(e)=>{e.target.src=`${currentQuestionData?.original_s3url}#t=0.001`}} className={`w-full h-full ${currentQuestionData?.video_fit==='zoomed'?'object-cover':'object-contain'}`} src={`${currentQuestionData?.video_url}#t=0.001`} playsInline preload='auto' allowFullScreen></video>
+        <video onClick={handleVideoClick} muted autoPlay ref={videoElm} poster={posterUrl} onError={(e)=>{e.target.src=`${currentQuestionData?.original_s3url}#t=0.001`}} className={`w-full h-full ${currentQuestionData?.video_fit==='zoomed'?'object-cover':'object-contain'}`} src={`${currentQuestionData?.video_url}#t=0.001`} playsInline preload='auto' allowFullScreen></video>
 
         {website_scroll_config&&<div 
         className={`${styles.scrollVideoOuterCont} ${websiteSrollContPosition[website_scroll_config?.position]} ${websiteSrollContShape[website_scroll_config?.shape]}`}>
-          <video className='h-full w-full object-cover object-center' muted autoPlay playsInline preload='auto' allowFullScreen ref={scrollVideoElm} src={`${website_scroll_config?.dyn_video_url}#t=0.001`} onError={(e)=>{e.target.src=`${website_scroll_config?.original_s3_url}#t=0.001`}}></video>
+          <video className='h-full w-full object-cover object-center' muted autoPlay playsInline preload='auto' allowFullScreen ref={scrollVideoElm} src={`${website_scroll_config?.dyn_video_url}#t=0.001`} poster={posterUrl} onError={(e)=>{e.target.src=`${website_scroll_config?.original_s3_url}#t=0.001`}}></video>
         </div>
         }
 
@@ -169,15 +187,17 @@ const percentage = (offsetX / width) ;
 </div>
 
 <div className='w-full px-1 py-1 mt-1'>
-<p className='flex items-center gap-3 w-max ml-2'>
-<span className='border border-white rounded-md p-1 bg-black bg-opacity-30'><Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Replay+Icon.svg' width={20} height={20} alt='replay icon'/></span>
-<span className='border border-white rounded-md p-1 bg-black bg-opacity-30'><Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Restart+Icon.svg' width={20} height={20} alt='replay icon'/></span>
-<span ref={videoTimerRef} className='border border-white rounded-md p-1 bg-black bg-opacity-30 text-white text-sm'>{`00:00 / 00:00`}</span>
-</p>
+<div className='flex items-center gap-3 w-max ml-2'>
+<span id='restart_video_tooltip_id' className='cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30'><Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Replay+Icon.svg' width={20} height={20} alt='replay icon'/></span>
+<Tooltip style={{borderRadius:"5px"}} anchorId="restart_video_tooltip_id" place="bottom" content={'Restart video'}/>
+<span id='restart_session_tooltip_id' className='cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30'><Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Restart+Icon.svg' width={20} height={20} alt='replay icon'/></span>
+<Tooltip style={{borderRadius:"5px"}} anchorId="restart_session_tooltip_id" place="bottom" content={'Restart session'}/>
+<span ref={videoTimerRef} className='cursor-default border border-white rounded-md p-1 bg-black bg-opacity-30 text-white text-sm'>{`00:00 / 00:00`}</span>
+</div>
 </div>
 
-        </div>
-        </section>
+</div>
+</section>
     </>
   )
 }

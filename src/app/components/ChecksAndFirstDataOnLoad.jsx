@@ -1,23 +1,18 @@
 'use-client'
 
 import React, { useEffect } from 'react'
-import {  generateRandomString, replacePercent40 } from '../utils/Functions'
+import {  generateRandomString, replacePercent40,checkIfParamsArePresent } from '../utils/Functions'
 import { useGlobalStoreContext } from '../context/GlobalStoreContext'
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 const ChecksAndFirstDataOnLoad = () => {
-    const {setFirstLoadData}=useGlobalStoreContext()
+    const {setFirstLoadData,setIsLoading,setShowErrorModal}=useGlobalStoreContext()
 
-function checkIfParamsArePresent(){
-    const actualUrl = new URL(window.location.href)
-    let campaignId = actualUrl.searchParams.get("id")
-    let emailOfUser = actualUrl.searchParams.get("email")
-    let contact_id = actualUrl.searchParams.get("uid")
-    let mode = actualUrl.searchParams.get("mode")
-    return {campaignId,emailOfUser,contact_id,mode}
-}
+
 
 
 useEffect(() => {
+ 
   const {campaignId,emailOfUser,contact_id,mode}=checkIfParamsArePresent() 
   if(!campaignId){
     window.location.href=process.env.NEXT_PUBLIC_PERSONALIZ_URL
@@ -35,6 +30,10 @@ useEffect(() => {
     getFirstQuestionDetails(campaignId, contact_id,mode)
   }
   
+return ()=>{  
+  
+}
+
 //eslint-disable-next-line
 },[])
 
@@ -86,7 +85,15 @@ async function getFirstQuestionDetails(campaignId, contact_id,mode){
           delete custom_personalized_variable_obj.mode
           delete custom_personalized_variable_obj.uid
     }
-    let visitorUniqueId= `run_${generateRandomString(32)}`
+    let visitorUniqueId 
+    const fp = await FingerprintJS.load();
+    const { visitorId } = await fp.get();
+    if(visitorId){
+        visitorUniqueId=visitorId
+    }
+    else{
+        visitorUniqueId= `run_${generateRandomString(32)}`
+    }
     let geoIpLocationKeyObject = {city: null,state: null,country: null}
     const deviceWidth = window.innerWidth;
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video`, {
@@ -113,7 +120,69 @@ async function getFirstQuestionDetails(campaignId, contact_id,mode){
     const interactlyResponseData = await res.json();
     if(interactlyResponseData.status){
         setFirstLoadData(interactlyResponseData?.data)
+        makingGeoIpCallAndUpdatingSession(interactlyResponseData?.data)
+        setIsLoading(false)
     }
+    else if(interactlyResponseData.status===false&&interactlyResponseData?.no_contact_found){
+        setIsLoading(false)
+        setShowErrorModal(['Contact not found for this personalized video',null,'https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg'])
+    }
+    else if(interactlyResponseData.status===false&&interactlyResponseData?.no_contact_id){
+        setIsLoading(false)
+        setShowErrorModal(['uid is requred!','Please add uid in url and try again','https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg'])
+    }
+    else if(interactlyResponseData.status===false&&interactlyResponseData?.no_first_question_found){
+        setIsLoading(false)
+        setShowErrorModal(['No question available to display for this Personalized video!',null,'https://d34um3r0i45esv.cloudfront.net/no_first_question_available_imageFinal.jpg'])
+    }
+    else if(interactlyResponseData.status===false&&interactlyResponseData?.data?.no_active_subscription===true){
+        setIsLoading(false)
+        setShowErrorModal(['Content is temporarily unavailable!','Please try after some time','https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg'])
+    }
+}
+
+
+const makingGeoIpCallAndUpdatingSession = async (interactlyResponseData) => {
+    let interactlyIpData;
+    let interactlyDefaultAPIFORSESSIONUPDATE = `${process.env.NEXT_PUBLIC_API}/video/update_session_data`;
+    try {
+        const interactlyIpDataResponse = await fetch('https://interactly.video:3000/v1/geoIp');
+        if (interactlyIpDataResponse) {
+            interactlyIpData = await interactlyIpDataResponse.json()
+        } else {
+            interactlyIpData = { city: false, country_name: false, IPv4: false };
+        }
+    } catch (error) {
+        console.log('IP response error', error.message);
+    }
+
+    interactlyIpData = interactlyIpData._ip;
+  
+    let geoIpLocationKeyObject = {
+        city: interactlyIpData?.city ? interactlyIpData?.city : null,
+        state: interactlyIpData?.state ? interactlyIpData?.state : null,
+        country: interactlyIpData?.country_name ? interactlyIpData?.country_name : null
+    }
+
+    const deviceWidth = window.innerWidth;
+
+    const res = await fetch(`${interactlyDefaultAPIFORSESSIONUPDATE}`, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "ip_address": interactlyIpData?._myip,
+            "location": JSON.stringify(geoIpLocationKeyObject),
+            "session_id": interactlyResponseData.session_id,
+            "device_type": deviceWidth < 768 ? 'mobile'
+            : (deviceWidth >= 768 && deviceWidth < 1024) ? 'tablet'
+            : 'desktop'
+        }), method: 'POST'
+    });
+
+    const response = await res.json();
+    // console.log("sessionUpdateResponse", response)
+
 }
 
 

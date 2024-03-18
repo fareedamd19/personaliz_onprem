@@ -11,7 +11,6 @@ const QuestionContainer = () => {
     }} className={`flex flex-col gap-4 w-full h-full ${!isQuestionOnTopOfVideo&&configData?.form_bg_image?'bg-cover bg-center':""}}`}>
     {currentQuestionData?.type==="single_choice"&&<SingleChoice/>}
     
-
     </section>
   )
 }

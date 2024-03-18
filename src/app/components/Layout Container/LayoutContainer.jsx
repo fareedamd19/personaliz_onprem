@@ -14,7 +14,7 @@ const LayoutContainer = () => {
       
   return (
   <main className='w-full h-[90vh] flex items-center justify-center'>
-<div className={`h-[90%] w-[95%] lg:w-[80%] xl:w-[65%] bg shadow-lg rounded-lg relative flex overflow-hidden`}>
+<div className={`h-[90%] w-[99%] lg:w-[80%] xl:w-[65%] bg shadow-lg rounded-lg relative flex overflow-hidden`}>
 <div className={`${isQuestionOnTopOfVideo?'w-full':'w-[50%]'} h-full`}><VideoContainer/></div>
 
 <div style={{height:getHeightOfQuestionContainer(),transition:isQuestionOnTopOfVideo?"height 0.2s":""}} className={`${styles.layoutOuterMostScrollableCont} overflow-y-auto ${isQuestionOnTopOfVideo?'w-full':'w-[50%]'} ${isQuestionOnTopOfVideo?`absolute bottom-0 left-0 z-10`:'h-full'} ${isQuestionOnTopOfVideo&&'bg-black bg-opacity-20'}`}>

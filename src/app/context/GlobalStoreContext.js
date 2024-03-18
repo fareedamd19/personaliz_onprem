@@ -1,10 +1,12 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { checkIfParamsArePresent } from "../utils/Functions";
 
 const alphabet = ["","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 const breakPointNumber=720
 
 const GlobalStoreContext = createContext();
 const GlobalStoreProvider = ({ children }) => {
+    const[isLoading,setIsLoading]=useState(true)
     const [personaliz_branding, setPersonaliz_branding] = useState(null)
     const [campaignName, setCampaignName] = useState(null)
     const [personalizSessionId, setPersonalizSessionId] = useState(null)
@@ -19,11 +21,17 @@ const GlobalStoreProvider = ({ children }) => {
     const [numberThemeObj,setNumberThemeObj]=useState(null)
     const [customHeader,setCustomHeader]=useState(null)
     const [questionContainerHeight,setQuestionContainerHeight]=useState('mid')
-    const [isFirstTimeVideoClicked,setIsFirstTimeVideoClicked]=useState(false)
+    const [showThankYouPage,setShowThankYouPage]=useState(false)
+    const max_video_watch_time=useRef(0)
+    const target_video_element=useRef(null)
+    const stored_watch_time_for_api_called=useRef(null)
+    const is_user_exit_api_called=useRef(false)
+    const isVideoClickedOnFirstLoad=useRef(false)
 
 useEffect(()=>{
 if(firstLoadData){
   console.log("firstLoadData",firstLoadData)
+  document.querySelector("body").addEventListener('mouseleave', captureUserExit);
     setCurrentQuestionData(firstLoadData?.questions)
     setCampaignName(firstLoadData?.campaign_name)
     setPersonaliz_branding(firstLoadData?.personaliz_branding)
@@ -45,6 +53,11 @@ if(firstLoadData){
           }
     }
 }
+return ()=>{
+  document.querySelector("body").removeEventListener('mouseleave', captureUserExit);
+}
+
+//eslint-disable-next-line
 },[firstLoadData])
 
 
@@ -142,9 +155,136 @@ function getUrlLinkToBeRedirectedTo(url,personaliz_campaign_name,questionmarkOrA
   return `${url}${questionmarkOrAnd}utm_campaign=${personaliz_campaign_name}&utm_medium=social&utm_source=Personaliz.ai`
 }
 
+
+function getStatusWatchTimeAndWatchTimePercentage(payload_status) {
+ 
+  const watch_time= isVideoClickedOnFirstLoad.current?Math.max(max_video_watch_time.current,target_video_element.current.currentTime):0
+
+  const video_total_duration = target_video_element?.current?.duration||0;
+
+  const watch_time_percentage=(watch_time/video_total_duration)*100
+
+  const status=payload_status?payload_status:isVideoClickedOnFirstLoad.current?'Clicked':'Loaded'
+
+ 
+
+  return {watch_time,watch_time_percentage,status}
+
+}
+
+async function getNextQuestion(payload, form_field_variables){
+  const{watch_time,watch_time_percentage,status}=getStatusWatchTimeAndWatchTimePercentage('Answered')
+  const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
+  setIsLoading(true)
+
+  const isJSONString = (str) =>{
+    try {
+        JSON.parse(str);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+const question_text = currentQuestionData ? currentQuestionData.text : "";
+const answer = isJSONString(payload) ? JSON.parse(payload) : payload;
+
+const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video/nextQuestion`, {
+  headers: {
+      'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+      "contact_id": contact_id ?? null,
+      "action": "answer",
+      "ivideo_id": campaignId,
+      question_text,
+      "payload": JSON.stringify({status,type: currentQuestionData?.type, session_var: currentQuestionData?.session_var, answer,watch_time,watch_time_percentage:watch_time_percentage??0}),
+      "session_id": firstLoadData.session_id,
+      "question_id": currentQuestionData.question_id,
+      "mode":mode??null,
+      "form_field_variables": form_field_variables ? form_field_variables : payload
+  }),
+  method: 'POST'
+});
+const interactlyResponseData = await res.json();
+if(interactlyResponseData.status){
+  setIsLoading(false)
+  max_video_watch_time.current=0
+  is_user_exit_api_called.current=false
+  isVideoClickedOnFirstLoad.current=true
+  if(!interactlyResponseData?.data?.questions){
+    setShowThankYouPage(true)
+  }
+  else if(interactlyResponseData?.data?.questions){
+    setCurrentQuestionData(interactlyResponseData?.data?.questions)
+  }
+}
+else{
+  setIsLoading(false)
+}
+}
+
+async function hanleJumpForURL(payload, form_field_variables){
+  const{watch_time,watch_time_percentage,status}=getStatusWatchTimeAndWatchTimePercentage('Answered')
+  const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
+
+ 
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video/urlOptionSelect`, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "action": "answer",
+            "contact_id": contact_id ,
+            "ivideo_id": campaignId,
+            "payload": JSON.stringify({status,type: currentQuestionData?.type, session_var: currentQuestionData?.session_var, answer: payload,watch_time,watch_time_percentage:watch_time_percentage??0}),
+            "question_text":"Redirect to url",
+            "session_id": firstLoadData.session_id,
+            "question_id": currentQuestionData.question_id,
+            "mode":mode??null
+        }),
+        method: 'POST'
+    });
+}
+
+
+const captureUserExit = async () => {
+  const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
+  const{watch_time,watch_time_percentage,status}=currentQuestionData?.type==="auto_redirect"?getStatusWatchTimeAndWatchTimePercentage('Answered'):getStatusWatchTimeAndWatchTimePercentage()
+  if(is_user_exit_api_called.current&&(stored_watch_time_for_api_called.current===watch_time)){return}
+
+
+  const question_text = currentQuestionData ? currentQuestionData.text : "";
+  const answer = currentQuestionData?.type==="auto_redirect"?'Redirected to url':''
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video/capture_user_exit`, {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          "contact_id": contact_id ?? null,
+          "action": "answer",
+          "ivideo_id": campaignId,
+          question_text,
+          "payload": JSON.stringify({status,type: currentQuestionData?.type, session_var: currentQuestionData?.session_var, answer,watch_time,watch_time_percentage:watch_time_percentage??0}),
+          "session_id": firstLoadData.session_id,
+          "question_id": currentQuestionData?.question_id,
+          "mode":mode??null,
+          "form_field_variables": ''
+      }),
+      method: 'POST'
+  });
+ 
+  const interactlyResponseData = await res.json();
+  if(interactlyResponseData.status){
+      is_user_exit_api_called.current=true 
+      stored_watch_time_for_api_called.current=watch_time 
+  }
+}
+
+
     return (
     <GlobalStoreContext.Provider
-    value={{firstLoadData,setFirstLoadData,
+    value={{isLoading,setIsLoading,firstLoadData,setFirstLoadData,
             currentQuestionData,setCurrentQuestionData,
             showErrorModal, setShowErrorModal,
             configData,isQuestionOnTopOfVideo,
@@ -154,7 +294,8 @@ function getUrlLinkToBeRedirectedTo(url,personaliz_campaign_name,questionmarkOrA
             getHeightOfQuestionContainer,getPositionOfUpAndDownArrow,
             returnNumberOrAlpabet,personaliz_branding,campaignName,
             personalizSessionId,website_scroll_config,getUrlLinkToBeRedirectedTo, 
-            isFirstTimeVideoClicked,setIsFirstTimeVideoClicked    
+            target_video_element,getNextQuestion,hanleJumpForURL,showThankYouPage,
+            isVideoClickedOnFirstLoad
                 
             }}
     >

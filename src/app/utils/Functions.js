@@ -18,3 +18,13 @@ export function replacePercent40(email) {
         return email;
     }
 }
+
+export function checkIfParamsArePresent(){
+    const actualUrl = new URL(window.location.href)
+    let campaignId = actualUrl.searchParams.get("id")
+    let emailOfUser = actualUrl.searchParams.get("email")
+    let contact_id = actualUrl.searchParams.get("uid")
+    let mode = actualUrl.searchParams.get("mode")
+    return {campaignId,emailOfUser,contact_id,mode}
+}
+
