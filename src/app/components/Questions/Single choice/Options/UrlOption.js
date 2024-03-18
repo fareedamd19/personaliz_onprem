@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 
 const UrlOption = ({option,index}) => {
-    const {fontThemeObj,optionThemeObj,isQuestionOnTopOfVideo,numberThemeObj,returnNumberOrAlpabet} = useGlobalStoreContext();
+    const {fontThemeObj,optionThemeObj,isQuestionOnTopOfVideo,numberThemeObj,returnNumberOrAlpabet,getUrlLinkToBeRedirectedTo,campaignName} = useGlobalStoreContext();
   return (
    <>
     <Link style={{
@@ -13,7 +13,7 @@ const UrlOption = ({option,index}) => {
     borderRadius:`${optionThemeObj?.option_border_radius}px`,
     color:optionThemeObj?.option_text_color,
     fontSize:`${+fontThemeObj?.font_size-3}px`,
-    }} href={option?.url} target='_blank' 
+    }} href={getUrlLinkToBeRedirectedTo(option?.url,campaignName,'?')} target='_blank' 
     className={`${isQuestionOnTopOfVideo?'w-[80%] md:w-[40%] mx-auto':'w-[80%]'} h-max p-4 py-3 md:-mb-2 cursor-pointer hover:scale-105`}>
     <span style={{
         backgroundColor:numberThemeObj?.numbered_background_color,

@@ -8,20 +8,20 @@ import UrlOption from './Options/UrlOption';
 
 const SingleChoice = () => {
 
-const {isQuestionOnTopOfVideo,questionData,fontThemeObj,optionThemeObj,configData}=useGlobalStoreContext()
+const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,optionThemeObj,configData}=useGlobalStoreContext()
    
     const[options,setOptions]=useState([])
    
 
     useEffect(()=>{
-        const optionsObj=JSON.parse(questionData.options)
+        const optionsObj=JSON.parse(currentQuestionData.options)
         for(let key in optionsObj){
             setOptions(prev=>[...prev,optionsObj[key]])
         }
 return ()=>{
     setOptions([])
 }
-    },[questionData])
+    },[currentQuestionData])
 
 
     function getBackgroundColorForTitle(){
@@ -40,12 +40,12 @@ return ()=>{
   return (
     <>
     <section className='w-[90%] mx-auto mt-4'>
-    {questionData.text&&<h1 style={{
+    {currentQuestionData.text&&<h1 style={{
         fontFamily:fontThemeObj?.font_name,
         fontSize:`${+fontThemeObj?.font_size}px`,
         backgroundColor:getBackgroundColorForTitle(),
         color:fontThemeObj?.title_text_color
-        }} className={` ${isQuestionOnTopOfVideo?'text-center':''} w-full py-2 rounded-md`}>{questionData.text}</h1>}
+        }} className={` ${isQuestionOnTopOfVideo?'text-center':''} w-full py-2 rounded-md`}>{currentQuestionData.text}</h1>}
 
     <div className={`w-full h-full flex ${!isQuestionOnTopOfVideo?'flex-col gap-7':''} flex-wrap mt-3 pb-9`}>
     {options.length>0&&options.map((option,index)=>{

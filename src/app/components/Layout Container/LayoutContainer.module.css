@@ -1,7 +1,5 @@
 
-.layoutOuterMostScrollableCont{
-    transition: height 0.2s;
-}
+
 .layoutOuterMostScrollableCont::-webkit-scrollbar {
     width: 7px;
 }

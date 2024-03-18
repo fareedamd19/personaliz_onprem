@@ -5,8 +5,12 @@ const breakPointNumber=720
 
 const GlobalStoreContext = createContext();
 const GlobalStoreProvider = ({ children }) => {
+    const [personaliz_branding, setPersonaliz_branding] = useState(null)
+    const [campaignName, setCampaignName] = useState(null)
+    const [personalizSessionId, setPersonalizSessionId] = useState(null)
+    const [website_scroll_config, setWebsite_scroll_config] = useState(null)
     const [firstLoadData, setFirstLoadData] = useState(null)
-    const [questionData, setQuestionData] = useState(null)
+    const [currentQuestionData, setCurrentQuestionData] = useState(null)
     const [showErrorModal, setShowErrorModal] = useState(null)
     const [configData,setConfigData]=useState(null)
     const [isQuestionOnTopOfVideo,setIsQuestionOnTopOfVideo]=useState(true)
@@ -15,24 +19,30 @@ const GlobalStoreProvider = ({ children }) => {
     const [numberThemeObj,setNumberThemeObj]=useState(null)
     const [customHeader,setCustomHeader]=useState(null)
     const [questionContainerHeight,setQuestionContainerHeight]=useState('mid')
+    const [isFirstTimeVideoClicked,setIsFirstTimeVideoClicked]=useState(false)
 
 useEffect(()=>{
 if(firstLoadData){
-    setQuestionData(firstLoadData?.questions)
+  console.log("firstLoadData",firstLoadData)
+    setCurrentQuestionData(firstLoadData?.questions)
+    setCampaignName(firstLoadData?.campaign_name)
+    setPersonaliz_branding(firstLoadData?.personaliz_branding)
+    setPersonalizSessionId(firstLoadData?.session_id)
+    setWebsite_scroll_config(firstLoadData?.website_scroll_config)
     if(firstLoadData?.videoConfig){
         const configData=firstLoadData?.videoConfig
         setConfigData(configData)
         const viewData=JSON.parse(configData?.widget_view)?.desktop_video_view?.landing_page
-        // setIsQuestionOnTopOfVideo(window.innerWidth < breakPointNumber||(viewData.video_view==="landscape"||(viewData.video_view==="portrait"&&viewData.display_options==="on_video")))
-        // if(firstLoadData.videoConfig.font_obj){
-        //     let fontFamilyName=JSON.parse(firstLoadData.videoConfig.font_obj).font_name
-        //     if(fontFamilyName){
-        //     let style = window.document.createElement('style');
-        //     style.textContent = `@import url("https://fonts.googleapis.com/css2?family=${fontFamilyName}&display=swap")`;
-        //     window.document.head.appendChild(style);
-        //     }
+        setIsQuestionOnTopOfVideo(window.innerWidth < breakPointNumber||(viewData.video_view==="landscape"||(viewData.video_view==="portrait"&&viewData.display_options==="on_video")))
+        if(firstLoadData.videoConfig.font_obj){
+            let fontFamilyName=JSON.parse(firstLoadData.videoConfig.font_obj).font_name
+            if(fontFamilyName){
+            let style = window.document.createElement('style');
+            style.textContent = `@import url("https://fonts.googleapis.com/css2?family=${fontFamilyName}&display=swap")`;
+            window.document.head.appendChild(style);
+            }
       
-        //   }
+          }
     }
 }
 },[firstLoadData])
@@ -71,24 +81,24 @@ useEffect(() => {
 
   function handleQuestionConatinerUpOrDown(opt){
    
-// if(opt==="up"){
-// if(questionContainerHeight==='top'){return}
-// if(questionContainerHeight==='mid'){
-//     setQuestionContainerHeight('top')
-// }
-// else if(questionContainerHeight==='bottom'){
-//     setQuestionContainerHeight('mid')
-// }
-// }
-// else if (opt==="down"){
-//   if(questionContainerHeight==='bottom'){return}
-//   if(questionContainerHeight==='mid'){
-//       setQuestionContainerHeight('bottom')
-//   }
-//   else if(questionContainerHeight==='top'){
-//       setQuestionContainerHeight('mid')
-//   }
-// }
+if(opt==="up"){
+if(questionContainerHeight==='top'){return}
+if(questionContainerHeight==='mid'){
+    setQuestionContainerHeight('top')
+}
+else if(questionContainerHeight==='bottom'){
+    setQuestionContainerHeight('mid')
+}
+}
+else if (opt==="down"){
+  if(questionContainerHeight==='bottom'){return}
+  if(questionContainerHeight==='mid'){
+      setQuestionContainerHeight('bottom')
+  }
+  else if(questionContainerHeight==='top'){
+      setQuestionContainerHeight('mid')
+  }
+}
   }
 
   function getHeightOfQuestionContainer(){
@@ -128,18 +138,23 @@ useEffect(() => {
 }
 
 
+function getUrlLinkToBeRedirectedTo(url,personaliz_campaign_name,questionmarkOrAnd){
+  return `${url}${questionmarkOrAnd}utm_campaign=${personaliz_campaign_name}&utm_medium=social&utm_source=Personaliz.ai`
+}
+
     return (
     <GlobalStoreContext.Provider
     value={{firstLoadData,setFirstLoadData,
-            questionData,setQuestionData,
+            currentQuestionData,setCurrentQuestionData,
             showErrorModal, setShowErrorModal,
             configData,isQuestionOnTopOfVideo,
             fontThemeObj,optionThemeObj,
             numberThemeObj,customHeader,
             handleQuestionConatinerUpOrDown,questionContainerHeight,
             getHeightOfQuestionContainer,getPositionOfUpAndDownArrow,
-            returnNumberOrAlpabet,  
-                
+            returnNumberOrAlpabet,personaliz_branding,campaignName,
+            personalizSessionId,website_scroll_config,getUrlLinkToBeRedirectedTo, 
+            isFirstTimeVideoClicked,setIsFirstTimeVideoClicked    
                 
             }}
     >

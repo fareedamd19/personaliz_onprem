@@ -6,14 +6,14 @@ import { useGlobalStoreContext } from '../context/GlobalStoreContext';
 
 const Navbar = () => {
 
-const {customHeader} = useGlobalStoreContext()
+const {customHeader,getUrlLinkToBeRedirectedTo,campaignName} = useGlobalStoreContext()
 
  
   return (
     
     <nav className='w-full h-[65px] px-5 py-1 flex items-center justify-between bg-white shadow-md'>
-    <Link href={customHeader?.custom_logo_redirect_url||""}>
-    <Image src={customHeader?.custom_logo_img_url} loading="lazy" alt="logo" width={150} height={150}/>
+    <Link href={getUrlLinkToBeRedirectedTo(customHeader?.custom_logo_redirect_url,campaignName,'?')||""}>
+    <Image src={customHeader?.custom_logo_img_url||"https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png"} loading="lazy" alt="logo" width={150} height={150}/>
     </Link>
     {
       customHeader?.custom_button_type==='call'?<a style={{background:customHeader?.custom_button_color}} className='flex items-center px-[10px] py-[9px] text-white rounded-md' href={`tel:${customHeader?.custom_button_redirect_url}`}>
@@ -23,7 +23,7 @@ const {customHeader} = useGlobalStoreContext()
       </p>
       </a>
       :
-      <Link style={{background:customHeader?.custom_button_color}} className={`flex items-center px-[10px] py-[9px] text-white rounded-md`} href={customHeader?.custom_button_redirect_url||''}>{customHeader?.custom_button_text}</Link>
+      <Link style={{background:customHeader?.custom_button_color}} className={`flex items-center px-[10px] py-[9px] text-white rounded-md`} href={getUrlLinkToBeRedirectedTo(customHeader?.custom_button_redirect_url,campaignName,'?')||''}>{customHeader?.custom_button_text}</Link>
     }
     
     </nav>

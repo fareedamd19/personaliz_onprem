@@ -1,0 +1,8 @@
+.scrollVideoOuterCont{
+    position: absolute;
+    z-index: 10;
+    height: 12rem;
+    width: 12rem;
+    overflow: hidden;
+    border: 2.5px solid #fff;
+}
