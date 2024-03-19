@@ -185,6 +185,7 @@ function getStatusWatchTimeAndWatchTimePercentage(payload_status) {
 }
 
 async function getNextQuestion(payload,quesData=currentQuestionData.current, form_field_variables){
+  return
   let{watch_time,watch_time_percentage,status}=getStatusWatchTimeAndWatchTimePercentage('Answered')
   const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
   setIsLoading(true)
@@ -247,6 +248,7 @@ else{
 }
 
 async function hanleJumpForURL(payload,quesData=currentQuestionData.current, form_field_variables){
+  return
   const{watch_time,watch_time_percentage,status}=getStatusWatchTimeAndWatchTimePercentage('Answered')
   const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
 
@@ -271,6 +273,7 @@ async function hanleJumpForURL(payload,quesData=currentQuestionData.current, for
 
 
 const captureUserExit = async () => {
+  return
   const quesData=currentQuestionData.current
   if(quesData?.type==="auto_redirect"){return}
   const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
@@ -310,6 +313,7 @@ const captureUserExit = async () => {
 
 
 function handleAutoRedirectOption(quesData){
+  return
   const options = JSON.parse(quesData.options);
   const {url, session_var,open_new_tab} = options;
   let queryParams = "";
