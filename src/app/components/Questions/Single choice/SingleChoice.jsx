@@ -14,7 +14,7 @@ const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,optionThemeObj,co
    
 
     useEffect(()=>{
-        const optionsObj=JSON.parse(currentQuestionData.options)
+        const optionsObj=JSON.parse(currentQuestionData.current.options)
         for(let key in optionsObj){
             setOptions(prev=>[...prev,optionsObj[key]])
         }
@@ -40,14 +40,14 @@ return ()=>{
   return (
     <>
     <section className='w-[90%] mx-auto mt-4'>
-    {currentQuestionData.text&&<h1 style={{
+    {currentQuestionData.current.text&&<h1 style={{
         fontFamily:fontThemeObj?.font_name,
         fontSize:`${+fontThemeObj?.font_size}px`,
         backgroundColor:getBackgroundColorForTitle(),
         color:fontThemeObj?.title_text_color
-        }} className={` ${isQuestionOnTopOfVideo?'text-center':''} w-full py-2 rounded-md`}>{currentQuestionData.text}</h1>}
+        }} className={` ${isQuestionOnTopOfVideo?'text-center':''} w-full py-2 rounded-md`}>{currentQuestionData.current.text}</h1>}
 
-    <div className={`w-full h-full flex ${!isQuestionOnTopOfVideo?'flex-col gap-7':''} flex-wrap mt-3 pb-9`}>
+    <div className={`w-full h-full flex ${!isQuestionOnTopOfVideo?'flex-col gap-7':'pb-7'} flex-wrap mt-3`}>
     {options.length>0&&options.map((option,index)=>{
     return <Fragment key={index}>
     {option.type==='branch'?

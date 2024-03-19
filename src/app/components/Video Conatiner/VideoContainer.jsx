@@ -3,6 +3,7 @@ import Image from 'next/image'
 import React, {  useEffect, useRef, useState } from 'react'
 import styles from "./VideoContainer.module.css"
 import { Tooltip } from "react-tooltip";
+import { RiFullscreenFill } from "react-icons/ri";
 
 const websiteSrollContPosition={
   bottom_left:'bottom-[0.5rem] left-[0.5rem]',
@@ -18,7 +19,7 @@ const websiteSrollContShape={
 
 
 const VideoContainer = () => {
-  const {currentQuestionData,website_scroll_config,target_video_element,personaliz_branding,isVideoClickedOnFirstLoad}=useGlobalStoreContext()
+  const {currentQuestionData,website_scroll_config,target_video_element,personaliz_branding,isVideoClickedOnFirstLoad,handleQuestionConatinerUpOrDown,questionContainerHeight,configData,max_video_watch_time,captureUserExit,isQuestionOnTopOfVideo}=useGlobalStoreContext()
  
     const personalizVideoSetInterval=useRef(null)
     const videoElm=useRef(null)
@@ -28,7 +29,9 @@ const VideoContainer = () => {
     const [videoProgress,setVideoProgress]=useState(0)
     const [isMuted,setIsMuted]=useState(true)
     const posterUrl=personaliz_branding==="none"?"https://d2p77m460qjhbw.cloudfront.net/interactly_circular_loader_none.gif":"https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
- 
+    const alreadyAutomaticallyMovedUp=useRef(false)
+
+
 function getVideoElementToTarget(){
   let video 
 if(website_scroll_config){
@@ -41,6 +44,10 @@ target_video_element.current=video
 if(isVideoClickedOnFirstLoad.current){
   video.muted=false
   setIsVideoPlaying(true)
+  setIsMuted(false)
+}
+if(!isVideoClickedOnFirstLoad.current&&!(+configData?.auto_play)){
+  video.pause()
 }
 return video
 }
@@ -63,10 +70,14 @@ return ()=>{
     removeVideoTracking()
 }
 //eslint-disable-next-line
-},[videoElm?.current?.src,scrollVideoElm?.current?.src])
+},[videoElm?.current?.src,scrollVideoElm?.current?.src,configData])
 
 function startVideoTracking(video){
+
+  
+ 
 personalizVideoSetInterval.current=setInterval(()=>{
+  handleCheckForAutomaticallyMoveUp(video)
     setVideoProgress(video.currentTime/video.duration*100)
     videoTimerRef.current.innerHTML=`${getDuration(Number(video.currentTime))} / ${getDuration(Number(video.duration))}`
     if(video.currentTime>=video.duration){
@@ -112,6 +123,8 @@ function personalizPlayVideoFunction(){
   setIsVideoPlaying(true)
   if(!isVideoClickedOnFirstLoad.current){
     isVideoClickedOnFirstLoad.current=true
+    alreadyAutomaticallyMovedUp.current=false
+    handleQuestionConatinerUpOrDown('down')
     setIsMuted(false)
     videoElm.current.currentTime=0
     if(website_scroll_config){
@@ -168,14 +181,123 @@ const percentage = (offsetX / width) ;
   }
 }
 
+
+function handleCheckForAutomaticallyMoveUp(video){
+  const videoPopupTimer=+currentQuestionData.current?.delay_interaction
+  const maximizeOptionPannel=+configData?.maximize_option_panel
+  const isLeadTriggeredType=+currentQuestionData.current?.is_lead_trigger
+  const currentTime=video.currentTime
+  const videoTotalDuration=video.duration
+ 
+  if(currentTime>=(videoPopupTimer>=videoTotalDuration?videoTotalDuration:videoPopupTimer)){
+
+    if(questionContainerHeight==='bottom'&&!alreadyAutomaticallyMovedUp.current){
+  
+      if(maximizeOptionPannel){
+        if(isLeadTriggeredType){
+          handleQuestionConatinerUpOrDown('top')
+          alreadyAutomaticallyMovedUp.current=true
+        }
+        else{
+          handleQuestionConatinerUpOrDown('up')
+          alreadyAutomaticallyMovedUp.current=true
+        }
+      }
+      else{           
+        handleQuestionConatinerUpOrDown("up")
+        alreadyAutomaticallyMovedUp.current=true
+    }
+    }
+
+  }
+ 
+}
+
+function handleRestartVideoClick(){
+  if(!isVideoClickedOnFirstLoad.current){
+    isVideoClickedOnFirstLoad.current=true
+  }
+  max_video_watch_time.current=Math.max(max_video_watch_time.current,target_video_element.current.currentTime)
+  setIsMuted(false)
+  if(website_scroll_config){
+    if(scrollVideoElm.current){
+      scrollVideoElm.current.currentTime=0
+      scrollVideoElm.current.play()
+      scrollVideoElm.current.muted=false
+    }
+  }
+  videoElm.current.currentTime=0
+  videoElm.current.play()
+  if(!website_scroll_config){
+    videoElm.current.muted=false
+  }
+
+}
+
+function handleRestartSessionClick(){
+  captureUserExit()
+  window.location.reload()
+}
+function handleToggleSound(){
+  if(!isVideoClickedOnFirstLoad.current){
+    isVideoClickedOnFirstLoad.current=true
+  }
+  if(isMuted){
+    setIsMuted(false)
+    if(website_scroll_config){
+      scrollVideoElm.current.muted=false
+    }
+    else{
+      videoElm.current.muted=false
+    }
+  }
+  else{
+    setIsMuted(true)
+    if(website_scroll_config){
+      scrollVideoElm.current.muted=true
+    }
+    else{
+      videoElm.current.muted=true
+    }
+  }
+
+}
+function handleFullscreen(){
+  const personaliz_video_outer_conatiner=document.querySelector(`.${styles.videoOuterConatiner}`)
+  if(document.fullscreenElement ===personaliz_video_outer_conatiner){
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    else if (document.webkitFullscreenElement) {
+        document.webkitCancelFullScreen();
+      } else if (document.mozFullScreenElement) {
+        document.mozCancelFullScreen();
+      } else if (document.msFullscreenElement) {
+        document.msExitFullscreen();
+      }
+}
+else
+
+if (personaliz_video_outer_conatiner.requestFullscreen) {
+    personaliz_video_outer_conatiner.requestFullscreen();
+  } else if (personaliz_video_outer_conatiner.mozRequestFullScreen) { // Firefox
+    personaliz_video_outer_conatiner.mozRequestFullScreen();
+  } else if (personaliz_video_outer_conatiner.webkitRequestFullscreen) { // Chrome, Safari, Opera
+    personaliz_video_outer_conatiner.webkitRequestFullscreen();
+  } else if (personaliz_video_outer_conatiner.msRequestFullscreen) { // Edge
+    personaliz_video_outer_conatiner.msRequestFullscreen();
+  }else if (videoElm.current.webkitEnterFullScreen) { // Iphone
+    videoElm.current.webkitEnterFullScreen();
+  }
+}
   return (
     <>
-        <section className='w-full h-full relative'>
-        <video onClick={handleVideoClick} muted autoPlay ref={videoElm} poster={posterUrl} onError={(e)=>{e.target.src=`${currentQuestionData?.original_s3url}#t=0.001`}} className={`w-full h-full ${currentQuestionData?.video_fit==='zoomed'?'object-cover':'object-contain'}`} src={`${currentQuestionData?.video_url}#t=0.001`} playsInline preload='auto' allowFullScreen></video>
+        <section className={`${styles.videoOuterConatiner} w-full h-full relative`}>
+        <video onClick={handleVideoClick} muted autoPlay ref={videoElm} poster={posterUrl} onError={(e)=>{e.target.src=`${currentQuestionData.current?.original_s3url}#t=0.001`}} className={`w-full h-full ${currentQuestionData.current?.video_fit==='zoomed'?'object-cover':'object-contain'}`} src={`${currentQuestionData.current?.video_url}#t=0.001`} playsInline preload='auto' allowFullScreen></video>
 
         {website_scroll_config&&<div 
         className={`${styles.scrollVideoOuterCont} ${websiteSrollContPosition[website_scroll_config?.position]} ${websiteSrollContShape[website_scroll_config?.shape]}`}>
-          <video className='h-full w-full object-cover object-center' muted autoPlay playsInline preload='auto' allowFullScreen ref={scrollVideoElm} src={`${website_scroll_config?.dyn_video_url}#t=0.001`} poster={posterUrl} onError={(e)=>{e.target.src=`${website_scroll_config?.original_s3_url}#t=0.001`}}></video>
+          <video className={`h-full w-full object-cover object-center ${websiteSrollContShape[website_scroll_config?.shape]}`} muted autoPlay playsInline preload='auto' allowFullScreen ref={scrollVideoElm} src={`${website_scroll_config?.dyn_video_url}#t=0.001`} poster={posterUrl} onError={(e)=>{e.target.src=`${website_scroll_config?.original_s3_url}#t=0.001`}}></video>
         </div>
         }
 
@@ -186,17 +308,29 @@ const percentage = (offsetX / width) ;
   <p style={{width:`${videoProgress}%`}} className='w-0 bg-black h-full'></p>
 </div>
 
-<div className='w-full px-1 py-1 mt-1'>
+<div className='w-full px-1 py-1 mt-1 flex items-center'>
 <div className='flex items-center gap-3 w-max ml-2'>
-<span id='restart_video_tooltip_id' className='cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30'><Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Replay+Icon.svg' width={20} height={20} alt='replay icon'/></span>
+<span onClick={handleRestartVideoClick} id='restart_video_tooltip_id' className='cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30'><Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Replay+Icon.svg' width={20} height={20} alt='replay icon'/></span>
 <Tooltip style={{borderRadius:"5px"}} anchorId="restart_video_tooltip_id" place="bottom" content={'Restart video'}/>
-<span id='restart_session_tooltip_id' className='cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30'><Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Restart+Icon.svg' width={20} height={20} alt='replay icon'/></span>
+<span onClick={handleRestartSessionClick} id='restart_session_tooltip_id' className='cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30'><Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Restart+Icon.svg' width={20} height={20} alt='replay icon'/></span>
 <Tooltip style={{borderRadius:"5px"}} anchorId="restart_session_tooltip_id" place="bottom" content={'Restart session'}/>
 <span ref={videoTimerRef} className='cursor-default border border-white rounded-md p-1 bg-black bg-opacity-30 text-white text-sm'>{`00:00 / 00:00`}</span>
+</div>
+
+<div className='flex items-center gap-3 w-max ml-auto'>
+<span onClick={handleToggleSound} className='cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30'>
+{isMuted?<Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Mute+icon.svg' width={20} height={20} alt='mute icon'/>:
+<Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Sound+icon.svg' width={20} height={20} alt='sound icon'/>
+}
+</span>
+<span onClick={handleFullscreen} className='cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30'>
+<RiFullscreenFill className='text-white text-xl'/>
+</span>
 </div>
 </div>
 
 </div>
+ {personaliz_branding!=="none"&&<div style={{display:(isQuestionOnTopOfVideo&&questionContainerHeight==='bottom')?"none":""}} className='bg-black bg-opacity-50 text-white text-lg font-sans font-bold w-full h-[35px] absolute right-0 bottom-0 flex items-center justify-center gap-2 z-50'><em>Powered by</em><Image src="https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png" alt="brandLogo" width={30} height={30}/> <em>Personaliz.ai</em></div>}
 </section>
     </>
   )
