@@ -27,11 +27,21 @@ const GlobalStoreProvider = ({ children }) => {
     const stored_watch_time_for_api_called=useRef(null)
     const is_user_exit_api_called=useRef(false)
     const isVideoClickedOnFirstLoad=useRef(false)
-
+    const sessionVarAnswers = useRef({});
+    let globalHardcodedVariables=useRef({
+      submitText:'Submit',
+      ProceedText:'Proceed',
+      Done_Go_Next_Text:'Done? Go Next',
+      Start_Recording_Text:'Start Recording',
+      PausedText:'Paused'
+  })
 useEffect(()=>{
 if(firstLoadData){
   console.log("firstLoadData",firstLoadData)
   document.querySelector("body").addEventListener('mouseleave', captureUserExit);
+  if(firstLoadData?.translated_texts){
+    updateGlobalHardcodedVariables(firstLoadData?.translated_texts)
+  }
   currentQuestionData.current=firstLoadData?.questions
     setCampaignName(firstLoadData?.campaign_name)
     setPersonaliz_branding(firstLoadData?.personaliz_branding)
@@ -91,6 +101,16 @@ useEffect(() => {
     };
   }, []);
 
+
+  function updateGlobalHardcodedVariables(obj){
+    obj.forEach((text)=>{
+      if(text.original_text==="Submit"){globalHardcodedVariables.current.submitText=text.translated_text}
+      else if(text.original_text==="Proceed"){globalHardcodedVariables.current.ProceedText=text.translated_text}
+      else if(text.original_text==="Done? Go Next"){globalHardcodedVariables.current.Done_Go_Next_Text=text.translated_text}
+      else if(text.original_text==="Start Recording"){globalHardcodedVariables.current.Start_Recording_Text=text.translated_text}
+      else if(text.original_text==="Paused"){globalHardcodedVariables.current.PausedText=text.translated_text}
+  })
+  }
 
   function handleQuestionConatinerUpOrDown(opt){
    if(!isQuestionOnTopOfVideo){return}
@@ -204,6 +224,20 @@ async function getNextQuestion(payload,quesData=currentQuestionData.current, for
 const question_text = quesData ? quesData.text : "";
 const answer = isJSONString(payload) ? JSON.parse(payload) : payload;
 
+
+if(quesData?.session_var) {
+  const type = quesData?.type;
+  if(type === "form") {
+      for(const item of Object.values(answer)) {
+          sessionVarAnswers.current[item.variable] = item.answer;
+      }
+  } else if(type === "rich_media") {
+      sessionVarAnswers.current[quesData?.session_var] = answer.data;
+  } else{
+      sessionVarAnswers.current[quesData?.session_var] = answer;
+  }
+}
+
 const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video/nextQuestion`, {
   headers: {
       'Content-Type': 'application/json'
@@ -229,6 +263,7 @@ if(interactlyResponseData.status){
   is_user_exit_api_called.current=false
   isVideoClickedOnFirstLoad.current=true
   if(!interactlyResponseData?.data?.questions){
+    currentQuestionData.current=null
     setShowThankYouPage(true)
   }
   else if(interactlyResponseData?.data?.questions?.type === "auto_redirect"){
@@ -275,6 +310,7 @@ async function hanleJumpForURL(payload,quesData=currentQuestionData.current, for
 const captureUserExit = async () => {
   return
   const quesData=currentQuestionData.current
+  if(!quesData){return}
   if(quesData?.type==="auto_redirect"){return}
   const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
   let{watch_time,watch_time_percentage,status}=quesData?.type==="auto_redirect"?getStatusWatchTimeAndWatchTimePercentage('Answered'):getStatusWatchTimeAndWatchTimePercentage()
@@ -285,6 +321,20 @@ const captureUserExit = async () => {
 
   const question_text = quesData ? quesData.text : "";
   const answer = quesData?.type==="auto_redirect"?'Redirected to url':''
+
+  if(quesData?.session_var) {
+    const type = quesData?.type;
+    if(type === "form") {
+        for(const item of Object.values(answer)) {
+            sessionVarAnswers.current[item.variable] = item.answer;
+        }
+    } else if(type === "rich_media") {
+        sessionVarAnswers.current[quesData?.session_var] = answer.data;
+    } else{
+        sessionVarAnswers.current[quesData?.session_var] = answer;
+    }
+}
+
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video/capture_user_exit`, {
       headers: {
@@ -322,7 +372,7 @@ function handleAutoRedirectOption(quesData){
         if(Array.isArray(item)) {
             item = item.join(',');
         }
-        queryParams += `${item}=${sessionVarAnswers[item]}${session_var.length - 1 !== index ? "&" : ""}`
+        queryParams += `${item}=${sessionVarAnswers.current[item]}${session_var.length - 1 !== index ? "&" : ""}`
     }
 }
 const finalUrl = `${url}?utm_campaign=${campaignName}&utm_medium=social&utm_source=Personaliz.ai&${queryParams}`
@@ -334,6 +384,18 @@ document.body.appendChild(anchor);
 anchor.click();
 
 getNextQuestion('Redirected to url',quesData);
+}
+
+function getBackgroundColorForTitle(){
+  if(configData?.form_bg_color){
+      return configData?.form_bg_color
+  }
+  else if(optionThemeObj?.option_background_color){
+      return optionThemeObj?.option_background_color
+  }
+  else{
+      return '#000'
+  }
 }
 
     return (
@@ -349,7 +411,8 @@ getNextQuestion('Redirected to url',quesData);
             returnNumberOrAlpabet,personaliz_branding,campaignName,
             personalizSessionId,website_scroll_config,getUrlLinkToBeRedirectedTo, 
             target_video_element,getNextQuestion,hanleJumpForURL,showThankYouPage,
-            isVideoClickedOnFirstLoad,max_video_watch_time,captureUserExit
+            isVideoClickedOnFirstLoad,max_video_watch_time,captureUserExit,getBackgroundColorForTitle,
+            globalHardcodedVariables
                 
             }}
     >

@@ -1,7 +1,7 @@
 import React from 'react'
 import ChecksAndFirstDataOnLoad from '../ChecksAndFirstDataOnLoad'
 import Loader from '../Loader/Loader'
-import Navbar from '../Navbar'
+import Navbar from '../Navbar/Navbar'
 import LayoutContainer from '../Layout Container/LayoutContainer'
 import { useGlobalStoreContext } from '@/app/context/GlobalStoreContext'
 import ErrorModal from '../Error Modal/ErrorModal'

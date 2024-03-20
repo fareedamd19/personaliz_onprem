@@ -1,0 +1,7 @@
+@media(max-width:410px){
+    .warningCont{
+    width: 100%;
+    bottom: -2rem;
+    padding: 0 0.5rem;
+    }
+}
