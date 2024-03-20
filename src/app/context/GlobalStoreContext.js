@@ -27,6 +27,7 @@ const GlobalStoreProvider = ({ children }) => {
     const stored_watch_time_for_api_called=useRef(null)
     const is_user_exit_api_called=useRef(false)
     const isVideoClickedOnFirstLoad=useRef(false)
+    const [is_RTL,set_Is_RTL]=useState(0)
     const sessionVarAnswers = useRef({});
     let globalHardcodedVariables=useRef({
       submitText:'Submit',
@@ -50,6 +51,7 @@ if(firstLoadData){
     if(firstLoadData?.videoConfig){
         const configData=firstLoadData?.videoConfig
         setConfigData(configData)
+        set_Is_RTL(+configData?.is_RTL)
         const viewData=JSON.parse(configData?.widget_view)?.desktop_video_view?.landing_page
         setIsQuestionOnTopOfVideo(window.innerWidth < breakPointNumber||(viewData.video_view==="landscape"||(viewData.video_view==="portrait"&&viewData.display_options==="on_video")))
         if(firstLoadData.videoConfig.font_obj){
@@ -401,7 +403,7 @@ function getBackgroundColorForTitle(){
     return (
     <GlobalStoreContext.Provider
     value={{isLoading,setIsLoading,firstLoadData,setFirstLoadData,
-            currentQuestionData,
+            currentQuestionData,is_RTL,
             showErrorModal, setShowErrorModal,
             configData,isQuestionOnTopOfVideo,
             fontThemeObj,optionThemeObj,

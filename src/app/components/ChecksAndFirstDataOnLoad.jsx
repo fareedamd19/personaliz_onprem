@@ -49,7 +49,7 @@ async function getCampaignDetails (campaignId, emailOfUser) {
         });
         const responseData = await res.json();
         if (responseData) {
-            // console.log("responseData",responseData)
+           
             if(responseData.status){
                 const original_url=replacePercent40(window.location.href)
                 const newParamValue = `uid=${responseData?.contact_id}`;
@@ -79,7 +79,7 @@ async function getFirstQuestionDetails(campaignId, contact_id,mode){
         // You can now loop through the parameters and their values
         for (const [param, value] of queryParamsForCustomParams) {
             custom_personalized_variable_obj[param]=value
-            // console.log(`Parameter: ${param}, Value: ${value}`);
+          
           }
           delete custom_personalized_variable_obj.id
           delete custom_personalized_variable_obj.mode
@@ -180,8 +180,9 @@ const makingGeoIpCallAndUpdatingSession = async (interactlyResponseData) => {
         }), method: 'POST'
     });
 
+    //eslint-disable-next-line no-unused-vars
     const response = await res.json();
-    // console.log("sessionUpdateResponse", response)
+    
 
 }
 

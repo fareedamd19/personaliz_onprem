@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { IoCheckmark } from "react-icons/io5";
 const MultipleChoice = () => {
 
-const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,optionThemeObj,numberThemeObj,getBackgroundColorForTitle,getNextQuestion,globalHardcodedVariables,configData}=useGlobalStoreContext()
+const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,optionThemeObj,numberThemeObj,getBackgroundColorForTitle,getNextQuestion,globalHardcodedVariables,is_RTL}=useGlobalStoreContext()
 const[options,setOptions]=useState([])
 const [selectedOptionsIndexArray,setSelectedOptionsIndexArray]=useState([])
 const [showError,setShowError]=useState(false)
@@ -51,8 +51,8 @@ function handleJump(){
         fontSize:`${+fontThemeObj?.font_size}px`,
         backgroundColor:getBackgroundColorForTitle(),
         color:fontThemeObj?.title_text_color,
-        direction:(+configData?.is_RTL)?"rtl":"",
-        unicodeBidi:(+configData?.is_RTL)?"bidi-override":""
+        direction:(is_RTL)?"rtl":"",
+        unicodeBidi:(is_RTL)?"bidi-override":""
         }} className={` ${isQuestionOnTopOfVideo?'text-center':''} w-full py-2 rounded-md font-semibold`}>{currentQuestionData.current.text}</h1>}
 
     <div className={`w-full flex ${!isQuestionOnTopOfVideo?'flex-col gap-7':'gap-4'} flex-wrap mt-3`}>
@@ -76,8 +76,8 @@ function handleJump(){
      {selectedOptionsIndexArray.includes(index)?`✔`:""}
     </span>
     <span style={{
-        direction:(+configData?.is_RTL)?"rtl":"",
-        unicodeBidi:(+configData?.is_RTL)?"bidi-override":"",
+        direction:(is_RTL)?"rtl":"",
+        unicodeBidi:(is_RTL)?"bidi-override":"",
     }}>{option}</span></div>
     </Fragment>
     })}
@@ -93,10 +93,10 @@ function handleJump(){
         borderRadius:`${optionThemeObj?.option_border_radius}px`,
         color:optionThemeObj?.option_background_color,
         fontSize:`${+fontThemeObj?.font_size}px`,
-        direction:(+configData?.is_RTL)?"rtl":"",
-        unicodeBidi:(+configData?.is_RTL)?"bidi-override":""
+        direction:(is_RTL)?"rtl":"",
+        unicodeBidi:(is_RTL)?"bidi-override":""
         }}>
-        {globalHardcodedVariables?.current?.ProceedText}</button>
+        {globalHardcodedVariables?.current?.Done_Go_Next_Text}</button>
         </div>
         
         </section>

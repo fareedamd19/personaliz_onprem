@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 
 const Default = () => {
-    const {getUrlLinkToBeRedirectedTo,campaignName,configData} = useGlobalStoreContext()
+    const {getUrlLinkToBeRedirectedTo,campaignName,is_RTL} = useGlobalStoreContext()
 
     return (
         <section className="w-full h-[90vh] flex items-center justify-center">
@@ -21,8 +21,8 @@ const Default = () => {
                         width={120}
                         height={120}
                     />
-                    <p style={{direction:(+configData?.is_RTL)?"rtl":"",
-        unicodeBidi:(+configData?.is_RTL)?"bidi-override":""}} className="font-normal mt-5">
+                    <p style={{direction:(is_RTL)?"rtl":"",
+        unicodeBidi:(is_RTL)?"bidi-override":""}} className="font-normal mt-5">
                         Thank you, For answering all the Questions
                     </p>
                     <div className="flex items-center gap-4">
@@ -34,10 +34,10 @@ const Default = () => {
                             height={100}
                         />
                         <div>
-                        <p style={{direction:(+configData?.is_RTL)?"rtl":"",
-                        unicodeBidi:(+configData?.is_RTL)?"bidi-override":""}} className="font-normal text-gray-500">You just experienced</p>
-                        <p style={{direction:(+configData?.is_RTL)?"rtl":"",
-                        unicodeBidi:(+configData?.is_RTL)?"bidi-override":""}} className="font-bold text-[22px]">
+                        <p style={{direction:(is_RTL)?"rtl":"",
+                        unicodeBidi:(is_RTL)?"bidi-override":""}} className="font-normal text-gray-500">You just experienced</p>
+                        <p style={{direction:(is_RTL)?"rtl":"",
+                        unicodeBidi:(is_RTL)?"bidi-override":""}} className="font-bold text-[22px]">
                         Personaliz.ai
                         </p>
                         </div>
@@ -48,8 +48,8 @@ const Default = () => {
                         rel="noreferrer"
                         target="_blank"
                     >
-                        <button style={{direction:(+configData?.is_RTL)?"rtl":"",
-                        unicodeBidi:(+configData?.is_RTL)?"bidi-override":""}} className="text-white text-sm bg-black rounded-[28px] w-[233px] h-[56px] shadow-lg shadow-black mt-10">
+                        <button style={{direction:(is_RTL)?"rtl":"",
+                        unicodeBidi:(is_RTL)?"bidi-override":""}} className="text-white text-sm bg-black rounded-[28px] w-[233px] h-[56px] shadow-lg shadow-black mt-10">
                             Try Personaliz.ai Free
                         </button>
                     </a>

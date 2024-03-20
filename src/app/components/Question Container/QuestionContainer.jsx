@@ -4,6 +4,7 @@ import { useGlobalStoreContext } from '@/app/context/GlobalStoreContext'
 import RichMedia from '../Questions/Rich media/RichMedia'
 import MultipleChoice from '../Questions/Multiple Choice/MultipleChoice'
 import styles from "./QuestionContainer.module.css"
+import Iframe from '../Questions/I Frame/Iframe'
 
 const QuestionContainer = () => {
   const {isQuestionOnTopOfVideo,currentQuestionData,configData}=useGlobalStoreContext()
@@ -15,6 +16,7 @@ const QuestionContainer = () => {
     {currentQuestionData.current?.type==="single_choice"&&<SingleChoice/>}
     {currentQuestionData.current?.type==="multiple_choice"&&<MultipleChoice/>}
     {currentQuestionData.current?.type==="rich_media"&&<RichMedia/>}
+    {currentQuestionData.current?.type==="iframe"&&<Iframe/>}
     
     </section>
   )

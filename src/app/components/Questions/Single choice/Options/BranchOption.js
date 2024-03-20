@@ -2,7 +2,7 @@ import { useGlobalStoreContext } from '@/app/context/GlobalStoreContext';
 import React from 'react'
 
 const BranchOption = ({option,index}) => {
-    const {fontThemeObj,optionThemeObj,isQuestionOnTopOfVideo,numberThemeObj,returnNumberOrAlpabet,getNextQuestion,configData} = useGlobalStoreContext();
+    const {fontThemeObj,optionThemeObj,isQuestionOnTopOfVideo,numberThemeObj,returnNumberOrAlpabet,getNextQuestion,is_RTL} = useGlobalStoreContext();
   return (
    <>
     <div onClick={()=>getNextQuestion(option.text)} style={{
@@ -19,8 +19,8 @@ const BranchOption = ({option,index}) => {
         borderRadius:`${numberThemeObj.numbered_border_radius}px`,
         color:numberThemeObj?.numbered_text_color,
     }} className={`w-[28px] h-[28px] flex items-center justify-center mr-4`}>{returnNumberOrAlpabet(index)}</span><span style={{
-      direction:(+configData?.is_RTL)?"rtl":"",
-      unicodeBidi:(+configData?.is_RTL)?"bidi-override":""
+      direction:(is_RTL)?"rtl":"",
+      unicodeBidi:(is_RTL)?"bidi-override":""
     }}>{option.text}</span></div>
    </>
   )

@@ -7,7 +7,7 @@ import UrlOption from './Options/UrlOption';
 
 const SingleChoice = () => {
 
-const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,configData,getBackgroundColorForTitle}=useGlobalStoreContext()
+const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,is_RTL,getBackgroundColorForTitle}=useGlobalStoreContext()
    
     const[options,setOptions]=useState([])
    
@@ -31,8 +31,8 @@ return ()=>{
         fontSize:`${+fontThemeObj?.font_size}px`,
         backgroundColor:getBackgroundColorForTitle(),
         color:fontThemeObj?.title_text_color,
-        direction:(+configData?.is_RTL)?"rtl":"",
-        unicodeBidi:(+configData?.is_RTL)?"bidi-override":""
+        direction:(is_RTL)?"rtl":"",
+        unicodeBidi:(is_RTL)?"bidi-override":""
         }} className={` ${isQuestionOnTopOfVideo?'text-center':''} w-full py-2 rounded-md font-semibold`}>{currentQuestionData.current.text}</h1>}
 
     <div className={`w-full h-full flex ${!isQuestionOnTopOfVideo?'flex-col gap-7':'gap-2 md:gap-4'} flex-wrap mt-3`}>
