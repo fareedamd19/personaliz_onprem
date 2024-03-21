@@ -207,7 +207,6 @@ function getStatusWatchTimeAndWatchTimePercentage(payload_status) {
 }
 
 async function getNextQuestion(payload,quesData=currentQuestionData.current, form_field_variables){
-  return
   let{watch_time,watch_time_percentage,status}=getStatusWatchTimeAndWatchTimePercentage('Answered')
   const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
   setIsLoading(true)
@@ -285,7 +284,6 @@ else{
 }
 
 async function hanleJumpForURL(payload,quesData=currentQuestionData.current, form_field_variables){
-  return
   const{watch_time,watch_time_percentage,status}=getStatusWatchTimeAndWatchTimePercentage('Answered')
   const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
 
@@ -365,7 +363,6 @@ const captureUserExit = async () => {
 
 
 function handleAutoRedirectOption(quesData){
-  return
   const options = JSON.parse(quesData.options);
   const {url, session_var,open_new_tab} = options;
   let queryParams = "";
@@ -389,7 +386,10 @@ getNextQuestion('Redirected to url',quesData);
 }
 
 function getBackgroundColorForTitle(){
-  if(configData?.form_bg_color){
+  if(configData?.form_bg_image&&!isQuestionOnTopOfVideo){
+    return 'transparent'
+  }
+  else if(configData?.form_bg_color){
       return configData?.form_bg_color
   }
   else if(optionThemeObj?.option_background_color){
@@ -398,6 +398,22 @@ function getBackgroundColorForTitle(){
   else{
       return '#000'
   }
+}
+
+function getContrastColor(color) {
+  // console.log("color")
+  if(color==='transparent'||color==="undefined"){return null}
+  let rgbColor=hexToRgb(color)
+  // Calculate the brightness of the color
+  let brightness = (1 - (0.299 * rgbColor.r + 0.587 * rgbColor.g + 0.114 * rgbColor.b)) * 255;
+
+  // If the color is light, use a dark color for the contrast
+  if (brightness > 128) {
+    return '#ffffff';
+  }
+
+  // Otherwise, use a light color for the contrast
+  return '#000';
 }
 
     return (
@@ -414,7 +430,7 @@ function getBackgroundColorForTitle(){
             personalizSessionId,website_scroll_config,getUrlLinkToBeRedirectedTo, 
             target_video_element,getNextQuestion,hanleJumpForURL,showThankYouPage,
             isVideoClickedOnFirstLoad,max_video_watch_time,captureUserExit,getBackgroundColorForTitle,
-            globalHardcodedVariables
+            globalHardcodedVariables,getContrastColor
                 
             }}
     >

@@ -1,0 +1,5 @@
+@media(max-width:380px){
+    .optionOuterCont{
+        width: 100% !important;
+    }
+}

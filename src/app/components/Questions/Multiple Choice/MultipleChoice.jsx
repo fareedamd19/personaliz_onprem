@@ -1,9 +1,10 @@
 import { useGlobalStoreContext } from '@/app/context/GlobalStoreContext'
 import React, { Fragment, useEffect, useState } from 'react'
 import { IoCheckmark } from "react-icons/io5";
+import QuestionTitle from '../../Question Container/QuestionTitle';
 const MultipleChoice = () => {
 
-const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,optionThemeObj,numberThemeObj,getBackgroundColorForTitle,getNextQuestion,globalHardcodedVariables,is_RTL}=useGlobalStoreContext()
+const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,optionThemeObj,numberThemeObj,getBackgroundColorForTitle,getNextQuestion,globalHardcodedVariables,is_RTL,getContrastColor}=useGlobalStoreContext()
 const[options,setOptions]=useState([])
 const [selectedOptionsIndexArray,setSelectedOptionsIndexArray]=useState([])
 const [showError,setShowError]=useState(false)
@@ -43,17 +44,24 @@ function handleJump(){
     }
 }
 
+function getProceedBtnTextColor(hexColor){
+    if(!hexColor||hexColor?.toLowerCase()==="transparent"){
+        return getContrastColor(optionThemeObj?.option_text_color)
+    }
+    else if (hexColor?.length === 9 && hexColor?.startsWith("#")) {
+        // Extract RGB part (without alpha)
+        const rgbHex = hexColor.substring(0, 7);
+        return rgbHex;
+    } else {
+        // If there's no alpha channel, return the original color
+        return hexColor;
+    }
+}
+
   return (
     <>
           <section className='w-[90%] mx-auto mt-4'>
-    {currentQuestionData.current.text&&<h1 style={{
-        fontFamily:fontThemeObj?.font_name,
-        fontSize:`${+fontThemeObj?.font_size}px`,
-        backgroundColor:getBackgroundColorForTitle(),
-        color:fontThemeObj?.title_text_color,
-        direction:(is_RTL)?"rtl":"",
-        unicodeBidi:(is_RTL)?"bidi-override":""
-        }} className={` ${isQuestionOnTopOfVideo?'text-center':''} w-full py-2 rounded-md font-semibold`}>{currentQuestionData.current.text}</h1>}
+    {currentQuestionData.current.text&&<QuestionTitle/>}
 
     <div className={`w-full flex ${!isQuestionOnTopOfVideo?'flex-col gap-7':'gap-4'} flex-wrap mt-3`}>
     {options.length>0&&options.map((option,index)=>{
@@ -68,11 +76,11 @@ function handleJump(){
     }} 
     className={`${isQuestionOnTopOfVideo?'w-[90%] md:w-[40%] mx-auto':'w-full'} h-max p-4 py-3 md:-mb-2 cursor-pointer hover:scale-x-105  flex items-center`}>
     <span style={{
-        backgroundColor:numberThemeObj?.numbered_text_color,
+        backgroundColor:selectedOptionsIndexArray.includes(index)?"#4f4feb":numberThemeObj?.numbered_border_color,
         border:`${selectedOptionsIndexArray.includes(index)?'2px':'1px'} solid ${numberThemeObj?.numbered_border_color}`,
         borderRadius:`3px`,
-        color:numberThemeObj?.numbered_background_color,
-    }} className={`w-[14px] h-[14px] flex items-center justify-center mr-4 font-extrabold`}>
+        color:"#fff",
+    }} className={`w-[16px] h-[16px] flex items-center justify-center mr-4`}>
      {selectedOptionsIndexArray.includes(index)?`✔`:""}
     </span>
     <span style={{
@@ -91,12 +99,12 @@ function handleJump(){
         backgroundColor:optionThemeObj?.option_text_color,
         border:`2px solid ${optionThemeObj?.option_border_color}`,
         borderRadius:`${optionThemeObj?.option_border_radius}px`,
-        color:optionThemeObj?.option_background_color,
+        color:getProceedBtnTextColor(optionThemeObj?.option_background_color),
         fontSize:`${+fontThemeObj?.font_size}px`,
         direction:(is_RTL)?"rtl":"",
         unicodeBidi:(is_RTL)?"bidi-override":""
         }}>
-        {globalHardcodedVariables?.current?.Done_Go_Next_Text}</button>
+        {globalHardcodedVariables?.current?.ProceedText}</button>
         </div>
         
         </section>

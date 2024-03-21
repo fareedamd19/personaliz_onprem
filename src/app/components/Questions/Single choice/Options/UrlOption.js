@@ -1,20 +1,12 @@
 import { useGlobalStoreContext } from '@/app/context/GlobalStoreContext';
+import { pauseAllVideos } from '@/app/utils/Functions';
 import Link from 'next/link'
 import React from 'react'
 
 const UrlOption = ({option,index}) => {
     const {fontThemeObj,optionThemeObj,isQuestionOnTopOfVideo,numberThemeObj,returnNumberOrAlpabet,getUrlLinkToBeRedirectedTo,campaignName,hanleJumpForURL,is_RTL} = useGlobalStoreContext();
 
-  function pauseAllVideos() {
-    // Select all video elements on the page
-    const videos = document.querySelectorAll('video');
-    
-    // Iterate through each video element and pause it
-    videos.forEach(video => {
-        video.pause();
-    });
-
-  }
+  
 
 function handleOptionClick(){
   pauseAllVideos()

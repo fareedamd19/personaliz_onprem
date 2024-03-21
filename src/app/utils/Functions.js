@@ -28,3 +28,13 @@ export function checkIfParamsArePresent(){
     return {campaignId,emailOfUser,contact_id,mode}
 }
 
+export function pauseAllVideos() {
+    // Select all video elements on the page
+    const videos = document.querySelectorAll('video');
+    
+    // Iterate through each video element and pause it
+    videos.forEach(video => {
+        video.pause();
+    });
+
+  }
