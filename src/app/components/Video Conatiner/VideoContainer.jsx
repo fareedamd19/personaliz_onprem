@@ -99,7 +99,7 @@ personalizVideoSetInterval.current=setInterval(()=>{
         setIsVideoPlaying(false)
       }
     }
-},10)  
+},20)  
 }
 function removeVideoTracking(){
     clearInterval(personalizVideoSetInterval.current)

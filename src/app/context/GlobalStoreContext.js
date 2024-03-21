@@ -287,28 +287,36 @@ async function hanleJumpForURL(payload,quesData=currentQuestionData.current, for
   const{watch_time,watch_time_percentage,status}=getStatusWatchTimeAndWatchTimePercentage('Answered')
   const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
 
- 
+  setIsLoading(true)
+
+  try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video/urlOptionSelect`, {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            "action": "answer",
-            "contact_id": contact_id ,
-            "ivideo_id": campaignId,
-            "payload": JSON.stringify({status,type: quesData?.type, session_var: quesData?.session_var, answer: payload,watch_time,watch_time_percentage:watch_time_percentage??0}),
-            "question_text":"Redirect to url",
-            "session_id": firstLoadData.session_id,
-            "question_id": quesData.question_id,
-            "mode":mode??null
-        }),
-        method: 'POST'
-    });
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          "action": "answer",
+          "contact_id": contact_id ,
+          "ivideo_id": campaignId,
+          "payload": JSON.stringify({status,type: quesData?.type, session_var: quesData?.session_var, answer: payload,watch_time,watch_time_percentage:watch_time_percentage??0}),
+          "question_text":"Redirect to url",
+          "session_id": firstLoadData.session_id,
+          "question_id": quesData.question_id,
+          "mode":mode??null
+      }),
+      method: 'POST'
+  });
+    
+  } catch (error) {
+    console.log("err in handleJumpForURL",error)
+  }
+  setIsLoading(false)
+    
 }
 
 
 const captureUserExit = async () => {
-  return
+
   const quesData=currentQuestionData.current
   if(!quesData){return}
   if(quesData?.type==="auto_redirect"){return}
@@ -385,6 +393,46 @@ anchor.click();
 getNextQuestion('Redirected to url',quesData);
 }
 
+
+const getUrlForUploadedFile=async(file,type)=>{
+  const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
+  const quesData=currentQuestionData.current
+  setIsLoading(true)
+
+  if(mode==="test"){
+    getNextQuestion(JSON.stringify({type:type,data:'test'}))
+    return
+  }
+
+
+  let formData = new FormData();
+  formData.append('action', 'answer')
+  formData.append('ivideo_id',campaignId )
+  formData.append('contact_id',contact_id )
+  formData.append('file_type',type )
+  formData.append('question_id',quesData?.question_id)
+  formData.append('mode',mode??null )
+  formData.append('session_id', firstLoadData.session_id )
+  formData.append('payload',file,file.name )
+
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video/richMediaQuestion`, {
+      body: formData,
+      method: 'POST'
+  });
+
+  const interactlyResponseData = await res.json();
+
+  if(interactlyResponseData.status){
+    getNextQuestion(JSON.stringify({type:type,data:interactlyResponseData.data}))
+  }
+  } catch (error) {
+    console.log("error in uploading file",error)
+    setIsLoading(false)
+  }
+  
+}
+
 function getBackgroundColorForTitle(){
   if(configData?.form_bg_image&&!isQuestionOnTopOfVideo){
     return 'transparent'
@@ -430,7 +478,7 @@ function getContrastColor(color) {
             personalizSessionId,website_scroll_config,getUrlLinkToBeRedirectedTo, 
             target_video_element,getNextQuestion,hanleJumpForURL,showThankYouPage,
             isVideoClickedOnFirstLoad,max_video_watch_time,captureUserExit,getBackgroundColorForTitle,
-            globalHardcodedVariables,getContrastColor
+            globalHardcodedVariables,getContrastColor,getUrlForUploadedFile
                 
             }}
     >
@@ -438,6 +486,7 @@ function getContrastColor(color) {
     </GlobalStoreContext.Provider>
     );
 }
+
 
 const useGlobalStoreContext = () => {
     return useContext(GlobalStoreContext);

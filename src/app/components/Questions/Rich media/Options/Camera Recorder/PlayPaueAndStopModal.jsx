@@ -1,24 +1,30 @@
 import Image from 'next/image'
 import React from 'react'
 import { IoMdCloseCircleOutline } from 'react-icons/io'
+import { Tooltip } from "react-tooltip";
 
 const PlayPaueAndStopModal = ({startRecording,handleCloseCameraAndGoBack,showMoreOptions,pauseRecording=()=>{},stopRecording=()=>{}}) => {
   return (
    <>
     <div className='w-max flex gap-3 absolute bottom-0 left-1/2 -translate-x-1/2'>
-    {showMoreOptions&&<><p onClick={pauseRecording} className='w-[50px] h-[50px] shadow-lg p-1 rounded-full border border-[#e6e6e6] bg-white flex items-center justify-center mt-auto cursor-pointer'>
-        <Image src='https://d34um3r0i45esv.cloudfront.net/rich_media_icons/Pause+Icon.svg' alt="record icon" width={40} height={40} className='w-full h-full'/>
+    {showMoreOptions&&<><p id='rich_media_pause_recording_btn' onClick={pauseRecording} className='w-[50px] h-[50px] shadow-lg p-1 rounded-full border border-[#e6e6e6] bg-white flex items-center justify-center mt-auto cursor-pointer'>
+        <Image src='https://d34um3r0i45esv.cloudfront.net/rich_media_icons/Pause+Icon.svg' alt="pause icon" width={40} height={40} className='w-full h-full'/>
         </p>
-    <p onClick={stopRecording} className='w-[65px] h-[65px] shadow-lg p-1 rounded-full border border-[#e6e6e6] bg-white flex items-center justify-center mt-auto cursor-pointer mb-6'>
-    <Image src='https://d34um3r0i45esv.cloudfront.net/rich_media_icons/stop_recording_button_videoask.png'alt="record icon" width={40} height={40} className='w-full h-full'/>
+    <p id='rich_media_stop_recording_btn' onClick={stopRecording} className='w-[65px] h-[65px] shadow-lg p-1 rounded-full border border-[#e6e6e6] bg-white flex items-center justify-center mt-auto cursor-pointer mb-6'>
+    <Image src='https://d34um3r0i45esv.cloudfront.net/rich_media_icons/stop_recording_button_videoask.png'alt="stop icon" width={40} height={40} className='w-full h-full'/>
     </p></>}
 
-        {!showMoreOptions&&<p onClick={startRecording} className='w-[65px] h-[65px] shadow-lg p-1 rounded-full border border-[#e6e6e6] bg-white flex items-center justify-center mt-auto cursor-pointer'>
+        {!showMoreOptions&&<p id='rich_media_start_recording_btn' onClick={startRecording} className='w-[65px] h-[65px] shadow-lg p-1 rounded-full border border-[#e6e6e6] bg-white flex items-center justify-center mt-auto cursor-pointer'>
         <Image src='https://d34um3r0i45esv.cloudfront.net/rich_media_icons/start_recording_button_videoask.png' alt="record icon" width={40} height={40} className='w-full h-full'/>
         </p>}
-        <p onClick={handleCloseCameraAndGoBack} className='w-[50px] h-[50px] shadow-lg p-1 rounded-full border border-[#e6e6e6] bg-white flex items-center justify-center mt-auto cursor-pointer'>
+        <p id='rich_media_cancel_goback_btn' onClick={handleCloseCameraAndGoBack} className='w-[50px] h-[50px] shadow-lg p-1 rounded-full border border-[#e6e6e6] bg-white flex items-center justify-center mt-auto cursor-pointer'>
         <IoMdCloseCircleOutline className='text-5xl'/>
         </p>
+
+        {showMoreOptions&&<><Tooltip className='rounded text-lg font-semibold' anchorId={`rich_media_pause_recording_btn`} place="right" content={`Pause Recording`}/>
+        <Tooltip className='rounded text-lg font-semibold' anchorId={`rich_media_stop_recording_btn`} place="right" content={`Stop Recording`}/></>}
+        <Tooltip className='rounded text-lg font-semibold' anchorId={`rich_media_start_recording_btn`} place="right" content={`${showMoreOptions?"Resume":"Start"} Recording`}/>
+        <Tooltip className='rounded text-lg font-semibold' anchorId={`rich_media_cancel_goback_btn`} place="right" content={`Cancel`}/>
         </div>
    </>
   )

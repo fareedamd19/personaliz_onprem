@@ -10,7 +10,7 @@ import styles from "./CamerRecorder.module.css"
 import RecordedVideoPreviewer from './RecordedVideoPreviewer'
 
 function CameraRecorder({optionData,handleGoBack}) {
-    const {personaliz_branding}=useGlobalStoreContext()
+    const {personaliz_branding,getUrlForUploadedFile}=useGlobalStoreContext()
 // console.log("optionData",optionData)
 const posterUrl=personaliz_branding==="none"?"https://d2p77m460qjhbw.cloudfront.net/interactly_circular_loader_none.gif":"https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
 const [showErrorModal,setShowErrorModal]=useState(false)
@@ -169,7 +169,10 @@ let timer=4
 for(let i=0;i<=4;i++){
     setTimeout(()=>{
        timer=timer-1
-    document.querySelector(`.${styles.countdownTimer}`).innerHTML=timer!==0?timer:'Start'
+       if(document.querySelector(`.${styles.countdownTimer}`)){
+        document.querySelector(`.${styles.countdownTimer}`).innerHTML=timer!==0?timer:'Start'
+       }
+  
     if(timer<0){
     startCameraRecording()
     }
@@ -193,9 +196,12 @@ async function checkStartOfMediaRecorderAndHandle(){
 async function startCameraRecording(){
     setShowCountDown(false)
     setShowMoreOptions(true)
-    mediaRecorder.current.start();
+    if(mediaRecorder.current){
+        mediaRecorder.current.start();
    
-    timer_id.current=setInterval(trackTimerCountDown,1000)
+        timer_id.current=setInterval(trackTimerCountDown,1000)
+    }
+   
     
 }
 
@@ -254,6 +260,17 @@ async function createATempFileToPreview(){
     }
 }
 
+function handleNoClick(){
+    setRecordedVideoFile(null)
+    setStartRecording(false)
+    setRecordedVideoFile(null)
+    startRecordingCameraFunction()
+}
+
+function handleYesClick(){
+    getUrlForUploadedFile(recordedVideoFile,'video')
+}
+
   return (
     <>
         <section className='w-full h-[76dvh] bg-white shadow-lg rounded-md flex items-center justify-center overflow-hidden'>
@@ -275,7 +292,7 @@ async function createATempFileToPreview(){
         </div>
         }
 
-        {!loading&&!showErrorModal&&!showWaitingModal&&recordedVideoFile&&<><RecordedVideoPreviewer recordedVideoFile={recordedVideoFile}/></>
+        {!loading&&!showErrorModal&&!showWaitingModal&&recordedVideoFile&&<><RecordedVideoPreviewer recordedVideoFile={recordedVideoFile} handleNoClick={handleNoClick} handleYesClick={handleYesClick}/></>
 
         }
         </section>

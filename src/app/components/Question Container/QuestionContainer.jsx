@@ -14,9 +14,9 @@ const QuestionContainer = () => {
     backgroundColor: isQuestionOnTopOfVideo?"":configData?.form_bg_color
     }} className={`${styles.question_inner_container} flex flex-col gap-4 w-full ${!isQuestionOnTopOfVideo?"h-full overflow-y-auto":"mb-11"} ${!isQuestionOnTopOfVideo&&configData?.form_bg_image?'bg-cover bg-center':""}}`}>
     {currentQuestionData.current?.type==="single_choice"&&<SingleChoice/>}
-    {/* {currentQuestionData.current?.type==="multiple_choice"&&<MultipleChoice/>} */}
-    {/* {currentQuestionData.current?.type==="rich_media"&&<RichMedia/>} */}
-    {/* {currentQuestionData.current?.type==="iframe"&&<Iframe/>} */}
+    {currentQuestionData.current?.type==="multiple_choice"&&<MultipleChoice/>}
+    {currentQuestionData.current?.type==="rich_media"&&<RichMedia/>}
+    {currentQuestionData.current?.type==="iframe"&&<Iframe/>}
     
     </section>
   )
