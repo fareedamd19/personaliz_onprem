@@ -35,6 +35,7 @@ const VideoContainer = () => {
     const subtitile_data=currentQuestionData?.current?.subtitle_data??null
 
 function getVideoElementToTarget(){
+  
   let video 
 if(website_scroll_config){
   video=scrollVideoElm.current
@@ -49,7 +50,10 @@ if(isVideoClickedOnFirstLoad.current){
   setIsMuted(false)
 }
 if(!isVideoClickedOnFirstLoad.current&&!(+configData?.auto_play)){
-  video.pause()
+  if(video){
+    video.pause()
+  }
+  
 }
 return video
 }
@@ -64,6 +68,7 @@ return video
       } 
 
 useEffect(()=>{
+  if(!currentQuestionData.current?.video_url){return}
 let video=getVideoElementToTarget()
 if(video){
     startVideoTracking(video)
@@ -292,22 +297,32 @@ if (personaliz_video_outer_conatiner.requestFullscreen) {
     videoElm.current.webkitEnterFullScreen();
   }
 }
+
+function handleVideoError(event) {
+  // console.log("handleVideoError event",event)
+  event.target.src = `${currentQuestionData.current?.original_s3url}#t=0.001`;
+}
+
+function handleWebsiteScrollVideoError(event) {
+  event.target.src = `${website_scroll_config?.original_s3_url}#t=0.001`;
+}
+
   return (
     <>
         <section className={`${styles.videoOuterConatiner} w-full h-full relative`}>
 
         {/* MAIN VIDEO */}
-        <video onClick={handleVideoClick} muted autoPlay ref={videoElm} poster={posterUrl} onError={(e)=>{e.target.src=`${currentQuestionData.current?.original_s3url}#t=0.001`}} className={`w-full h-full ${currentQuestionData.current?.video_fit==='zoomed'?'object-cover':'object-contain'}`} src={`${currentQuestionData.current?.video_url}#t=0.001`} playsInline preload='auto' allowFullScreen></video>
+        {currentQuestionData.current?.video_url&&<video onClick={handleVideoClick} muted autoPlay ref={videoElm} poster={posterUrl} onError={handleVideoError} className={`w-full h-full ${currentQuestionData.current?.video_fit==='zoomed'?'object-cover':'object-contain'}`} src={`${currentQuestionData.current?.video_url}#t=0.001`} playsInline preload='auto' allowFullScreen></video>}
 
         {/* WEBSITE SCROLL VIDEO */}
         {website_scroll_config&&<div 
         className={`${styles.scrollVideoOuterCont} ${websiteSrollContPosition[website_scroll_config?.position]} ${websiteSrollContShape[website_scroll_config?.shape]}`}>
-          <video className={`h-full w-full object-cover object-center ${websiteSrollContShape[website_scroll_config?.shape]}`} muted autoPlay playsInline preload='auto' allowFullScreen ref={scrollVideoElm} src={`${website_scroll_config?.dyn_video_url}#t=0.001`} poster={posterUrl} onError={(e)=>{e.target.src=`${website_scroll_config?.original_s3_url}#t=0.001`}}></video>
+          <video className={`h-full w-full object-cover object-center ${websiteSrollContShape[website_scroll_config?.shape]}`} muted autoPlay playsInline preload='auto' allowFullScreen ref={scrollVideoElm} src={`${website_scroll_config?.dyn_video_url}#t=0.001`} poster={posterUrl} onError={handleWebsiteScrollVideoError}></video>
         </div>
         }
 
 {/* SUBTITLE CONTAINER */}
-{/* {subtitile_data&&<SubTitleContainer subtitile_data={subtitile_data}/>} */}
+{subtitile_data&&<SubTitleContainer subtitile_data={subtitile_data}/>}
 
 {/* PLAY ICON */}
 {!isVideoPlaying&&<Image onClick={handleVideoClick} className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer' src='https://dyolkjkaata8s.cloudfront.net/personaliz_play_Icon.svg' height={80} width={80} alt='personaliz play icon'/>}
@@ -331,7 +346,7 @@ if (personaliz_video_outer_conatiner.requestFullscreen) {
 
 <div className='flex items-center gap-3 w-max ml-auto'>
 <span onClick={handleToggleSound} className='cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30'>
-{isMuted?<Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Mute+icon.svg' width={20} height={20} alt='mute icon'/>:
+{isMuted?<Image className='w-[20px] h-[20px] aspect-auto' src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Mute+icon.svg' width={20} height={20} alt='mute icon'/>:
 <Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Sound+icon.svg' width={20} height={20} alt='sound icon'/>
 }
 </span>
@@ -344,7 +359,7 @@ if (personaliz_video_outer_conatiner.requestFullscreen) {
 </div>
 
 {/* COMPANY BRAND LOGO */}
- {personaliz_branding!=="none"&&<div style={{display:(isQuestionOnTopOfVideo&&questionContainerHeight==='bottom')?"none":""}} className='bg-black bg-opacity-50 text-white text-lg font-sans font-bold w-full h-[35px] absolute right-0 bottom-0 flex items-center justify-center gap-2 z-50'><em>Powered by</em><Image src="https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png" alt="brandLogo" width={30} height={30}/> <em>Personaliz.ai</em></div>}
+ {personaliz_branding!=="none"&&<div style={{display:(isQuestionOnTopOfVideo&&questionContainerHeight==='bottom')?"none":""}} className='bg-black bg-opacity-50 text-white text-lg font-sans font-bold w-full h-[35px] absolute right-0 bottom-0 flex items-center justify-center gap-2 z-50'><em>Powered by</em><Image className='size-[30px]' src="https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png" alt="brandLogo" width={30} height={30}/> <em>Personaliz.ai</em></div>}
 </section>
     </>
   )

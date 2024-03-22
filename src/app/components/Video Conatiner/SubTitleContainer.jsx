@@ -75,7 +75,7 @@ useEffect(()=>{
 
   return (
    <div className={`hidden absolute bottom-8 ${website_scroll_config?'w-[calc(100%-13rem)] right-0':'w-[97%] left-1 md:left-2'}`} ref={subtitleOuterCont}>
-    <div className='my-0 mx-auto bg-white text-black rounded text-xl text-justify leading-7 break-all' ref={subtitleInnerCont}>
+    <div className='my-0 mx-auto bg-white text-black rounded text-xl text-justify leading-7 ' ref={subtitleInnerCont}>
 
     </div>
    </div>

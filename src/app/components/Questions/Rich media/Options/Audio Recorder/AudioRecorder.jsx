@@ -12,7 +12,7 @@ import RecordedVideoPreviewer from '../Camera Recorder/RecordedVideoPreviewer'
 
 function AudioRecorder({optionData,handleGoBack}) {
     const {personaliz_branding,getUrlForUploadedFile}=useGlobalStoreContext()
-// console.log("optionData",optionData)
+
 const posterUrl=personaliz_branding==="none"?"https://d2p77m460qjhbw.cloudfront.net/interactly_circular_loader_none.gif":"https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
 const [showErrorModal,setShowErrorModal]=useState(false)
 const [showWaitingModal,setShowWaitingModal]=useState(false)
@@ -33,7 +33,7 @@ const [microphoneStream,setmicrophoneStream]=useState(null)
 
 useEffect(()=>{
     if(optionData){
-        timer.current=((optionData?.length_limit)/1000)
+        timer.current=((+optionData?.length_limit)/1000)
     }
     setLoading(true)
     setShowWaitingModal(true)
@@ -127,7 +127,7 @@ async function resetCameraRecorder(){
     clearInterval(timer_id.current)
     setShowMoreOptions(false)
     setStartRecording(false)
-    timer.current=((optionData?.length_limit)/1000)
+    timer.current=((+optionData?.length_limit)/1000)
     setRecordedVideoFile(null)
     startRecordingMediaFunction()
    
@@ -188,7 +188,7 @@ function trackTimerCountDown(){
     if(new_timer===0){
         clearInterval(timer_id.current)
         mediaRecorder.current.stop();
-        timer.current=((optionData?.length_limit)/1000)
+        timer.current=((+optionData?.length_limit)/1000)
     }
     else{
         timer.current=new_timer-1
@@ -213,7 +213,7 @@ function stopRecording(){
     clearInterval(timer_id.current)
     mediaRecorder.current.stop();
     setShowMoreOptions(false)
-    timer.current=((optionData?.length_limit)/1000)
+    timer.current=((+optionData?.length_limit)/1000)
 }
 
 async function createATempFileToPreview(){
@@ -226,7 +226,7 @@ async function createATempFileToPreview(){
      const blob = new Blob(final_data_chunks.current, { type: 'audio/mp3' });
 
      // Create a file from the blob and set it as the recorded video file
-     const new_file = new File([blob], 'audio.mp3', { type: 'audio/mp3' });
+     const new_file = new File([blob], 'AudioRecording.mp3', { type: 'audio/mp3' });
      setRecordedVideoFile(new_file);
  
      // Clear the data chunks
@@ -252,8 +252,8 @@ function handleYesClick(){
     <>
         <section className='w-full h-[76dvh] bg-[#afafaf] shadow-lg rounded-md flex items-center justify-center overflow-hidden'>
         {loading&&<Image src={posterUrl} width={150} height={150} alt="poster"/>}
-        {!loading&&showWaitingModal&&<WaitingModal handleGoBack={handleGoBack}/>}
-        {!loading&&showErrorModal&&<ErrorModal handleGoBack={handleGoBack}/>}
+        {!loading&&showWaitingModal&&<WaitingModal handleGoBack={handleGoBack} targetSrc={'audio'}/>}
+        {!loading&&showErrorModal&&<ErrorModal handleGoBack={handleGoBack} targetSrc={'audio'}/>}
 
         {!loading&&!showErrorModal&&!showWaitingModal&&!recordedVideoFile&&<div className='w-full h-full relative'>
         {!startRecording&&<div className='w-max flex gap-3 absolute top-1 left-1/2 -translate-x-1/2 z-10'>

@@ -34,7 +34,7 @@ const final_data_chunks=useRef([])
 
 useEffect(()=>{
     if(optionData){
-        timer.current=((optionData?.length_limit)/1000)
+        timer.current=((+optionData?.length_limit)/1000)
     }
     setLoading(true)
     setShowWaitingModal(true)
@@ -141,7 +141,7 @@ async function resetCameraRecorder(){
     clearInterval(timer_id.current)
     setShowMoreOptions(false)
     setStartRecording(false)
-    timer.current=((optionData?.length_limit)/1000)
+    timer.current=((+optionData?.length_limit)/1000)
     setRecordedVideoFile(null)
     startRecordingCameraFunction()
    
@@ -211,7 +211,7 @@ function trackTimerCountDown(){
     if(new_timer===0){
         clearInterval(timer_id.current)
         mediaRecorder.current.stop();
-        timer.current=((optionData?.length_limit)/1000)
+        timer.current=((+optionData?.length_limit)/1000)
     }
     else{
         timer.current=new_timer-1
@@ -236,7 +236,7 @@ function stopRecording(){
     clearInterval(timer_id.current)
     mediaRecorder.current.stop();
     setShowMoreOptions(false)
-    timer.current=((optionData?.length_limit)/1000)
+    timer.current=((+optionData?.length_limit)/1000)
 }
 
 async function createATempFileToPreview(){
@@ -275,8 +275,8 @@ function handleYesClick(){
     <>
         <section className='w-full h-[76dvh] bg-white shadow-lg rounded-md flex items-center justify-center overflow-hidden'>
         {loading&&<Image src={posterUrl} width={150} height={150} alt="poster"/>}
-        {!loading&&showWaitingModal&&<WaitingModal handleGoBack={handleGoBack}/>}
-        {!loading&&showErrorModal&&<ErrorModal handleGoBack={handleGoBack}/>}
+        {!loading&&showWaitingModal&&<WaitingModal handleGoBack={handleGoBack} targetSrc={'video'}/>}
+        {!loading&&showErrorModal&&<ErrorModal handleGoBack={handleGoBack} targetSrc={'video'}/>}
 
         {!loading&&!showErrorModal&&!showWaitingModal&&!recordedVideoFile&&<div className='w-full h-full relative'>
         {!startRecording&&<div className='w-max flex gap-3 absolute top-1 left-1/2 -translate-x-1/2 z-10'>

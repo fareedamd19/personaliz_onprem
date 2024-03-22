@@ -1,0 +1,15 @@
+.countdownTimer{
+    width: max-content;
+    height: max-content;
+    padding: 0 2rem;
+    background-color: rgb(0, 0, 0,0.5);
+    border-radius: 5px;
+    color: white;
+    font-size: 4.5rem;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+}

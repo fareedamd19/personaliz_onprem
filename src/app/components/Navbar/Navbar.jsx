@@ -16,8 +16,8 @@ const [showWarningText,setShowWarningText]=useState(mode==='test')
   return (
     
     <nav className='w-full h-[65px] px-5 py-1 flex items-center justify-between bg-white shadow-md relative'>
-    <Link href={getUrlLinkToBeRedirectedTo(customHeader?.custom_logo_redirect_url,campaignName,'?')||""}>
-    <Image src={customHeader?.custom_logo_img_url||"https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png"} loading="lazy" alt="logo" width={150} height={150}/>
+    <Link className='w-[130px] h-full overflow-hidden' href={getUrlLinkToBeRedirectedTo(customHeader?.custom_logo_redirect_url,campaignName,'?')||""}>
+    <Image className='w-full h-full' src={customHeader?.custom_logo_img_url||"https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png"} loading="lazy" alt="logo" width={150} height={40}/>
     </Link>
     {
       customHeader?.custom_button_type==='call'?<a style={{background:customHeader?.custom_button_color}} className='flex items-center px-[10px] py-[9px] text-white rounded-md' href={`tel:${customHeader?.custom_button_redirect_url}`}>
