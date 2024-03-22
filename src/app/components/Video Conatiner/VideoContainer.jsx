@@ -4,6 +4,7 @@ import React, {  useEffect, useRef, useState } from 'react'
 import styles from "./VideoContainer.module.css"
 import { Tooltip } from "react-tooltip";
 import { RiFullscreenFill } from "react-icons/ri";
+import SubTitleContainer from './SubTitleContainer';
 
 const websiteSrollContPosition={
   bottom_left:'bottom-[0.5rem] left-[0.5rem]',
@@ -31,6 +32,7 @@ const VideoContainer = () => {
     const posterUrl=personaliz_branding==="none"?"https://d2p77m460qjhbw.cloudfront.net/interactly_circular_loader_none.gif":"https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
     const alreadyAutomaticallyMovedUp=useRef(false)
 
+    const subtitile_data=currentQuestionData?.current?.subtitle_data??null
 
 function getVideoElementToTarget(){
   let video 
@@ -293,21 +295,31 @@ if (personaliz_video_outer_conatiner.requestFullscreen) {
   return (
     <>
         <section className={`${styles.videoOuterConatiner} w-full h-full relative`}>
+
+        {/* MAIN VIDEO */}
         <video onClick={handleVideoClick} muted autoPlay ref={videoElm} poster={posterUrl} onError={(e)=>{e.target.src=`${currentQuestionData.current?.original_s3url}#t=0.001`}} className={`w-full h-full ${currentQuestionData.current?.video_fit==='zoomed'?'object-cover':'object-contain'}`} src={`${currentQuestionData.current?.video_url}#t=0.001`} playsInline preload='auto' allowFullScreen></video>
 
+        {/* WEBSITE SCROLL VIDEO */}
         {website_scroll_config&&<div 
         className={`${styles.scrollVideoOuterCont} ${websiteSrollContPosition[website_scroll_config?.position]} ${websiteSrollContShape[website_scroll_config?.shape]}`}>
           <video className={`h-full w-full object-cover object-center ${websiteSrollContShape[website_scroll_config?.shape]}`} muted autoPlay playsInline preload='auto' allowFullScreen ref={scrollVideoElm} src={`${website_scroll_config?.dyn_video_url}#t=0.001`} poster={posterUrl} onError={(e)=>{e.target.src=`${website_scroll_config?.original_s3_url}#t=0.001`}}></video>
         </div>
         }
 
-        {!isVideoPlaying&&<Image onClick={handleVideoClick} className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer' src='https://dyolkjkaata8s.cloudfront.net/personaliz_play_Icon.svg' height={80} width={80} alt='personaliz play icon'/>}
+{/* SUBTITLE CONTAINER */}
+{/* {subtitile_data&&<SubTitleContainer subtitile_data={subtitile_data}/>} */}
+
+{/* PLAY ICON */}
+{!isVideoPlaying&&<Image onClick={handleVideoClick} className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer' src='https://dyolkjkaata8s.cloudfront.net/personaliz_play_Icon.svg' height={80} width={80} alt='personaliz play icon'/>}
+
 
 <div className='bg-black bg-opacity-10 w-full flex flex-col absolute top-0'>
+{/* VIDEO PROGRESS BAR */}
 <div onClick={handleSeekVideo} className={`${styles.prgressBarOuterCont} cursor-pointer w-full h-[0.75rem] bg-[#6b7280]`}>
   <p style={{width:`${videoProgress}%`}} className='w-0 bg-black h-full'></p>
 </div>
 
+{/* VIDEO CONTROLS BAR */}
 <div className='w-full px-1 py-1 mt-1 flex items-center'>
 <div className='flex items-center gap-3 w-max ml-2'>
 <span onClick={handleRestartVideoClick} id='restart_video_tooltip_id' className='cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30'><Image src='https://d34um3r0i45esv.cloudfront.net/Control+Options/Replay+Icon.svg' width={20} height={20} alt='replay icon'/></span>
@@ -330,6 +342,8 @@ if (personaliz_video_outer_conatiner.requestFullscreen) {
 </div>
 
 </div>
+
+{/* COMPANY BRAND LOGO */}
  {personaliz_branding!=="none"&&<div style={{display:(isQuestionOnTopOfVideo&&questionContainerHeight==='bottom')?"none":""}} className='bg-black bg-opacity-50 text-white text-lg font-sans font-bold w-full h-[35px] absolute right-0 bottom-0 flex items-center justify-center gap-2 z-50'><em>Powered by</em><Image src="https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png" alt="brandLogo" width={30} height={30}/> <em>Personaliz.ai</em></div>}
 </section>
     </>

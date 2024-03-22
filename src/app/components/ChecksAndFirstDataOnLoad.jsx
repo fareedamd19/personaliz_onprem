@@ -59,8 +59,8 @@ async function getCampaignDetails (campaignId, emailOfUser) {
                 window.location.replace(updatedUrl)
             }
             else{
-                return 'show_error'
-                // errorModalToShow('Contact not found for this personalized video','https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg')
+                setIsLoading(false)
+                setShowErrorModal(['Contact not found for this personalized video',null,'https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg'])
             }
            
         }
