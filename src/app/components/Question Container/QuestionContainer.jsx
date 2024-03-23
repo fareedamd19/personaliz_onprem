@@ -5,6 +5,7 @@ import RichMedia from '../Questions/Rich media/RichMedia'
 import MultipleChoice from '../Questions/Multiple Choice/MultipleChoice'
 import styles from "./QuestionContainer.module.css"
 import Iframe from '../Questions/I Frame/Iframe'
+import Form from '../Questions/Form/Form'
 
 const QuestionContainer = () => {
   const {isQuestionOnTopOfVideo,currentQuestionData,configData}=useGlobalStoreContext()
@@ -14,9 +15,10 @@ const QuestionContainer = () => {
     backgroundColor: isQuestionOnTopOfVideo?"":configData?.form_bg_color
     }} className={`${styles.question_inner_container} flex flex-col gap-4 w-full ${!isQuestionOnTopOfVideo?"h-full overflow-y-auto":"mb-11"} ${!isQuestionOnTopOfVideo&&configData?.form_bg_image?'bg-cover bg-center':""}}`}>
     {currentQuestionData.current?.type==="single_choice"&&<SingleChoice/>}
-    {/* {currentQuestionData.current?.type==="multiple_choice"&&<MultipleChoice/>} */}
-    {/* {currentQuestionData.current?.type==="iframe"&&<Iframe/>} */}
+    {currentQuestionData.current?.type==="multiple_choice"&&<MultipleChoice/>}
+    {currentQuestionData.current?.type==="iframe"&&<Iframe/>}
     {/* {currentQuestionData.current?.type==="rich_media"&&<RichMedia/>} */}
+    {/* {currentQuestionData.current?.type==="form"&&<Form/>} */}
     
     </section>
   )
