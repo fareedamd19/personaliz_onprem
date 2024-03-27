@@ -32,9 +32,16 @@ const Form = () => {
 
 //CREATE INPUTS
 function createFormInputs(arr){
+
   let tempObj={}
   arr.forEach((item)=>{
-    tempObj[item.variable]={type:item.type,answer:""}
+    if(item.type==="phone"){
+      tempObj[item.variable]={type:item.type,answer:"",dialCode:""}
+    }
+    else{
+      tempObj[item.variable]={type:item.type,answer:""}
+    }
+  
   })
   setFormInputValue(tempObj)
 }
@@ -50,14 +57,28 @@ function handleInputChange(e){
   }))
 }
 
-function updateCustomFormInput(value,name){
-  setFormInputValue((prev) => ({
-    ...prev,
-    [name]: {
-      ...prev[name],
-      answer: value
-    }
-  }))
+function updateCustomFormInput(value,name,dialCode=null){
+  if(dialCode){
+    setFormInputValue((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev[name],
+        answer: value,
+        dialCode:dialCode
+      }
+    }))
+  }
+
+  else{
+    setFormInputValue((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev[name],
+        answer: value
+      }
+    }))
+  }
+  
 }
 
 function checkAnswerNotEmptyAndValid(data) {
@@ -100,7 +121,7 @@ function handleFormSubmit(e){
   }
   else{
     setShowError(null)
-
+ 
     let formInputs = {};
     options.forEach((opt,idx) => {
       formInputs[idx+1]=opt
@@ -108,7 +129,14 @@ function handleFormSubmit(e){
    
     let interactlyInputs={}
     for(let key in formInputValue){
-      interactlyInputs[key]=formInputValue[key].answer
+     
+      if(formInputValue[key].type==="phone"){
+        interactlyInputs[key]=`${formInputValue[key].dialCode} ${formInputValue[key].answer}`
+      }
+      else{
+        interactlyInputs[key]=formInputValue[key].answer
+      }
+      
     }
   
     for (const key in formInputs) {
@@ -117,6 +145,7 @@ function handleFormSubmit(e){
           formInputs[key].answer = interactlyInputs[variable];
       }
   }
+ 
   setLoading(false)
     getNextQuestion(formInputs,currentQuestionData.current,JSON.stringify(interactlyInputs))
 
@@ -133,7 +162,7 @@ function handleFormSubmit(e){
       {options.map((opt)=>{
         return <Fragment key={opt.variable}>
 
-        {opt.type==='location'?<Location updateLocationFormInput={updateCustomFormInput} option={opt}/>:opt.type==='phone'?<PhoneNumber handleInputChange={handleInputChange} formInputValue={formInputValue} option={opt}/>:<InputModal option={opt} handleInputChange={handleInputChange} formInputValue={formInputValue}/>}
+        {opt.type==='location'?<Location updateLocationFormInput={updateCustomFormInput} option={opt}/>:opt.type==='phone'?<PhoneNumber updatePhoneFormInput={updateCustomFormInput} formInputValue={formInputValue} option={opt}/>:<InputModal option={opt} handleInputChange={handleInputChange} formInputValue={formInputValue}/>}
         </Fragment>
       })}
 

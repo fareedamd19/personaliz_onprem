@@ -1,16 +1,29 @@
 import { useGlobalStoreContext } from '@/app/context/GlobalStoreContext'
 import CountryCodePicker from '@/app/utils/Country Code Picker/CountryCodePicker'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from "./PhoneNumber.module.css"
-const PhoneNumber = ({option,handleInputChange,formInputValue}) => {
+const PhoneNumber = ({option,updatePhoneFormInput,formInputValue}) => {
     const {fontThemeObj,optionThemeObj,choosenCountryCode}=useGlobalStoreContext()
     const [selectedCountry,setSelectedCountry]=useState(null)
+   
 function returnPlaceholerType(type){
 if(type==='phone'){return 'number'}
 else if (type==='email'){return 'email'}
 else if (type==='url'){return 'url'}
 else if (type==="number"){return 'number'}
 else return 'text'
+}
+
+useEffect(()=>{
+if(selectedCountry){
+  updatePhoneFormInput(formInputValue[option.variable]?.answer,option.variable,selectedCountry?.dialCode) 
+}
+//eslint-disable-next-line
+},[selectedCountry])
+
+function handleInputChange(e){
+  let {value}=e.target
+  updatePhoneFormInput(value,option.variable,selectedCountry?.dialCode)
 }
 
   return (
