@@ -18,9 +18,10 @@ const QuestionContainer = () => {
     {currentQuestionData.current?.type==="single_choice"&&<SingleChoice/>}
     {currentQuestionData.current?.type==="multiple_choice"&&<MultipleChoice/>}
     {currentQuestionData.current?.type==="iframe"&&<Iframe/>}
+    {/* {currentQuestionData.current?.type==="calendar"&&<Calender/>} */}
     {/* {currentQuestionData.current?.type==="rich_media"&&<RichMedia/>} */}
     {/* {currentQuestionData.current?.type==="form"&&<Form/>} */}
-    {currentQuestionData.current?.type==="calendar"&&<Calender/>}
+  
     
     </section>
   )
