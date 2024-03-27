@@ -38,3 +38,17 @@ export function pauseAllVideos() {
     });
 
   }
+
+  export function getProceedBtnTextColor(hexColor){
+    if(!hexColor||hexColor?.toLowerCase()==="transparent"){
+        return getContrastColor(optionThemeObj?.option_text_color)
+    }
+    else if (hexColor?.length === 9 && hexColor?.startsWith("#")) {
+        // Extract RGB part (without alpha)
+        const rgbHex = hexColor.substring(0, 7);
+        return rgbHex;
+    } else {
+        // If there's no alpha channel, return the original color
+        return hexColor;
+    }
+}

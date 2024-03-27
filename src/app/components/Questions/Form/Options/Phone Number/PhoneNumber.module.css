@@ -1,0 +1,4 @@
+.inputCont::placeholder {
+    color: var(--placeholder-color);
+    opacity: 0.9;
+  }

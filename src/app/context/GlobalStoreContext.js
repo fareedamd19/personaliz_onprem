@@ -29,6 +29,8 @@ const GlobalStoreProvider = ({ children }) => {
     const isVideoClickedOnFirstLoad=useRef(false)
     const [is_RTL,set_Is_RTL]=useState(0)
     const sessionVarAnswers = useRef({});
+    const choosenCountryCode = useRef(null);
+
     let globalHardcodedVariables=useRef({
       submitText:'Submit',
       ProceedText:'Proceed',
@@ -50,6 +52,7 @@ if(firstLoadData){
     setWebsite_scroll_config(firstLoadData?.website_scroll_config)
     if(firstLoadData?.videoConfig){
         const configData=firstLoadData?.videoConfig
+        choosenCountryCode.current=firstLoadData?.videoConfig?.country_code
         setConfigData(configData)
         set_Is_RTL(+configData?.is_RTL)
         const viewData=JSON.parse(configData?.widget_view)?.desktop_video_view?.landing_page
@@ -478,7 +481,7 @@ function getContrastColor(color) {
             personalizSessionId,website_scroll_config,getUrlLinkToBeRedirectedTo, 
             target_video_element,getNextQuestion,hanleJumpForURL,showThankYouPage,
             isVideoClickedOnFirstLoad,max_video_watch_time,captureUserExit,getBackgroundColorForTitle,
-            globalHardcodedVariables,getContrastColor,getUrlForUploadedFile
+            globalHardcodedVariables,getContrastColor,getUrlForUploadedFile,choosenCountryCode
                 
             }}
     >

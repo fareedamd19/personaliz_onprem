@@ -30,6 +30,11 @@ const nextConfig = {
           hostname: 'd311yj556j5ydo.cloudfront.net',
           pathname: '**',
         },
+        {
+          protocol: 'https',
+          hostname: 'cdn.kcak11.com',
+          pathname: '**',
+        },
       ],
     },
 };

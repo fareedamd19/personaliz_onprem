@@ -1,0 +1,62 @@
+.signup_form_onboarding_countryCode_selector_inputCont{
+    /* width: 75px; */
+    height: max-content;
+    /* background-color: red; */
+    position: absolute;
+    top: 4px;
+    left: 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: .5rem;
+    /* border: 1px solid #898989; */
+}
+.signup_form_onboarding_countryCode_selector_inputCont>p{
+    margin-left: .25rem;
+    font-weight: 600;
+}
+.signup_form_onboarding_countryCode_selector_inputCont_selector{
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    width: 260px;
+    height: 200px;
+    background-color: white;
+    border-radius: 11px;
+    position: absolute;
+    border: 1px solid black;
+    top: 3.5rem;
+    z-index: 1;
+}
+.signup_form_onboarding_countryCode_selector_inputCont_selector::-webkit-scrollbar {
+    display: none;
+}
+.signup_form_onboarding_countryCode_selector_inputCont_selector_option{
+    display: flex;
+    align-items: center;
+    /* width: 100%; */
+    /* height: 50px; */
+    /* background-color: yellow; */
+    border-radius: 2px;
+    color:rgba(0, 0, 0, 0.60);
+    font-size: 1rem;
+    padding: .5rem;
+    padding-left: .5rem;
+    cursor: pointer;
+    margin-top: .1rem;
+}
+.signup_form_onboarding_countryCode_selector_inputCont_selector_option:hover{
+    background: rgba(0, 0, 0, 0.05)
+    /* background-color: #898989; */
+}
+.signup_form_onboarding_countryCode_selector_country_search_input{
+    padding: .5rem;
+    outline: none;
+    border: 1px solid rgb(156 163 175);
+    position: sticky;
+    top: 0;
+    border-top-left-radius: 12px;
+    
+    border-top-right-radius: 12px;
+}

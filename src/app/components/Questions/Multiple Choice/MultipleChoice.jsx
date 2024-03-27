@@ -2,6 +2,7 @@ import { useGlobalStoreContext } from '@/app/context/GlobalStoreContext'
 import React, { Fragment, useEffect, useState } from 'react'
 import { IoCheckmark } from "react-icons/io5";
 import QuestionTitle from '../../Question Container/QuestionTitle';
+import { getProceedBtnTextColor } from '@/app/utils/Functions';
 const MultipleChoice = () => {
 
 const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,optionThemeObj,numberThemeObj,getBackgroundColorForTitle,getNextQuestion,globalHardcodedVariables,is_RTL,getContrastColor}=useGlobalStoreContext()
@@ -44,19 +45,6 @@ function handleJump(){
     }
 }
 
-function getProceedBtnTextColor(hexColor){
-    if(!hexColor||hexColor?.toLowerCase()==="transparent"){
-        return getContrastColor(optionThemeObj?.option_text_color)
-    }
-    else if (hexColor?.length === 9 && hexColor?.startsWith("#")) {
-        // Extract RGB part (without alpha)
-        const rgbHex = hexColor.substring(0, 7);
-        return rgbHex;
-    } else {
-        // If there's no alpha channel, return the original color
-        return hexColor;
-    }
-}
 
   return (
     <>
