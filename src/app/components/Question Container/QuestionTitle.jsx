@@ -10,7 +10,7 @@ const QuestionTitle = () => {
         fontSize:`${+fontThemeObj?.font_size}px`,
         backgroundColor:getBackgroundColorForTitle(),
         color:fontThemeObj?.title_text_color,
-        }} className={` ${isQuestionOnTopOfVideo?'text-center':''} w-full py-2 rounded-md font-semibold`}><span style={{direction:(is_RTL)?"rtl":"",
+        }} className={` ${isQuestionOnTopOfVideo?'text-center':''} w-full py-2 rounded-md font-semibold z-10`}><span style={{direction:(is_RTL)?"rtl":"",
         unicodeBidi:(is_RTL)?"bidi-override":""}}>
             {currentQuestionData.current.text}
         </span></h1>

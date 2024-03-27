@@ -4,7 +4,7 @@ import { useCalendlyEventListener, InlineWidget } from "react-calendly";
 import IframeLoader from '../../IframeLoader';
 
 const Calendly = ({loading,url,setLoading}) => {
-    const {getNextQuestion}=useGlobalStoreContext()
+    const {getNextQuestion,isQuestionOnTopOfVideo}=useGlobalStoreContext()
 
     useCalendlyEventListener({
         onProfilePageViewed: () => setLoading(false),
@@ -14,7 +14,9 @@ const Calendly = ({loading,url,setLoading}) => {
   return (
    <>
    {loading&&<IframeLoader/>}
-    <InlineWidget styles={{height:"55dvh",width:"100%",borderRadius:"6px"}} url={url} />
+    <div className={`h-[55dvh] w-full rounded-md ${isQuestionOnTopOfVideo?'mt-0 md:-mt-11':""}`}>
+    <InlineWidget styles={{height:"100%",width:"100%"}} url={url} />
+    </div>
    </>
   )
 }
