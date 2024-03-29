@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import WaitingModal from '../WaitingModal'
 import ErrorModal from '../ErrorModal'
-import PlayPaueAndStopModal from '../Camera Recorder/PlayPaueAndStopModal'
+import PlayPaueAndStopModal from '../Camera Recorder/Play Pause And Stop Modal/PlayPaueAndStopModal'
 import MicOptions from '../Camera Recorder/MicOptions'
 import styles from "./ScreenRecorder.module.css"
 import RecordedVideoPreviewer from '../Camera Recorder/RecordedVideoPreviewer'
@@ -224,11 +224,7 @@ function trackTimerCountDown(){
     let new_timer=timer.current
       
     if(new_timer===0){
-        clearInterval(timer_id.current)
-        if(mediaRecorder.current){
-          mediaRecorder.current.stop();
-        }
-        timer.current=((+optionData?.length_limit)/1000)
+        stopRecording()
     }
     else{
         timer.current=new_timer-1

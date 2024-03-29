@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import WaitingModal from '../WaitingModal'
 import ErrorModal from '../ErrorModal'
-import PlayPaueAndStopModal from './PlayPaueAndStopModal'
+import PlayPaueAndStopModal from './Play Pause And Stop Modal/PlayPaueAndStopModal'
 import CameraOptions from './CameraOptions'
 import MicOptions from './MicOptions'
 import styles from "./CamerRecorder.module.css"
@@ -205,13 +205,22 @@ async function startCameraRecording(){
     
 }
 
+function trackPercentageOfTimerLeft(currentTime){
+const currentTimer=currentTime-1
+const totalTime=(+optionData?.length_limit)/1000
+const percentage=((totalTime-currentTimer)/totalTime)*100
+
+const stopButton=document.getElementById('rich_media_stop_recording_btn')
+if(stopButton){
+    stopButton.style=`--value:${percentage}%`
+}
+}
+
 function trackTimerCountDown(){
     let new_timer=timer.current
-      
+      trackPercentageOfTimerLeft(new_timer)
     if(new_timer===0){
-        clearInterval(timer_id.current)
-        mediaRecorder.current.stop();
-        timer.current=((+optionData?.length_limit)/1000)
+        stopRecording()
     }
     else{
         timer.current=new_timer-1

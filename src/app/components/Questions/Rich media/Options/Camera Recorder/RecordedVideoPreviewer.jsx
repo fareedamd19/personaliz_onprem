@@ -1,7 +1,9 @@
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
-const RecordedVideoPreviewer = ({recordedVideoFile,handleNoClick,handleYesClick}) => {
+
+
+const RecordedVideoPreviewer = ({recordedVideoFile,handleNoClick,handleYesClick,src}) => {
    
     const videoRef=useRef(null)
     const tempVideoUrl=useRef(recordedVideoFile?window.URL.createObjectURL(recordedVideoFile):null)
@@ -39,6 +41,7 @@ else{
   return (
     <>
        {tempVideoUrl.current&& <div className='w-full h-full relative cursor-pointer'>
+      
             <video onClick={handleVideoClick} ref={videoRef} src={tempVideoUrl.current} className='w-full h-full object-cover'/>
             {!isPlaying&&<Image onClick={handleVideoClick} className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' src='https://dyolkjkaata8s.cloudfront.net/personaliz_play_Icon.svg' height={80} width={80} alt='personaliz play icon'/>}
 

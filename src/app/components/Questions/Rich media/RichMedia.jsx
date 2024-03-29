@@ -62,7 +62,7 @@ function handleGoBack(){
     <div className={`${styles.optionOuterCont} w-max flex flex-wrap gap-3 mt-5 mx-auto`}>
     {options.length>0&&options.map((option,index)=>{
     return <Fragment key={index}>
-      <div onClick={()=>handleOptionClick(option)} id={`${rich_media_icons_obj[option.type]["id"]}`} style={{border:`1px solid ${optionThemeObj?.option_border_color}`}} className='w-[60px] h-[60px] rounded-full flex items-center justify-center p-1'>
+      <div onClick={()=>handleOptionClick(option)} id={`${rich_media_icons_obj[option.type]["id"]}`} style={{border:`1px solid ${optionThemeObj?.option_border_color}`}} className='w-[60px] h-[60px] rounded-full flex items-center justify-center p-1 cursor-pointer'>
       <p style={{
     fontFamily:fontThemeObj?.font_name,
     backgroundColor:optionThemeObj?.option_background_color,
@@ -77,11 +77,11 @@ function handleGoBack(){
     </Fragment>}
 
     {choosenOption&&<>
-      {/* {choosenOption.type==="video"&&<CameraRecorder optionData={choosenOption} handleGoBack={handleGoBack}/>} */}
+      {choosenOption.type==="video"&&<CameraRecorder optionData={choosenOption} handleGoBack={handleGoBack}/>}
       {/* {choosenOption.type==="audio"&&<AudioRecorder optionData={choosenOption} handleGoBack={handleGoBack}/>} */}
-      {choosenOption.type==="text"&&<EnterText optionData={choosenOption} handleGoBack={handleGoBack}/>}
+      {/* {choosenOption.type==="text"&&<EnterText optionData={choosenOption} handleGoBack={handleGoBack}/>} */}
       {/* {choosenOption.type==="screen"&&<ScreenRecorder optionData={choosenOption} handleGoBack={handleGoBack}/>} */}
-      {choosenOption.type==="upload"&&<UploadFile optionData={choosenOption} handleGoBack={handleGoBack}/>}
+      {/* {choosenOption.type==="upload"&&<UploadFile optionData={choosenOption} handleGoBack={handleGoBack}/>} */}
     </>}
     </section>
    </>
