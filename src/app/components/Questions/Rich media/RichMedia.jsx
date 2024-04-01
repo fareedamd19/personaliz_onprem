@@ -79,9 +79,9 @@ function handleGoBack(){
     {choosenOption&&<>
       {choosenOption.type==="video"&&<CameraRecorder optionData={choosenOption} handleGoBack={handleGoBack}/>}
       {choosenOption.type==="audio"&&<AudioRecorder optionData={choosenOption} handleGoBack={handleGoBack}/>}
-      {/* {choosenOption.type==="text"&&<EnterText optionData={choosenOption} handleGoBack={handleGoBack}/>} */}
-      {/* {choosenOption.type==="screen"&&<ScreenRecorder optionData={choosenOption} handleGoBack={handleGoBack}/>} */}
-      {/* {choosenOption.type==="upload"&&<UploadFile optionData={choosenOption} handleGoBack={handleGoBack}/>} */}
+      {choosenOption.type==="text"&&<EnterText optionData={choosenOption} handleGoBack={handleGoBack}/>}
+      {choosenOption.type==="screen"&&<ScreenRecorder optionData={choosenOption} handleGoBack={handleGoBack}/>}
+      {choosenOption.type==="upload"&&<UploadFile optionData={choosenOption} handleGoBack={handleGoBack}/>}
     </>}
     </section>
    </>

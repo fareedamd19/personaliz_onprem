@@ -20,7 +20,7 @@ const QuestionContainer = () => {
     {currentQuestionData.current?.type==="iframe"&&<Iframe/>}
     {currentQuestionData.current?.type==="calendar"&&<Calender/>}
     {currentQuestionData.current?.type==="rich_media"&&<RichMedia/>}
-    {/* {currentQuestionData.current?.type==="form"&&<Form/>} */}
+    {currentQuestionData.current?.type==="form"&&<Form/>}
   
     
     </section>

@@ -216,6 +216,9 @@ function pauseRecording(){
 function resumeRecording(){
     mediaRecorder.current.resume();
     setShowMoreOptions(true)
+    setTimeout(()=>{
+    trackPercentageOfTimerLeft(timer.current)
+    },10)
     timer_id.current=setInterval(trackTimerCountDown,1000)
 }
 function stopRecording(){
@@ -259,7 +262,7 @@ function handleYesClick(){
 
   return (
     <>
-        <section className='w-full h-[76dvh] bg-[#cacaca] shadow-lg rounded-md flex items-center justify-center overflow-hidden'>
+        <section className='w-full h-[76dvh] bg-[#dadada] shadow-lg rounded-md flex items-center justify-center overflow-hidden'>
         {loading&&<Image src={posterUrl} width={150} height={150} alt="poster"/>}
         {!loading&&showWaitingModal&&<WaitingModal handleGoBack={handleGoBack} targetSrc={'audio'}/>}
         {!loading&&showErrorModal&&<ErrorModal handleGoBack={handleGoBack} targetSrc={'audio'}/>}
@@ -273,7 +276,7 @@ function handleYesClick(){
 
         {startRecording&&<p id='rich_media_timer_dropdown' className={`w-max bg-black bg-opacity-60 p-2 text-white rounded-md absolute top-1 left-1/2 -translate-x-1/2 text-lg font-semibold`}>{getDuration(timer.current)}</p>}
        
-        <PlayPaueAndStopModal startRecording={checkStartOfMediaRecorderAndHandle} handleCloseCameraAndGoBack={handleCloseCameraAndGoBack} showMoreOptions={showMoreOptions} pauseRecording={pauseRecording} stopRecording={stopRecording}/>
+        <PlayPaueAndStopModal startRecording={checkStartOfMediaRecorderAndHandle} handleCloseCameraAndGoBack={handleCloseCameraAndGoBack} showMoreOptions={showMoreOptions} pauseRecording={pauseRecording} stopRecording={stopRecording} isRecording={mediaRecorder?.current?.state}/>
 
         {showCountDown&&<p className={`${styles.countdownTimer}`}>0</p>}
         </div>

@@ -239,6 +239,9 @@ function pauseRecording(){
 function resumeRecording(){
     mediaRecorder.current.resume();
     setShowMoreOptions(true)
+    setTimeout(()=>{
+    trackPercentageOfTimerLeft(timer.current)
+    },10)
     timer_id.current=setInterval(trackTimerCountDown,1000)
 }
 function stopRecording(){
@@ -295,7 +298,7 @@ function handleYesClick(){
 
         {startRecording&&<p id='rich_media_timer_dropdown' className={`w-max bg-black bg-opacity-60 p-2 text-white rounded-md absolute top-1 left-1/2 -translate-x-1/2 text-lg font-semibold`}>{getDuration(timer.current)}</p>}
         <video ref={target_video_element} className='w-full h-full object-cover' autoPlay playsInline muted></video>
-        <PlayPaueAndStopModal startRecording={checkStartOfMediaRecorderAndHandle} handleCloseCameraAndGoBack={handleCloseCameraAndGoBack} showMoreOptions={showMoreOptions} pauseRecording={pauseRecording} stopRecording={stopRecording}/>
+        <PlayPaueAndStopModal startRecording={checkStartOfMediaRecorderAndHandle} handleCloseCameraAndGoBack={handleCloseCameraAndGoBack} showMoreOptions={showMoreOptions} pauseRecording={pauseRecording} stopRecording={stopRecording} isRecording={mediaRecorder?.current?.state}/>
 
         {showCountDown&&<p className={`${styles.countdownTimer}`}>0</p>}
         </div>
