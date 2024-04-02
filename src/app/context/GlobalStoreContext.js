@@ -436,6 +436,46 @@ const getUrlForUploadedFile=async(file,type)=>{
   
 }
 
+const getUrlForFIlesUploadedInUploadedType=async(fileArray)=>{
+  const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
+  const quesData=currentQuestionData.current
+
+if(mode==="test"){
+  getNextQuestion(JSON.stringify({type:'upload',data:'fileArray uploaded'}),quesData)
+  return
+}
+
+  setIsLoading(true)
+  let formData = new FormData();
+
+  formData.append('action', 'answer')
+  formData.append('ivideo_id',campaignId )
+  formData.append('contact_id',contact_id )
+  formData.append('question_id',quesData?.question_id )
+  formData.append('mode',mode )
+  formData.append('session_id',firstLoadData.session_id  ) 
+  formData.append('upload_total_number',fileArray.length )
+
+  fileArray.forEach((file, index) => {
+      formData.append(`payload${index}`, file.data, file.data.name);
+    });
+
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video/upload_multiple_videos`, {
+      body: formData,
+      method: 'POST'
+  });
+
+  const interactlyResponseData = await res.json();
+ 
+  if(interactlyResponseData.status){
+    getNextQuestion(JSON.stringify({type:'upload',data:interactlyResponseData.data}),quesData)
+  }
+  else{
+    setIsLoading(false)
+  }
+}
+
 function getBackgroundColorForTitle(){
   if(configData?.form_bg_image&&!isQuestionOnTopOfVideo){
     return 'transparent'
@@ -451,21 +491,6 @@ function getBackgroundColorForTitle(){
   }
 }
 
-function getContrastColor(color) {
-  // console.log("color")
-  if(color==='transparent'||color==="undefined"){return null}
-  let rgbColor=hexToRgb(color)
-  // Calculate the brightness of the color
-  let brightness = (1 - (0.299 * rgbColor.r + 0.587 * rgbColor.g + 0.114 * rgbColor.b)) * 255;
-
-  // If the color is light, use a dark color for the contrast
-  if (brightness > 128) {
-    return '#ffffff';
-  }
-
-  // Otherwise, use a light color for the contrast
-  return '#000';
-}
 
     return (
     <GlobalStoreContext.Provider
@@ -481,7 +506,7 @@ function getContrastColor(color) {
             personalizSessionId,website_scroll_config,getUrlLinkToBeRedirectedTo, 
             target_video_element,getNextQuestion,hanleJumpForURL,showThankYouPage,
             isVideoClickedOnFirstLoad,max_video_watch_time,captureUserExit,getBackgroundColorForTitle,
-            globalHardcodedVariables,getContrastColor,getUrlForUploadedFile,choosenCountryCode
+            globalHardcodedVariables,getUrlForUploadedFile,choosenCountryCode,getUrlForFIlesUploadedInUploadedType
                 
             }}
     >

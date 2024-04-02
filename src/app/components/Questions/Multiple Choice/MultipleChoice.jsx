@@ -5,7 +5,7 @@ import QuestionTitle from '../../Question Container/QuestionTitle';
 import { getProceedBtnTextColor } from '@/app/utils/Functions';
 const MultipleChoice = () => {
 
-const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,optionThemeObj,numberThemeObj,getBackgroundColorForTitle,getNextQuestion,globalHardcodedVariables,is_RTL,getContrastColor}=useGlobalStoreContext()
+const {isQuestionOnTopOfVideo,currentQuestionData,fontThemeObj,optionThemeObj,numberThemeObj,getBackgroundColorForTitle,getNextQuestion,globalHardcodedVariables,is_RTL}=useGlobalStoreContext()
 const[options,setOptions]=useState([])
 const [selectedOptionsIndexArray,setSelectedOptionsIndexArray]=useState([])
 const [showError,setShowError]=useState(false)

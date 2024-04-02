@@ -52,3 +52,76 @@ export function pauseAllVideos() {
         return hexColor;
     }
 }
+
+export function addOpacity(hexColor) {
+    // Remove '#' if present
+    hexColor = hexColor.replace('#', '');
+
+    // Convert HEX to RGB
+    var r = parseInt(hexColor.substring(0, 2), 16);
+    var g = parseInt(hexColor.substring(2, 4), 16);
+    var b = parseInt(hexColor.substring(4, 6), 16);
+
+    // Convert RGB to RGBA with opacity 0.1
+    var rgbaColor = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.1)';
+    
+    return rgbaColor;
+}
+
+function checkColorFormat(color) {
+    if (/^rgba\(\d+,\s*\d+,\s*\d+,\s*(?:1|0?\.\d+)\)$/.test(color)) {
+      return 'rgba';
+    } else if (/^rgb\(\d+,\s*\d+,\s*\d+\)$/.test(color)) {
+      return 'rgb';
+    } else if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color)) {
+      return 'hex';
+    } else {
+      return null;
+    }
+  }
+
+function hexToRgb(color) {
+    const format =  checkColorFormat(color)
+    if (format === 'rgba') {
+        const rgbaValues = color.match(/\d+/g).map(Number);
+        const [r, g, b] = rgbaValues.slice(0, 3);
+        return {r,g,b};
+      } else if (format === 'rgb') {
+        const rgbValues = color.match(/\d+/g).map(Number);
+        const [r, g, b] = rgbValues;
+        return {r,g,b};
+      } else if (format === 'hex') {
+        const hexValue = color.replace(/^#/, '');
+        let r, g, b;
+        if (hexValue.length === 3) {
+          r = parseInt(hexValue[0] + hexValue[0], 16);
+          g = parseInt(hexValue[1] + hexValue[1], 16);
+          b = parseInt(hexValue[2] + hexValue[2], 16);
+        } else if (hexValue.length === 6) {
+          r = parseInt(hexValue.slice(0, 2), 16);
+          g = parseInt(hexValue.slice(2, 4), 16);
+          b = parseInt(hexValue.slice(4, 6), 16);
+        } else {
+          return null;
+        }
+      return {r,g,b};
+      } else {
+        return null;
+      }
+  }
+
+export  function getContrastColor(color) {
+    if(color==='transparent'||color==="undefined"){return null}
+    let rgbColor=hexToRgb(color)
+    
+    // Calculate the brightness of the color
+    let brightness = (1 - (0.299 * rgbColor.r + 0.587 * rgbColor.g + 0.114 * rgbColor.b)) * 255;
+  
+    // If the color is light, use a dark color for the contrast
+    if (brightness > 128) {
+      return '#fff';
+    }
+  
+    // Otherwise, use a light color for the contrast
+    return '#000';
+  }
