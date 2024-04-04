@@ -290,8 +290,6 @@ async function hanleJumpForURL(payload,quesData=currentQuestionData.current){
   const{watch_time,watch_time_percentage,status}=getStatusWatchTimeAndWatchTimePercentage('Answered')
   const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
 
-  // setIsLoading(true)
-
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video/urlOptionSelect`, {
       headers: {
@@ -393,7 +391,9 @@ anchor.style.display = "none";
 document.body.appendChild(anchor);
 anchor.click();
 
-getNextQuestion('Redirected to url',quesData);
+setTimeout(()=>{
+  getNextQuestion('Redirected to url',quesData);
+},1000)
 }
 
 
