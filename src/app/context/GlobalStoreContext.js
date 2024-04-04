@@ -302,7 +302,7 @@ async function hanleJumpForURL(payload,quesData=currentQuestionData.current){
           "contact_id": contact_id ,
           "ivideo_id": campaignId,
           "payload": JSON.stringify({status,type: quesData?.type, session_var: quesData?.session_var, answer: payload,watch_time,watch_time_percentage:watch_time_percentage??0}),
-          "question_text":"Redirect to url",
+          "question_text":quesData ? quesData.text : "",
           "session_id": firstLoadData.session_id,
           "question_id": quesData.question_id,
           "mode":mode??null
