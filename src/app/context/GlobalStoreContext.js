@@ -197,9 +197,9 @@ function getStatusWatchTimeAndWatchTimePercentage(payload_status) {
  
   const watch_time= isVideoClickedOnFirstLoad.current?Math.max(max_video_watch_time.current,target_video_element.current.currentTime):0
 
-  const video_total_duration = target_video_element?.current?.duration||0;
+  const video_total_duration = target_video_element?.current?.duration??0;
 
-  const watch_time_percentage=(watch_time/video_total_duration)*100
+  const watch_time_percentage=(watch_time/video_total_duration)*100??0
 
   const status=payload_status?payload_status:isVideoClickedOnFirstLoad.current?'Clicked':'Loaded'
 
@@ -286,11 +286,11 @@ else{
 }
 }
 
-async function hanleJumpForURL(payload,quesData=currentQuestionData.current, form_field_variables){
+async function hanleJumpForURL(payload,quesData=currentQuestionData.current){
   const{watch_time,watch_time_percentage,status}=getStatusWatchTimeAndWatchTimePercentage('Answered')
   const {campaignId,contact_id,mode}=checkIfParamsArePresent() 
 
-  setIsLoading(true)
+  // setIsLoading(true)
 
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video/urlOptionSelect`, {
