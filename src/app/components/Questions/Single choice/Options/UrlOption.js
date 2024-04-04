@@ -10,7 +10,7 @@ const UrlOption = ({option,index}) => {
 
 function handleOptionClick(){
   pauseAllVideos()
-  hanleJumpForURL(option.text)
+ setTimeout(()=>{ hanleJumpForURL(option.text)},500)
 }
 
   return (
