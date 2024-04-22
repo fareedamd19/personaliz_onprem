@@ -13,7 +13,7 @@ import RecordedVideoPreviewer from '../Camera Recorder/RecordedVideoPreviewer'
 function AudioRecorder({optionData,handleGoBack}) {
     const {personaliz_branding,getUrlForUploadedFile}=useGlobalStoreContext()
 
-const posterUrl=personaliz_branding==="none"?"https://personaliz.s3.ap-south-1.amazonaws.com/Personaliz+Logos/Personaliz+Custom+Loader+Poster.gif":"https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
+const posterUrl=personaliz_branding==="none"?"https://personaliz.s3.ap-south-1.amazonaws.com/Personaliz+Logos/Personaliz_Custom_Loader_Poster.gif":"https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
 const [showErrorModal,setShowErrorModal]=useState(false)
 const [showWaitingModal,setShowWaitingModal]=useState(false)
 const [loading,setLoading]=useState(false)
