@@ -39,7 +39,7 @@ if(loaderInnerRef.current){
   return (
     <section className='w-full h-screen flex flex-col items-center justify-center bg-white absolute top-0 left-0 z-[10000]'>
     <div className='w-[117px] h-[117px]'>
-    {server_personaliz_branding==="none"?<Image src={'https://personaliz.s3.ap-south-1.amazonaws.com/Personaliz+Logos/Personaliz_Custom_Loader_Poster.gif'} height={117} width={117} alt='personaliz logo'/>:
+    {server_personaliz_branding==="none"?<Image src={'https://personaliz.s3.ap-south-1.amazonaws.com/Personaliz+Logos/Personaliz_custom+loader.gif'} height={117} width={117} alt='personaliz logo'/>:
     <video className={styles.videoElm} src={"https://personaliz.s3.ap-south-1.amazonaws.com/PersonalizBlackLogoAnimatedForLoading.mp4"} playsInline muted autoPlay loop></video>}
     </div>
      <div className={styles.interactly_loader_outer_cont}>

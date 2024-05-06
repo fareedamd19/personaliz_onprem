@@ -29,7 +29,7 @@ const VideoContainer = () => {
     const [isVideoPlaying,setIsVideoPlaying]=useState(false)
     const [videoProgress,setVideoProgress]=useState(0)
     const [isMuted,setIsMuted]=useState(true)
-    const posterUrl=personaliz_branding==="none"?"https://personaliz.s3.ap-south-1.amazonaws.com/Personaliz+Logos/Personaliz_Custom_Loader_Poster.gif":"https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
+    const posterUrl=personaliz_branding==="none"?"https://personaliz.s3.ap-south-1.amazonaws.com/Personaliz+Logos/Personaliz_custom+loader.gif":"https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
     const alreadyAutomaticallyMovedUp=useRef(false)
 
     const subtitile_data=currentQuestionData?.current?.subtitle_data??null
