@@ -33,9 +33,6 @@ const VideoContainer = () => {
     const alreadyAutomaticallyMovedUp=useRef(false)
 
     const subtitile_data=currentQuestionData?.current?.subtitle_data??null
-    console.log("subtitle", currentQuestionData?.current?.subtitle_data);
-    console.log("current question", currentQuestionData);
-    debugger;
 
 function getVideoElementToTarget(){
   
