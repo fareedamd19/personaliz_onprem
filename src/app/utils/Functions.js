@@ -39,9 +39,9 @@ export function pauseAllVideos() {
 
   }
 
-  export function getProceedBtnTextColor(hexColor){
+  export function getProceedBtnTextColor(hexColor, option_text_color){
     if(!hexColor||hexColor?.toLowerCase()==="transparent"){
-        return getContrastColor(optionThemeObj?.option_text_color)
+        return getContrastColor(option_text_color)
     }
     else if (hexColor?.length === 9 && hexColor?.startsWith("#")) {
         // Extract RGB part (without alpha)
@@ -111,7 +111,7 @@ function hexToRgb(color) {
   }
 
 export  function getContrastColor(color) {
-    if(color==='transparent'||color==="undefined"){return null}
+    if(color==='transparent'||color==="undefined"||!color){return null}
     let rgbColor=hexToRgb(color)
     
     // Calculate the brightness of the color

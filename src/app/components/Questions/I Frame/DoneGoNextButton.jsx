@@ -17,7 +17,7 @@ function handleNextQuestion(){
         backgroundColor:optionThemeObj?.option_text_color,
         border:`2px solid ${optionThemeObj?.option_border_color}`,
         borderRadius:`${optionThemeObj?.option_border_radius}px`,
-        color:getProceedBtnTextColor(optionThemeObj?.option_background_color),
+        color:getProceedBtnTextColor(optionThemeObj?.option_background_color, optionThemeObj?.option_text_color),
         fontSize:`${+fontThemeObj?.font_size}px`,
         direction:(is_RTL)?"rtl":"",
         unicodeBidi:(is_RTL)?"bidi-override":""
