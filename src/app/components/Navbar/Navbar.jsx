@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <nav className="w-full h-[65px] px-5 py-1 flex items-center justify-between bg-white shadow-md relative">
       <Link
-        className="w-[130px] overflow-hidden"
+        className="overflow-hidden"
         href={
           getUrlLinkToBeRedirectedTo(
             customHeader?.custom_logo_redirect_url,
@@ -33,6 +33,7 @@ const Navbar = () => {
           alt="logo"
           width={150}
           height={50}
+          className="w-[120px] md:w-auto max-h-[50px]"
         />
       </Link>
       {customHeader?.custom_button_type === "call" ? (
