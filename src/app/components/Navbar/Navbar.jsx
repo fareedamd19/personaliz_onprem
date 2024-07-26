@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <nav className="w-full h-[65px] px-5 py-1 flex items-center justify-between bg-white shadow-md relative">
       <Link
-        className="w-[150px] overflow-hidden"
+        className="w-[130px] overflow-hidden"
         href={
           getUrlLinkToBeRedirectedTo(
             customHeader?.custom_logo_redirect_url,
