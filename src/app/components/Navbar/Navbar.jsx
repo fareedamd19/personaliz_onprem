@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <nav className="w-full h-[65px] px-5 py-1 flex items-center justify-between bg-white shadow-md relative">
       <Link
-        className="w-[130px] h-full overflow-hidden"
+        className="w-[150px] overflow-hidden"
         href={
           getUrlLinkToBeRedirectedTo(
             customHeader?.custom_logo_redirect_url,
@@ -25,7 +25,6 @@ const Navbar = () => {
         }
       >
         <Image
-          className="w-full h-full"
           src={
             customHeader?.custom_logo_img_url ||
             "https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png"
@@ -33,7 +32,7 @@ const Navbar = () => {
           loading="lazy"
           alt="logo"
           width={150}
-          height={40}
+          height={50}
         />
       </Link>
       {customHeader?.custom_button_type === "call" ? (
