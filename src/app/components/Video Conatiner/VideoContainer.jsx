@@ -596,9 +596,9 @@ function VideoCaptioner({
           poster={posterUrl}
           onClick={handleVideoClick}
           onError={handleVideoError}
-          controls
+          // controls
           muted
-          autoPlay
+          // autoPlay
           playsInline
           preload="auto"
           allowFullScreen
