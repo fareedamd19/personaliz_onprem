@@ -538,13 +538,13 @@ function VideoCaptioner({
     }
   }, [videoRef]);
 
-  useEffect(() => {
-    const videoElement = document.getElementById("webRenderVideo");
-    if (videoElement) {
-      setVideoHeight(1 * videoElement.clientHeight);
-      setVideoWidth(1 * videoElement.clientWidth);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const videoElement = document.getElementById("webRenderVideo");
+  //   if (videoElement) {
+  //     setVideoHeight(1 * videoElement.clientHeight);
+  //     setVideoWidth(1 * videoElement.clientWidth);
+  //   }
+  // }, []);
 
   const renderCaptions = () => {
     return captions.map((caption, index) => {
@@ -559,8 +559,8 @@ function VideoCaptioner({
             userSelect: "none",
             position: "absolute",
             fontSize: `${caption.fontsize * videoHeight}px`,
-            top: `${caption.textbox_y * 100}%`,
-            left: ` calc(31.5% + ${caption.textbox_x * 100}%)`,
+            top: `${caption.textbox_y * videoHeight}px`,
+            left: `${caption.textbox_x * videoWidth}px`,
             height: `auto`,
             width: `auto`,
             color: caption.fontcolor,
@@ -577,32 +577,41 @@ function VideoCaptioner({
   };
 
   return (
-    <div
-      style={{
-        height: "100%",
-        overflow: "hidden",
-        position: "relative",
-        display: "flex",
-        alignItem: "center",
-        justifyContent: "center",
-      }}
-    >
-      <video
-        id="webRenderVideo"
-        ref={videoRef}
-        src={videoSrc}
-        style={{ height: "100%", objectFit: "cover" }}
-        poster={posterUrl}
-        onClick={handleVideoClick}
-        onError={handleVideoError}
-        controls
-        muted
-        autoPlay
-        playsInline
-        preload="auto"
-        allowFullScreen
-      />
-      <div className="caption-container">{renderCaptions()}</div>
+    <div className="flex justify-center h-full">
+      <div
+        style={{
+          height: "100%",
+          overflow: "hidden",
+          position: "relative",
+          display: "flex",
+          alignItem: "center",
+          justifyContent: "center",
+        }}
+      >
+        <video
+          id="webRenderVideo"
+          ref={videoRef}
+          src={videoSrc}
+          style={{ height: "100%", objectFit: "cover" }}
+          poster={posterUrl}
+          onClick={handleVideoClick}
+          onError={handleVideoError}
+          controls
+          muted
+          autoPlay
+          playsInline
+          preload="auto"
+          allowFullScreen
+          onLoadedData={() => {
+            const videoElement = document.getElementById("webRenderVideo");
+            if (videoElement) {
+              setVideoHeight(1 * videoElement.clientHeight);
+              setVideoWidth(1 * videoElement.clientWidth);
+            }
+          }}
+        />
+        <div className="caption-container">{renderCaptions()}</div>
+      </div>
     </div>
   );
 }
