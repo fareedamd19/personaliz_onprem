@@ -34,8 +34,6 @@ const VideoContainer = () => {
     firstLoadData,
   } = useGlobalStoreContext();
 
-  console.log("firstLoadData", firstLoadData);
-
   const personalizVideoSetInterval = useRef(null);
   const videoElm = useRef(null);
   const scrollVideoElm = useRef(null);
@@ -50,8 +48,6 @@ const VideoContainer = () => {
   const alreadyAutomaticallyMovedUp = useRef(false);
 
   const subtitile_data = currentQuestionData?.current?.subtitle_data ?? null;
-
-  const [renderType, setRenderType] = useState("web");
 
   function getVideoElementToTarget() {
     let video;
@@ -398,7 +394,11 @@ const VideoContainer = () => {
         />
       )}
 
-      <div className="bg-black bg-opacity-10 w-full flex flex-col absolute top-0">
+      <div
+        className={`bg-black bg-opacity-10 w-full flex flex-col absolute top-0 ${
+          !isVideoPlaying ? "block" : "hidden"
+        } transition-all`}
+      >
         {/* VIDEO PROGRESS BAR */}
         <div
           onClick={handleSeekVideo}
