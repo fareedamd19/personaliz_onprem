@@ -8,8 +8,13 @@ import ErrorModal from "../Error Modal/ErrorModal";
 import ThankYouPage from "../Thank you Page/ThankYouPage";
 
 const Dashboard = ({ server_personaliz_branding }) => {
-  const { firstLoadData, isLoading, showErrorModal, showThankYouPage } =
-    useGlobalStoreContext();
+  const {
+    firstLoadData,
+    customHeader,
+    isLoading,
+    showErrorModal,
+    showThankYouPage,
+  } = useGlobalStoreContext();
 
   return (
     <>
@@ -18,8 +23,8 @@ const Dashboard = ({ server_personaliz_branding }) => {
         <Loader server_personaliz_branding={server_personaliz_branding} />
       )}
       {firstLoadData && !isLoading && !showThankYouPage && !showErrorModal && (
-        <section className="w-full h-screen overflow-hidden">
-          <Navbar />
+        <section className="w-full h-screen flex flex-col overflow-hidden">
+          {customHeader?.is_customer_header && <Navbar />}
           <LayoutContainer />
         </section>
       )}

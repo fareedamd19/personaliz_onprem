@@ -17,7 +17,7 @@ const LayoutContainer = () => {
   } = useGlobalStoreContext();
 
   return (
-    <main className="w-full h-[90vh] flex items-center justify-center">
+    <main className="w-full flex flex-grow items-center justify-center">
       <div
         className={`h-[90%] w-[99%] lg:w-[80%] xl:w-[65%] bg shadow-lg rounded-lg relative flex overflow-hidden`}
       >
