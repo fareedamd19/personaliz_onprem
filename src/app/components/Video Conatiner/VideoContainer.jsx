@@ -567,6 +567,9 @@ function VideoCaptioner({
             background: caption.boxcolor,
             textAlign: caption.alignment,
             opacity: `${shouldShow ? "1" : "0"}`,
+            fontWeight: `${caption?.textStyle?.B}`,
+            fontStyle: `${caption?.textStyle?.I}`,
+            textDecoration: `${caption?.textStyle?.U}`,
             // transform: "translate(-50%, -50%)",
           }}
         >
