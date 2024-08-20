@@ -5,10 +5,10 @@ import Default from "./Default";
 import Navbar from "../Navbar/Navbar";
 
 const ThankYouPage = () => {
-  const { configData } = useGlobalStoreContext();
+  const { configData, customHeader } = useGlobalStoreContext();
   return (
     <>
-      <Navbar />
+      {customHeader?.is_custom_header && <Navbar />}
       {configData.end_screen && configData.end_screen !== "null" ? (
         <Customize />
       ) : (
