@@ -1,17 +1,21 @@
-import { useGlobalStoreContext } from '@/app/context/GlobalStoreContext'
-import React from 'react'
-import Customize from './Customize'
-import Default from './Default'
-import Navbar from '../Navbar/Navbar'
+import { useGlobalStoreContext } from "@/app/context/GlobalStoreContext";
+import React from "react";
+import Customize from "./Customize";
+import Default from "./Default";
+import Navbar from "../Navbar/Navbar";
 
 const ThankYouPage = () => {
-    const {configData} = useGlobalStoreContext()
+  const { configData } = useGlobalStoreContext();
   return (
     <>
-    <Navbar/>
-      {(configData.end_screen&&configData.end_screen!=="null")?<Customize/>:<Default/>}  
+      <Navbar />
+      {configData.end_screen && configData.end_screen !== "null" ? (
+        <Customize />
+      ) : (
+        <Default />
+      )}
     </>
-  )
-}
+  );
+};
 
-export default ThankYouPage
+export default ThankYouPage;
