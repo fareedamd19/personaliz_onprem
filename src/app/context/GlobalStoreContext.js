@@ -194,9 +194,9 @@ const GlobalStoreProvider = ({ children }) => {
           ?.landing_page;
         setIsQuestionOnTopOfVideo(
           window.innerWidth < breakPointNumber ||
-          viewData.video_view === "landscape" ||
-          (viewData.video_view === "portrait" &&
-            viewData.display_options === "on_video")
+            viewData.video_view === "landscape" ||
+            (viewData.video_view === "portrait" &&
+              viewData.display_options === "on_video")
         );
         if (firstLoadData.videoConfig.font_obj) {
           let fontFamilyName = JSON.parse(
@@ -343,9 +343,9 @@ const GlobalStoreProvider = ({ children }) => {
   function getStatusWatchTimeAndWatchTimePercentage(payload_status) {
     const watch_time = isVideoClickedOnFirstLoad.current
       ? Math.max(
-        max_video_watch_time.current,
-        target_video_element.current.currentTime
-      )
+          max_video_watch_time.current,
+          target_video_element.current.currentTime
+        )
       : 0;
 
     const video_total_duration = target_video_element?.current?.duration ?? 0;
@@ -356,8 +356,8 @@ const GlobalStoreProvider = ({ children }) => {
     const status = payload_status
       ? payload_status
       : isVideoClickedOnFirstLoad.current
-        ? "Clicked"
-        : "Loaded";
+      ? "Clicked"
+      : "Loaded";
 
     return { watch_time, watch_time_percentage, status };
   }
@@ -581,8 +581,9 @@ const GlobalStoreProvider = ({ children }) => {
         if (Array.isArray(item)) {
           item = item.join(",");
         }
-        queryParams += `${item}=${sessionVarAnswers.current[item]}${session_var.length - 1 !== index ? "&" : ""
-          }`;
+        queryParams += `${item}=${sessionVarAnswers.current[item]}${
+          session_var.length - 1 !== index ? "&" : ""
+        }`;
       }
     }
     const finalUrl = `${url}?utm_campaign=${campaignName}&utm_medium=social&utm_source=Personaliz.ai&${queryParams}`;
