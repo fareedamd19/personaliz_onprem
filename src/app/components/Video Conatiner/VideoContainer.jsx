@@ -315,7 +315,7 @@ const VideoContainer = () => {
     event.target.src = `${website_scroll_config?.original_s3_url}#t=0.001`;
   }
 
-  console.log("harsh", firstLoadData?.dynamic_text_display.config);
+  // console.log("harsh", firstLoadData?.dynamic_text_display.config);
 
   return (
     <section className={`${styles.videoOuterConatiner} w-full h-full relative`}>
