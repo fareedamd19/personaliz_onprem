@@ -8,6 +8,7 @@ import { FaAngleUp } from "react-icons/fa";
 
 const LayoutContainer = () => {
   const {
+    customHeader,
     isQuestionOnTopOfVideo,
     questionContainerHeight,
     handleQuestionConatinerUpOrDown,
@@ -17,10 +18,12 @@ const LayoutContainer = () => {
   } = useGlobalStoreContext();
 
   return (
-    <main className="w-full flex flex-grow items-center justify-center">
-      <div
-        className={`h-[90%] w-[99%] lg:w-[80%] xl:w-[65%] bg shadow-lg rounded-lg relative flex overflow-hidden`}
-      >
+    <main
+      className={`w-full ${
+        customHeader?.is_custom_header ? "h-[calc(100vh-64px)]" : "h-screen"
+      } flex items-center justify-center`}
+    >
+      <div className="h-[97%] md:h-[95%] lg:h-[90%] w-[99%] lg:w-[80%] xl:w-[65%] bg shadow-lg rounded-lg relative flex overflow-hidden">
         <div
           className={`${isQuestionOnTopOfVideo ? "w-full" : "w-[50%]"} h-full`}
         >

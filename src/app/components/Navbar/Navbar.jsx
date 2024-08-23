@@ -73,7 +73,7 @@ const Navbar = () => {
             direction: is_RTL ? "rtl" : "",
             unicodeBidi: is_RTL ? "bidi-override" : "",
           }}
-          className={`${styles.warningCont} w-max md:w-max p-2 bg-black bg-opacity-50 text-white text-base md:text-lg rounded-md font-serif absolute left-1/2 -translate-x-[50%] -bottom-4`}
+          className={`${styles.warningCont} w-max md:w-max p-2 bg-black bg-opacity-50 text-white text-base md:text-lg rounded-md font-serif absolute left-1/2 -translate-x-[50%] -bottom-4 z-[99]`}
         >
           Viewing in test mode, responses will not be stored{" "}
           <span
