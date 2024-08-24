@@ -495,6 +495,7 @@ const GlobalStoreProvider = ({ children }) => {
       );
     } catch (error) {
       console.log("err in handleJumpForURL", error);
+
     }
     setIsLoading(false);
   }
