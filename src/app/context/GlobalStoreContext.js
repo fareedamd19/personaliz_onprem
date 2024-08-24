@@ -152,6 +152,8 @@ const GlobalStoreProvider = ({ children }) => {
   const [optionThemeObj, setOptionThemeObj] = useState(null);
   const [numberThemeObj, setNumberThemeObj] = useState(null);
   const [customHeader, setCustomHeader] = useState(null);
+  const [showSessionResume, setShowSessionResume] = useState(false);
+  const [isStartOver, setIsStartOver] = useState(false);
   const [questionContainerHeight, setQuestionContainerHeight] =
     useState("bottom");
   const [showThankYouPage, setShowThankYouPage] = useState(false);
@@ -421,7 +423,7 @@ const GlobalStoreProvider = ({ children }) => {
           }),
           session_id: firstLoadData.session_id,
           question_id: quesData.question_id,
-          mode: mode ?? null,
+          mode: mode || "live",
           form_field_variables: form_field_variables
             ? form_field_variables
             : payload,
@@ -486,7 +488,7 @@ const GlobalStoreProvider = ({ children }) => {
             question_text: quesData ? quesData.text : "",
             session_id: firstLoadData.session_id,
             question_id: quesData.question_id,
-            mode: mode ?? null,
+            mode: mode || "live",
           }),
           method: "POST",
         }
@@ -558,7 +560,7 @@ const GlobalStoreProvider = ({ children }) => {
           }),
           session_id: firstLoadData.session_id,
           question_id: quesData?.question_id,
-          mode: mode ?? null,
+          mode: mode || "live",
           form_field_variables: "",
         }),
         method: "POST",
@@ -739,6 +741,10 @@ const GlobalStoreProvider = ({ children }) => {
         getUrlForUploadedFile,
         choosenCountryCode,
         getUrlForFIlesUploadedInUploadedType,
+        showSessionResume,
+        setShowSessionResume,
+        isStartOver,
+        setIsStartOver,
       }}
     >
       {children}

@@ -10,12 +10,20 @@ import { useGlobalStoreContext } from "../context/GlobalStoreContext";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
 const ChecksAndFirstDataOnLoad = () => {
-  const { setFirstLoadData, setIsLoading, setShowErrorModal } =
-    useGlobalStoreContext();
+  const {
+    firstLoadData,
+    setFirstLoadData,
+    setIsLoading,
+    setShowErrorModal,
+    setShowSessionResume,
+    isStartOver,
+    setIsStartOver,
+  } = useGlobalStoreContext();
 
   useEffect(() => {
     const { campaignId, emailOfUser, contact_id, mode } =
       checkIfParamsArePresent();
+
     if (!campaignId) {
       window.location.href = process.env.NEXT_PUBLIC_PERSONALIZ_URL;
       return;
@@ -36,6 +44,15 @@ const ChecksAndFirstDataOnLoad = () => {
 
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    const { campaignId, contact_id, mode } = checkIfParamsArePresent();
+
+    if (isStartOver)
+      getFirstQuestionDetails(campaignId, contact_id, mode, true);
+
+    // eslint-disable-next-line
+  }, [isStartOver]);
 
   async function getCampaignDetails(campaignId, emailOfUser) {
     try {
@@ -72,7 +89,12 @@ const ChecksAndFirstDataOnLoad = () => {
     }
   }
 
-  async function getFirstQuestionDetails(campaignId, contact_id, mode) {
+  async function getFirstQuestionDetails(
+    campaignId,
+    contact_id,
+    mode,
+    singleSessionRestart
+  ) {
     let custom_personalized_variable_obj = {};
 
     let parentUrl = window?.parent?.location?.href;
@@ -102,6 +124,7 @@ const ChecksAndFirstDataOnLoad = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        single_session_restart: singleSessionRestart,
         ip_address: null,
         external_source_url: `${document.referrer ? document.referrer : null}`,
         internal_source_url: `${
@@ -112,7 +135,7 @@ const ChecksAndFirstDataOnLoad = () => {
         location: JSON.stringify(geoIpLocationKeyObject),
         channel: "landing_page",
         ivideo_id: campaignId,
-        mode: mode ?? null,
+        mode: mode || "live",
         contact_id: contact_id,
         device_type:
           deviceWidth < 768
@@ -129,8 +152,26 @@ const ChecksAndFirstDataOnLoad = () => {
     });
     const interactlyResponseData = await res.json();
     if (interactlyResponseData.status) {
-      setFirstLoadData(interactlyResponseData?.data);
-      makingGeoIpCallAndUpdatingSession(interactlyResponseData?.data);
+      let data = interactlyResponseData.data;
+      const showRestartPopup = data.show_restart_popup;
+
+      if (showRestartPopup) {
+        setShowSessionResume(showRestartPopup);
+        data.questions = data.resume_question_data?.questions;
+        data.session_id = data.resume_question_data?.session_id;
+      }
+
+      if (isStartOver) {
+        const updatedData = firstLoadData;
+        updatedData.questions = data.questions;
+        updatedData.session_id = data.session_id;
+        updatedData.dynamic_text_display = data.dynamic_text_display;
+
+        data = { ...updatedData };
+      }
+
+      setFirstLoadData(data);
+      makingGeoIpCallAndUpdatingSession(data);
       setIsLoading(false);
     } else if (
       interactlyResponseData.status === false &&
@@ -173,6 +214,8 @@ const ChecksAndFirstDataOnLoad = () => {
         "https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg",
       ]);
     }
+
+    setIsStartOver(false);
   }
 
   const makingGeoIpCallAndUpdatingSession = async (interactlyResponseData) => {
