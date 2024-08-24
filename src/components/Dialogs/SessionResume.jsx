@@ -1,4 +1,4 @@
-import { useGlobalStoreContext } from "@/app/context/GlobalStoreContext";
+import { useGlobalStoreContext } from "../../app/context/GlobalStoreContext";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,7 +8,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "../ui/alert-dialog";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 const SessionResume = () => {
