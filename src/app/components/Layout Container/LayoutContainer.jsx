@@ -23,7 +23,11 @@ const LayoutContainer = () => {
         customHeader?.is_custom_header ? "h-[calc(100vh-64px)]" : "h-screen"
       } flex items-center justify-center`}
     >
-      <div className="h-[97%] md:h-[95%] lg:h-[90%] w-[99%] lg:w-[80%] xl:w-[65%] bg shadow-lg rounded-lg relative flex overflow-hidden">
+      <div
+        className={`${
+          customHeader?.is_custom_header ? "h-[97%]" : "h-screen"
+        } md:h-[95%] lg:h-[90%] w-[99%] lg:w-[80%] xl:w-[65%] bg shadow-lg rounded-lg relative flex overflow-hidden`}
+      >
         <div
           className={`${isQuestionOnTopOfVideo ? "w-full" : "w-[50%]"} h-full`}
         >
