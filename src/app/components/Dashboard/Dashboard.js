@@ -24,7 +24,7 @@ const Dashboard = ({ server_personaliz_branding }) => {
         <Loader server_personaliz_branding={server_personaliz_branding} />
       )}
       {firstLoadData && !isLoading && !showThankYouPage && !showErrorModal && (
-        <section className="w-full h-screen flex flex-col overflow-hidden">
+        <section className="w-full h-[100svh] flex flex-col overflow-hidden">
           {customHeader?.is_custom_header && <Navbar />}
           <LayoutContainer />
         </section>

@@ -20,12 +20,12 @@ const LayoutContainer = () => {
   return (
     <main
       className={`w-full ${
-        customHeader?.is_custom_header ? "h-[calc(100vh-64px)]" : "h-screen"
+        customHeader?.is_custom_header ? "h-[calc(100svh-64px)]" : "h-[100svh]"
       } flex items-center justify-center`}
     >
       <div
         className={`${
-          customHeader?.is_custom_header ? "h-[97%]" : "h-screen"
+          customHeader?.is_custom_header ? "h-[97%]" : "h-[100svh]"
         } md:h-[95%] lg:h-[90%] w-[99%] lg:w-[80%] xl:w-[65%] bg shadow-lg rounded-lg relative flex overflow-hidden`}
       >
         <div
