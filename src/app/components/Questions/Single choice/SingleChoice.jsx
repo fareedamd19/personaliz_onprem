@@ -23,7 +23,9 @@ const SingleChoice = () => {
     return () => {
       setOptions([]);
     };
-  }, [currentQuestionData]);
+
+    // eslint-disable-next-line
+  }, [currentQuestionData.current.options]);
 
   return (
     <>
