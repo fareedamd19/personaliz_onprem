@@ -27,17 +27,19 @@ const BranchOption = ({ option, index }) => {
           isQuestionOnTopOfVideo ? "w-[90%] md:w-[40%] mx-auto" : "w-full"
         } h-max p-4 py-3 md:-mb-2 cursor-pointer hover:scale-105 flex items-center`}
       >
-        <span
-          style={{
-            backgroundColor: numberThemeObj?.numbered_background_color,
-            border: `1px solid ${numberThemeObj?.numbered_border_color}`,
-            borderRadius: `${numberThemeObj?.numbered_border_radius}px`,
-            color: numberThemeObj?.numbered_text_color,
-          }}
-          className={`w-[28px] h-[28px] flex items-center justify-center mr-4`}
-        >
-          {returnNumberOrAlpabet(index)}
-        </span>
+        {numberThemeObj?.numbered_type !== "none" && (
+          <span
+            style={{
+              backgroundColor: numberThemeObj?.numbered_background_color,
+              border: `1px solid ${numberThemeObj?.numbered_border_color}`,
+              borderRadius: `${numberThemeObj?.numbered_border_radius}px`,
+              color: numberThemeObj?.numbered_text_color,
+            }}
+            className={`w-[28px] h-[28px] flex items-center justify-center mr-4`}
+          >
+            {returnNumberOrAlpabet(index)}
+          </span>
+        )}
         <span
           style={{
             direction: is_RTL ? "rtl" : "",

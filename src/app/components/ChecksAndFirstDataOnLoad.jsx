@@ -155,7 +155,7 @@ const ChecksAndFirstDataOnLoad = () => {
       let data = interactlyResponseData.data;
       const showRestartPopup = data.show_restart_popup;
 
-      if (showRestartPopup) {
+      if (showRestartPopup || data.resume_question_data?.questions) {
         setShowSessionResume(showRestartPopup);
         data.questions = data.resume_question_data?.questions;
         data.session_id = data.resume_question_data?.session_id;
