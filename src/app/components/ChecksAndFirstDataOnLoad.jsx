@@ -166,6 +166,7 @@ const ChecksAndFirstDataOnLoad = () => {
         updatedData.questions = data.questions;
         updatedData.session_id = data.session_id;
         updatedData.dynamic_text_display = data.dynamic_text_display;
+        updatedData.website_scroll_config = data.website_scroll_config;
 
         data = { ...updatedData };
       }
