@@ -555,14 +555,15 @@ function VideoCaptioner({
         <div
           key={index}
           style={{
+            // border: "1px solid red",
             pointerEvents: "none",
             userSelect: "none",
             position: "absolute",
             fontSize: `${caption.fontsize * videoHeight}px`,
             top: `${caption.textbox_y * videoHeight}px`,
             left: `${caption.textbox_x * videoWidth}px`,
-            height: `auto`,
-            width: `auto`,
+            height: `${caption.textbox_h * 100}%`,
+            width: `${caption.textbox_w * 100}%`,
             color: caption.fontcolor,
             background: caption.boxcolor,
             textAlign: caption.alignment,
