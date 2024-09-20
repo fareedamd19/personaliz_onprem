@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 const Start = ({ setIsStarted }) => {
   return (
     <div className="flex-center flex-col gap-4">
-      <p className="p-3 px-5 bg-gray-200 rounded-lg text-center">
+      <p className="p-2 px-5 bg-gray-200 rounded-lg text-center">
         Press <strong>Start</strong> and read the message
       </p>
       <Button onClick={() => setIsStarted(true)}>

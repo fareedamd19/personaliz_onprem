@@ -25,8 +25,10 @@ const VideoConsent = () => {
     >
       <AlertDialogContent className="w-11/12 sm:max-w-md rounded-lg">
         <AlertDialogHeader>
-          <AlertDialogTitle>Video Consent</AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogTitle className="text-center">
+            Video Consent
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-center">
             Before we start, please complete the mandatory video consent
             verification.
           </AlertDialogDescription>

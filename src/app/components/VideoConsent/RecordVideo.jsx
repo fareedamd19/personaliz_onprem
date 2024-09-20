@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { IoPlay, IoVideocamOutline } from "react-icons/io5";
 import { Button } from "../ui/button";
 import { FaCheckCircle, FaStop } from "react-icons/fa";
@@ -31,7 +31,21 @@ const VideoRecorder = () => {
     // eslint-disable-next-line
   }, [recordingStartTime, isRecording]);
 
-  const startRecording = async () => {
+  useEffect(() => {
+    startWebcam();
+
+    return () => {
+      if (videoRef.current) {
+        // eslint-disable-next-line
+        const stream = videoRef.current.srcObject;
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+        }
+      }
+    };
+  }, []);
+
+  const startWebcam = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -42,7 +56,14 @@ const VideoRecorder = () => {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
       }
+    } catch (error) {
+      console.error("Error accessing media devices", error);
+    }
+  };
 
+  const startRecording = () => {
+    try {
+      const stream = videoRef.current.srcObject;
       const options = { mimeType: "video/webm; codecs=vp8" };
       const newMediaRecorder = new MediaRecorder(stream, options);
       setMediaRecorder(newMediaRecorder);
@@ -64,7 +85,7 @@ const VideoRecorder = () => {
       setIsRecording(true);
       setRecordingStartTime(Date.now());
     } catch (error) {
-      console.error("Error accessing media devices.", error);
+      console.error("Error starting recording", error);
     }
   };
 
@@ -101,7 +122,7 @@ const VideoRecorder = () => {
   const handleRestartRecording = () => {
     recordedChunks.current = [];
     setVideoBlob(null);
-    startRecording();
+    startWebcam();
   };
 
   return (
@@ -125,12 +146,19 @@ const VideoRecorder = () => {
 
       <div className="flex-center gap-2">
         {!isRecording && !videoBlob ? (
-          <Button
-            className="flex-center w-max rounded-full p-2 bg-black"
-            onClick={startRecording}
-          >
-            <IoVideocamOutline className="text-white text-2xl cursor-pointer" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                className="flex-center w-max rounded-full p-2 bg-black"
+                onClick={startRecording}
+              >
+                <IoVideocamOutline className="text-white text-2xl cursor-pointer" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Start Recording</p>
+            </TooltipContent>
+          </Tooltip>
         ) : isRecording ? (
           <>
             <CountdownCircleTimer
@@ -171,7 +199,7 @@ const VideoRecorder = () => {
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>Restart</p>
+              <p>Re-record</p>
             </TooltipContent>
           </Tooltip>
         )}
