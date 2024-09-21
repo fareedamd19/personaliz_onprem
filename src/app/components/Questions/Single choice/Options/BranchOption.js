@@ -11,6 +11,7 @@ const BranchOption = ({ option, index }) => {
     getNextQuestion,
     is_RTL,
   } = useGlobalStoreContext();
+
   return (
     <>
       <div
@@ -22,6 +23,12 @@ const BranchOption = ({ option, index }) => {
           borderRadius: `${optionThemeObj?.option_border_radius}px`,
           color: optionThemeObj?.option_text_color,
           fontSize: `${+fontThemeObj?.font_size - 3}px`,
+          justifyContent:
+            optionThemeObj?.option_text_alignment === "center"
+              ? "center"
+              : optionThemeObj?.option_text_alignment === "right"
+              ? "flex-end"
+              : "flex-start",
         }}
         className={`${
           isQuestionOnTopOfVideo ? "w-[90%] md:w-[40%] mx-auto" : "w-full"

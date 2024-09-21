@@ -82,6 +82,12 @@ const MultipleChoice = () => {
                       borderRadius: `${optionThemeObj?.option_border_radius}px`,
                       color: optionThemeObj?.option_text_color,
                       fontSize: `${+fontThemeObj?.font_size - 3}px`,
+                      justifyContent:
+                        optionThemeObj?.option_text_alignment === "center"
+                          ? "center"
+                          : optionThemeObj?.option_text_alignment === "right"
+                          ? "flex-end"
+                          : "flex-start",
                     }}
                     className={`${
                       isQuestionOnTopOfVideo
