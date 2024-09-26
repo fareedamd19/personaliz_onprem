@@ -9,12 +9,27 @@ import {
   AlertDialogTitle,
 } from "../ui/alert-dialog";
 import RecordVideo from "./RecordVideo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Start from "./Start";
 
 const VideoConsent = () => {
-  const { showVideoConsent, setShowVideoConsent } = useGlobalStoreContext();
+  const { firstLoadData } = useGlobalStoreContext();
+  const [showVideoConsent, setShowVideoConsent] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
+
+  useEffect(() => {
+    setShowVideoConsent(!!firstLoadData?.video_consent);
+  }, [firstLoadData]);
+
+  const exitFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch((err) => {
+        console.error(
+          `Error attempting to exit fullscreen mode: ${err.message} (${err.name})`
+        );
+      });
+    }
+  };
 
   return (
     <AlertDialog

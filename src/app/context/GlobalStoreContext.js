@@ -154,7 +154,6 @@ const GlobalStoreProvider = ({ children }) => {
   const [customHeader, setCustomHeader] = useState(null);
   const [showSessionResume, setShowSessionResume] = useState(false);
   const [isStartOver, setIsStartOver] = useState(false);
-  const [showVideoConsent, setShowVideoConsent] = useState(true);
   const [questionContainerHeight, setQuestionContainerHeight] =
     useState("bottom");
   const [showThankYouPage, setShowThankYouPage] = useState(false);
@@ -746,8 +745,6 @@ const GlobalStoreProvider = ({ children }) => {
         setShowSessionResume,
         isStartOver,
         setIsStartOver,
-        showVideoConsent,
-        setShowVideoConsent,
       }}
     >
       {children}

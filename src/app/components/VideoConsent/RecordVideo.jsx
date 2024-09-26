@@ -125,6 +125,16 @@ const VideoRecorder = () => {
     startWebcam();
   };
 
+  const enterFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(
+          `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`
+        );
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-3">
       <div className="md:mx-6">
@@ -212,7 +222,7 @@ const VideoRecorder = () => {
         <strong>Frontend Enineer</strong> role at <strong>Oscorp</strong>
       </p>
 
-      <Button onClick={() => {}} disabled={!videoBlob || isRecording}>
+      <Button onClick={enterFullscreen} disabled={!videoBlob || isRecording}>
         <FaCheckCircle className=" text-lg mr-2" />
         Finish Reading
       </Button>
