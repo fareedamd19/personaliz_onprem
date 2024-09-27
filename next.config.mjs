@@ -35,6 +35,11 @@ const nextConfig = {
         hostname: 'cdn.kcak11.com',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'me-central-personaliz-uploads.s3.me-central-1.amazonaws.com',
+        pathname: '**',
+      },
     ],
   },
 };
