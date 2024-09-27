@@ -571,7 +571,6 @@ function VideoCaptioner({
             fontWeight: `${caption?.textStyle?.B}`,
             fontStyle: `${caption?.textStyle?.I}`,
             textDecoration: `${caption?.textStyle?.U}`,
-            alignContent: "center",
             // transform: "translate(-50%, -50%)",
           }}
         >
