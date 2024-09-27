@@ -34,7 +34,7 @@ const Dashboard = ({ server_personaliz_branding }) => {
       {!isLoading && showThankYouPage && <ThankYouPage />}
 
       <SessionResume />
-      <VideoConsent />
+      {/* <VideoConsent /> */}
     </>
   );
 };
