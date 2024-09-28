@@ -339,7 +339,11 @@ const GlobalStoreProvider = ({ children }) => {
     personaliz_campaign_name,
     questionmarkOrAnd
   ) {
-    return `${url}${questionmarkOrAnd}utm_campaign=${personaliz_campaign_name}&utm_medium=social&utm_source=Personaliz.ai`;
+    return `${url}${questionmarkOrAnd}utm_campaign=${personaliz_campaign_name}&utm_medium=social&utm_source=${
+      configData.campaign_origin === "middle-east"
+        ? "GoVideoPx"
+        : "Personaliz.ai"
+    }`;
   }
 
   function getStatusWatchTimeAndWatchTimePercentage(payload_status) {
