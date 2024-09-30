@@ -34,6 +34,7 @@ const Navbar = () => {
           width={150}
           height={50}
           className="w-[120px] md:w-auto max-h-[50px]"
+          unoptimized
         />
       </Link>
       {customHeader?.custom_button_type === "call" ? (
