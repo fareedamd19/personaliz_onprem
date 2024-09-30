@@ -40,6 +40,11 @@ const nextConfig = {
         hostname: "me-central-personaliz-uploads.s3.me-central-1.amazonaws.com",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "v.afnic.me",
+        pathname: "**",
+      },
     ],
   },
 };
