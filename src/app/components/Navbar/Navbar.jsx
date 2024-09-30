@@ -24,15 +24,15 @@ const Navbar = () => {
           ) || ""
         }
       >
-        <img
+        <Image
           src={
             customHeader?.custom_logo_img_url ||
             "https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png"
           }
-          // loading="lazy"
+          loading="lazy"
           alt="logo"
-          // width={150}
-          // height={50}
+          width={150}
+          height={50}
           className="w-[120px] md:w-auto max-h-[50px]"
         />
       </Link>
