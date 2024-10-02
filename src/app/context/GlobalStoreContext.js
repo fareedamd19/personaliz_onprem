@@ -243,7 +243,6 @@ const GlobalStoreProvider = ({ children }) => {
     // Event listener for window resize
     window.addEventListener("resize", handleResize);
 
-    // Clean up
     return () => {
       window.removeEventListener("resize", handleResize);
     };
