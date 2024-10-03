@@ -7,8 +7,13 @@ import { checkIfParamsArePresent } from "../../utils/Functions";
 import styles from "./Navbar.module.css";
 
 const Navbar = () => {
-  const { customHeader, getUrlLinkToBeRedirectedTo, campaignName, is_RTL } =
-    useGlobalStoreContext();
+  const {
+    customHeader,
+    getUrlLinkToBeRedirectedTo,
+    campaignName,
+    is_RTL,
+    handleTrackEvent,
+  } = useGlobalStoreContext();
   const { mode } = checkIfParamsArePresent();
   const [showWarningText, setShowWarningText] = useState(mode === "test");
 
@@ -16,12 +21,16 @@ const Navbar = () => {
     <nav className="w-full h-[65px] px-5 py-1 flex items-center justify-between bg-white shadow-md relative">
       <Link
         className="overflow-hidden"
+        target="_blank"
         href={
           getUrlLinkToBeRedirectedTo(
             customHeader?.custom_logo_redirect_url,
             campaignName,
             "?"
           ) || ""
+        }
+        onClick={() =>
+          handleTrackEvent({ custom_header: { custom_logo_img_url: true } })
         }
       >
         <Image
@@ -36,36 +45,44 @@ const Navbar = () => {
           className="w-[120px] md:w-auto max-h-[50px]"
         />
       </Link>
-      {customHeader?.custom_button_type === "call" ? (
-        <a
-          style={{ background: customHeader?.custom_button_color }}
-          className="flex items-center px-[10px] py-[9px] text-white rounded-md"
-          href={`tel:${customHeader?.custom_button_redirect_url}`}
-        >
-          <p className="flex items-center gap-2">
-            <IoCallSharp />
+
+      <div
+        onClick={() =>
+          handleTrackEvent({ custom_header: { custom_button_text: true } })
+        }
+      >
+        {customHeader?.custom_button_type === "call" ? (
+          <a
+            style={{ background: customHeader?.custom_button_color }}
+            className="flex items-center px-[10px] py-[9px] text-white rounded-md"
+            href={`tel:${customHeader?.custom_button_redirect_url}`}
+          >
+            <p className="flex items-center gap-2">
+              <IoCallSharp />
+              {customHeader?.custom_button_text}
+            </p>
+          </a>
+        ) : (
+          <Link
+            style={{
+              background: customHeader?.custom_button_color,
+              direction: is_RTL ? "rtl" : "",
+              unicodeBidi: is_RTL ? "bidi-override" : "",
+            }}
+            className={`flex items-center px-[10px] py-[9px] text-white rounded-md`}
+            target="_blank"
+            href={
+              getUrlLinkToBeRedirectedTo(
+                customHeader?.custom_button_redirect_url,
+                campaignName,
+                "?"
+              ) || ""
+            }
+          >
             {customHeader?.custom_button_text}
-          </p>
-        </a>
-      ) : (
-        <Link
-          style={{
-            background: customHeader?.custom_button_color,
-            direction: is_RTL ? "rtl" : "",
-            unicodeBidi: is_RTL ? "bidi-override" : "",
-          }}
-          className={`flex items-center px-[10px] py-[9px] text-white rounded-md`}
-          href={
-            getUrlLinkToBeRedirectedTo(
-              customHeader?.custom_button_redirect_url,
-              campaignName,
-              "?"
-            ) || ""
-          }
-        >
-          {customHeader?.custom_button_text}
-        </Link>
-      )}
+          </Link>
+        )}
+      </div>
 
       {showWarningText && (
         <p

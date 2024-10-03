@@ -367,6 +367,19 @@ const GlobalStoreProvider = ({ children }) => {
     return { watch_time, watch_time_percentage, status };
   }
 
+  const handleTrackEvent = async (event) => {
+    const { mode } = checkIfParamsArePresent();
+    if (mode === "test") return;
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/event_tracking`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ event, session_id: firstLoadData.session_id }),
+    });
+  };
+
   async function getNextQuestion(
     payload,
     quesData = currentQuestionData.current,
@@ -748,6 +761,7 @@ const GlobalStoreProvider = ({ children }) => {
         setShowSessionResume,
         isStartOver,
         setIsStartOver,
+        handleTrackEvent,
       }}
     >
       {children}
