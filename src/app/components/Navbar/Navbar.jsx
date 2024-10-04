@@ -29,7 +29,7 @@ const Navbar = () => {
             "?"
           ) || ""
         }
-        onClick={() => handleTrackEvent({ is_header_logo_clicked: true })}
+        onClick={() => handleTrackEvent({ is_header_logo_clicked: "1" })}
       >
         <Image
           src={
@@ -44,7 +44,7 @@ const Navbar = () => {
         />
       </Link>
 
-      <div onClick={() => handleTrackEvent({ is_header_cta_clicked: true })}>
+      <div onClick={() => handleTrackEvent({ is_header_cta_clicked: "1" })}>
         {customHeader?.custom_button_type === "call" ? (
           <a
             style={{ background: customHeader?.custom_button_color }}
