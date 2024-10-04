@@ -376,7 +376,7 @@ const GlobalStoreProvider = ({ children }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ event, session_id: firstLoadData.session_id }),
+      body: JSON.stringify({ ...event, session_id: firstLoadData.session_id }),
     });
   };
 
