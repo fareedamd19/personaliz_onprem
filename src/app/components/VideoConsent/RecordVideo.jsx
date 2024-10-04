@@ -6,8 +6,17 @@ import { MdOutlinePause } from "react-icons/md";
 import { IoMdRefresh } from "react-icons/io";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { useGlobalStoreContext } from "@/app/context/GlobalStoreContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const VideoRecorder = () => {
+const RecordVideo = () => {
+  const { firstLoadData } = useGlobalStoreContext();
+  const {
+    video_consent: { candidate_name, job_company_name, job_role },
+    session_id,
+  } = firstLoadData;
+
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
@@ -125,6 +134,31 @@ const VideoRecorder = () => {
     startWebcam();
   };
 
+  const handleFinishReading = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("session_id", session_id);
+      formData.append("file", videoBlob);
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_PERSONALIZ_URL}/v1/play/store_consent_video`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const data = res.data;
+      if (data.status) {
+        enterFullscreen();
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again later.");
+    }
+  };
+
   const enterFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch((err) => {
@@ -218,11 +252,15 @@ const VideoRecorder = () => {
       <p cTooltipe="text-center">Face the camera and read the message below.</p>
 
       <p className="p-1 py-2 md:p-3 md:px-5 bg-gray-200 rounded-lg text-center italic">
-        My name is <strong>Santosh</strong>, <br />I am interviewing for{" "}
-        <strong>Frontend Enineer</strong> role at <strong>Oscorp</strong>
+        My name is <strong>{candidate_name}</strong>, <br />I am interviewing
+        for <strong>{job_company_name}</strong> role at{" "}
+        <strong>{job_role}</strong>
       </p>
 
-      <Button onClick={enterFullscreen} disabled={!videoBlob || isRecording}>
+      <Button
+        onClick={handleFinishReading}
+        disabled={!videoBlob || isRecording}
+      >
         <FaCheckCircle className=" text-lg mr-2" />
         Finish Reading
       </Button>
@@ -230,4 +268,4 @@ const VideoRecorder = () => {
   );
 };
 
-export default VideoRecorder;
+export default RecordVideo;
