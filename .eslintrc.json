@@ -1,8 +1,9 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
+    "no-unused-vars": ["warn", { "args": "none" }],
     "no-undef": ["error"],
-    "no-unused-vars": ["warn"]
+    "no-unused-expressions": ["warn"]
   },
   "parserOptions": {
     "ecmaVersion": 2020,
@@ -15,6 +16,5 @@
     "react": {
       "version": "detect"
     }
-  },
-  "ignoreDuringBuilds": ["warn"]
+  }
 }
