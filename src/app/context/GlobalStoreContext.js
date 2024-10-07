@@ -252,7 +252,16 @@ const GlobalStoreProvider = ({ children }) => {
 
   useEffect(() => {
     const handleFullscreenChange = () => {
-      if (!document.fullscreenElement && !!firstLoadData?.video_consent) {
+      const isFullScreen = document.fullscreenElement;
+      const hasVideoConsent = !!firstLoadData?.video_consent;
+
+      const currentQuestion = currentQuestionData.current;
+      const isRichMediaOrLastNode =
+        !currentQuestion ||
+        currentQuestion.type === "video" ||
+        currentQuestion.type === "rich_media";
+
+      if (!isFullScreen && hasVideoConsent && !isRichMediaOrLastNode) {
         showAlert({
           title: "Warning!",
           description: "Minimizing the full screen will be monitored.",
@@ -495,7 +504,13 @@ const GlobalStoreProvider = ({ children }) => {
         }
       }
 
-      if (!!firstLoadData?.video_consent) enterFullscreen();
+      const currentQuestion = currentQuestionData.current;
+      if (!!firstLoadData?.video_consent) {
+        const isLastNode = !currentQuestion || currentQuestion.type === "video";
+
+        if (isLastNode) exitFullscreen();
+        else enterFullscreen();
+      }
     } else {
       setIsLoading(false);
     }
