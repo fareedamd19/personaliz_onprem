@@ -10,8 +10,8 @@ import { useGlobalStoreContext } from "@/app/context/GlobalStoreContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const RecordVideo = () => {
-  const { firstLoadData } = useGlobalStoreContext();
+const RecordVideo = ({ setShowVideoConsent }) => {
+  const { firstLoadData, enterFullscreen } = useGlobalStoreContext();
   const {
     video_consent: { candidate_name, job_company_name, job_role },
     session_id,
@@ -152,20 +152,11 @@ const RecordVideo = () => {
 
       const data = res.data;
       if (data.status) {
+        setShowVideoConsent(false);
         enterFullscreen();
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again later.");
-    }
-  };
-
-  const enterFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch((err) => {
-        console.error(
-          `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`
-        );
-      });
     }
   };
 

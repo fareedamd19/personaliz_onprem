@@ -21,16 +21,6 @@ const VideoConsent = () => {
     setShowVideoConsent(!!firstLoadData?.video_consent);
   }, [firstLoadData]);
 
-  const exitFullscreen = () => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch((err) => {
-        console.error(
-          `Error attempting to exit fullscreen mode: ${err.message} (${err.name})`
-        );
-      });
-    }
-  };
-
   return (
     <AlertDialog
       open={showVideoConsent}
@@ -48,7 +38,11 @@ const VideoConsent = () => {
             verification.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        {isStarted ? <RecordVideo /> : <Start setIsStarted={setIsStarted} />}
+        {isStarted ? (
+          <RecordVideo setShowVideoConsent={setShowVideoConsent} />
+        ) : (
+          <Start setIsStarted={setIsStarted} />
+        )}
       </AlertDialogContent>
     </AlertDialog>
   );

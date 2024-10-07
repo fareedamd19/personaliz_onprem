@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { checkIfParamsArePresent } from "../utils/Functions";
+import { useAlert } from "./AlertContext";
 
 const alphabet = [
   "",
@@ -165,6 +166,7 @@ const GlobalStoreProvider = ({ children }) => {
   const [is_RTL, set_Is_RTL] = useState(0);
   const sessionVarAnswers = useRef({});
   const choosenCountryCode = useRef(null);
+  const showAlert = useAlert();
 
   let globalHardcodedVariables = useRef({
     submitText: "Submit",
@@ -247,6 +249,29 @@ const GlobalStoreProvider = ({ children }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement && !!firstLoadData?.video_consent) {
+        showAlert({
+          title: "Warning!",
+          description: "Minimizing the full screen will be monitored.",
+          actionButtonText: "Enable Full Screen",
+          onConfirm: () => {
+            enterFullscreen();
+          },
+        });
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+
+    // eslint-disable-next-line
+  }, [firstLoadData]);
 
   function updateGlobalHardcodedVariables(obj) {
     obj.forEach((text) => {
@@ -371,7 +396,7 @@ const GlobalStoreProvider = ({ children }) => {
     const { mode } = checkIfParamsArePresent();
     if (mode === "test") return;
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/event_tracking`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API}/event_tracking`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -469,6 +494,8 @@ const GlobalStoreProvider = ({ children }) => {
           setIsQuestionOnTopOfVideo(true);
         }
       }
+
+      if (!!firstLoadData?.video_consent) enterFullscreen();
     } else {
       setIsLoading(false);
     }
@@ -718,6 +745,26 @@ const GlobalStoreProvider = ({ children }) => {
     }
   }
 
+  const enterFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(
+          `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`
+        );
+      });
+    }
+  };
+
+  const exitFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch((err) => {
+        console.error(
+          `Error attempting to exit fullscreen mode: ${err.message} (${err.name})`
+        );
+      });
+    }
+  };
+
   return (
     <GlobalStoreContext.Provider
       value={{
@@ -762,6 +809,8 @@ const GlobalStoreProvider = ({ children }) => {
         isStartOver,
         setIsStartOver,
         handleTrackEvent,
+        enterFullscreen,
+        exitFullscreen,
       }}
     >
       {children}
