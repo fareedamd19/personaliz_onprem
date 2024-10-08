@@ -6,8 +6,13 @@ import CloseIcon from "./CloseIcon";
 import FileSelectedModal from "./FileSelectedModal";
 
 const UploadFile = ({ optionData, handleGoBack }) => {
-  const { fontThemeObj, optionThemeObj, getUrlForFIlesUploadedInUploadedType } =
-    useGlobalStoreContext();
+  const {
+    fontThemeObj,
+    optionThemeObj,
+    getUrlForFIlesUploadedInUploadedType,
+    enterFullscreen,
+  } = useGlobalStoreContext();
+
   const [filesArray, setFilesArray] = useState([]);
   const [showErrorMessage, setShowErrorMessage] = useState("");
   const chooseFileRef = useRef(null);
@@ -20,6 +25,7 @@ const UploadFile = ({ optionData, handleGoBack }) => {
 
   const handleFileSelected = (e) => {
     if (e.target.files.length > 0) {
+      enterFullscreen();
       const filesList = Array.from(e.target.files);
 
       let newTempFileList = [];
@@ -70,6 +76,9 @@ const UploadFile = ({ optionData, handleGoBack }) => {
   return (
     <>
       <input
+        onClick={() => {
+          window.isRichMediaFileUpload = true;
+        }}
         onChange={handleFileSelected}
         ref={chooseFileRef}
         type="file"

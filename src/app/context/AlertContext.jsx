@@ -11,6 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../components/ui/alert-dialog";
+import { cn } from "../lib/utils";
 
 const AlertContext = createContext();
 
@@ -27,6 +28,7 @@ export const AlertProvider = ({ children }) => {
   const [cancelButtonText, setCancelButtonText] = useState("Cancel");
   const [actionButtonText, setActionButtonText] = useState("Continue");
   const [hideCancelButton, setHideCancelButton] = useState(true);
+  const [titleClass, setTitleClass] = useState("");
 
   const showAlert = useCallback((config) => {
     setTitle(config.title);
@@ -36,6 +38,7 @@ export const AlertProvider = ({ children }) => {
     setCancelButtonText(config.cancelButtonText || "Cancel");
     setActionButtonText(config.actionButtonText || "Continue");
     setHideCancelButton(config.hideCancelButton || true);
+    setTitleClass(config.titleClass || "");
     setIsOpen(true);
   }, []);
 
@@ -48,6 +51,7 @@ export const AlertProvider = ({ children }) => {
     setCancelButtonText("Cancel");
     setActionButtonText("Continue");
     setHideCancelButton(true);
+    setTitleClass("");
   }, []);
 
   const handleConfirm = () => {
@@ -56,13 +60,15 @@ export const AlertProvider = ({ children }) => {
   };
 
   return (
-    <AlertContext.Provider value={showAlert}>
+    <AlertContext.Provider value={{ showAlert, hideAlert }}>
       {children}
       {isOpen && (
         <AlertDialog open={isOpen} onOpenChange={hideAlert}>
-          <AlertDialogContent>
+          <AlertDialogContent className="flex flex-col items-center">
             <AlertDialogHeader>
-              <AlertDialogTitle>{title}</AlertDialogTitle>
+              <AlertDialogTitle className={cn("text-center", titleClass)}>
+                {title}
+              </AlertDialogTitle>
               <AlertDialogDescription>{description}</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

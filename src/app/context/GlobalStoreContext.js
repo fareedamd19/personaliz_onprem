@@ -166,7 +166,7 @@ const GlobalStoreProvider = ({ children }) => {
   const [is_RTL, set_Is_RTL] = useState(0);
   const sessionVarAnswers = useRef({});
   const choosenCountryCode = useRef(null);
-  const showAlert = useAlert();
+  const { showAlert } = useAlert();
 
   let globalHardcodedVariables = useRef({
     submitText: "Submit",
@@ -257,13 +257,17 @@ const GlobalStoreProvider = ({ children }) => {
 
       const currentQuestion = currentQuestionData.current;
       const isRichMediaOrLastNode =
-        !currentQuestion ||
-        currentQuestion.type === "video" ||
-        currentQuestion.type === "rich_media";
+        !currentQuestion || currentQuestion.type === "video";
+
+      if (window.isRichMediaFileUpload) {
+        delete window.isRichMediaFileUpload;
+        return;
+      }
 
       if (!isFullScreen && hasVideoConsent && !isRichMediaOrLastNode) {
         showAlert({
           title: "Warning!",
+          titleClass: "text-red-500",
           description: "Minimizing the full screen will be monitored.",
           actionButtonText: "Enable Full Screen",
           onConfirm: () => {
@@ -761,7 +765,7 @@ const GlobalStoreProvider = ({ children }) => {
   }
 
   const enterFullscreen = () => {
-    if (!document.fullscreenElement) {
+    if (!document.fullscreenElement && !!firstLoadData?.video_consent) {
       document.documentElement.requestFullscreen().catch((err) => {
         console.error(
           `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`
@@ -771,7 +775,7 @@ const GlobalStoreProvider = ({ children }) => {
   };
 
   const exitFullscreen = () => {
-    if (document.fullscreenElement) {
+    if (document.fullscreenElement && !!firstLoadData?.video_consent) {
       document.exitFullscreen().catch((err) => {
         console.error(
           `Error attempting to exit fullscreen mode: ${err.message} (${err.name})`
