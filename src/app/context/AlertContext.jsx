@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
 } from "../components/ui/alert-dialog";
 import { cn } from "../lib/utils";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const AlertContext = createContext();
 
@@ -29,6 +30,7 @@ export const AlertProvider = ({ children }) => {
   const [actionButtonText, setActionButtonText] = useState("Continue");
   const [hideCancelButton, setHideCancelButton] = useState(true);
   const [titleClass, setTitleClass] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const showAlert = useCallback((config) => {
     setTitle(config.title);
@@ -52,11 +54,24 @@ export const AlertProvider = ({ children }) => {
     setActionButtonText("Continue");
     setHideCancelButton(true);
     setTitleClass("");
+    setIsLoading(false);
   }, []);
 
-  const handleConfirm = () => {
-    onConfirm();
-    hideAlert();
+  const handleConfirm = async () => {
+    setIsLoading(true);
+    try {
+      const result = onConfirm();
+
+      // eslint-disable-next-line
+      if (result instanceof Promise) {
+        await result;
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+      hideAlert();
+    }
   };
 
   return (
@@ -78,6 +93,9 @@ export const AlertProvider = ({ children }) => {
                 </AlertDialogCancel>
               )}
               <AlertDialogAction onClick={handleConfirm}>
+                {isLoading && (
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                )}
                 {actionButtonText}
               </AlertDialogAction>
             </AlertDialogFooter>
