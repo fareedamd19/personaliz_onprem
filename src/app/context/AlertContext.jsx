@@ -39,7 +39,7 @@ export const AlertProvider = ({ children }) => {
     setOnCancel(() => config.onCancel || (() => {}));
     setCancelButtonText(config.cancelButtonText || "Cancel");
     setActionButtonText(config.actionButtonText || "Continue");
-    setHideCancelButton(config.hideCancelButton || true);
+    setHideCancelButton(config.hideCancelButton ?? true);
     setTitleClass(config.titleClass || "");
     setIsOpen(true);
   }, []);
@@ -78,7 +78,7 @@ export const AlertProvider = ({ children }) => {
     <AlertContext.Provider value={{ showAlert, hideAlert }}>
       {children}
       {isOpen && (
-        <AlertDialog open={isOpen} onOpenChange={hideAlert}>
+        <AlertDialog open={isOpen}>
           <AlertDialogContent className="flex flex-col items-center">
             <AlertDialogHeader>
               <AlertDialogTitle className={cn("text-center", titleClass)}>
@@ -88,11 +88,16 @@ export const AlertProvider = ({ children }) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               {!hideCancelButton && (
-                <AlertDialogCancel onClick={onCancel}>
+                <AlertDialogCancel
+                  onClick={() => {
+                    hideAlert();
+                    onCancel();
+                  }}
+                >
                   {cancelButtonText}
                 </AlertDialogCancel>
               )}
-              <AlertDialogAction onClick={handleConfirm}>
+              <AlertDialogAction onClick={handleConfirm} disabled={isLoading}>
                 {isLoading && (
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                 )}

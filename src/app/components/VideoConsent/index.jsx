@@ -18,7 +18,9 @@ const VideoConsent = () => {
   const [isStarted, setIsStarted] = useState(false);
 
   useEffect(() => {
-    setShowVideoConsent(!!firstLoadData?.video_consent);
+    setShowVideoConsent(
+      !!firstLoadData?.video_consent && !firstLoadData.show_restart_popup
+    );
   }, [firstLoadData]);
 
   return (

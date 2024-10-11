@@ -33,7 +33,6 @@ const Dashboard = ({ server_personaliz_branding }) => {
       {!isLoading && showErrorModal && <ErrorModal />}
       {!isLoading && showThankYouPage && <ThankYouPage />}
 
-      <SessionResume />
       <VideoConsent />
     </>
   );

@@ -153,8 +153,6 @@ const GlobalStoreProvider = ({ children }) => {
   const [optionThemeObj, setOptionThemeObj] = useState(null);
   const [numberThemeObj, setNumberThemeObj] = useState(null);
   const [customHeader, setCustomHeader] = useState(null);
-  const [showSessionResume, setShowSessionResume] = useState(false);
-  const [isStartOver, setIsStartOver] = useState(false);
   const [questionContainerHeight, setQuestionContainerHeight] =
     useState("bottom");
   const [showThankYouPage, setShowThankYouPage] = useState(false);
@@ -796,6 +794,7 @@ const GlobalStoreProvider = ({ children }) => {
         showErrorModal,
         setShowErrorModal,
         configData,
+        setConfigData,
         isQuestionOnTopOfVideo,
         fontThemeObj,
         optionThemeObj,
@@ -815,6 +814,7 @@ const GlobalStoreProvider = ({ children }) => {
         getNextQuestion,
         hanleJumpForURL,
         showThankYouPage,
+        setShowThankYouPage,
         isVideoClickedOnFirstLoad,
         max_video_watch_time,
         captureUserExit,
@@ -823,10 +823,6 @@ const GlobalStoreProvider = ({ children }) => {
         getUrlForUploadedFile,
         choosenCountryCode,
         getUrlForFIlesUploadedInUploadedType,
-        showSessionResume,
-        setShowSessionResume,
-        isStartOver,
-        setIsStartOver,
         handleTrackEvent,
         enterFullscreen,
         exitFullscreen,
