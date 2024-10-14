@@ -19,7 +19,7 @@ const VideoConsent = () => {
 
   useEffect(() => {
     setShowVideoConsent(
-      !!firstLoadData?.video_consent && !firstLoadData.show_restart_popup
+      !!firstLoadData?.video_consent && !firstLoadData.is_consent_video_url
     );
   }, [firstLoadData]);
 

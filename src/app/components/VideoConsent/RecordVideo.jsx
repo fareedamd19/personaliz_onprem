@@ -136,9 +136,13 @@ const RecordVideo = ({ setShowVideoConsent }) => {
 
   const handleFinishReading = async () => {
     try {
+      const file = new File([videoBlob], "recorded_video.webm", {
+        type: "video/webm",
+      });
+
       const formData = new FormData();
       formData.append("session_id", session_id);
-      formData.append("file", videoBlob);
+      formData.append("file", file);
 
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_PERSONALIZ_URL}/v1/play/store_consent_video`,
