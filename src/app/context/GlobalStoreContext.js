@@ -164,6 +164,7 @@ const GlobalStoreProvider = ({ children }) => {
   const [is_RTL, set_Is_RTL] = useState(0);
   const sessionVarAnswers = useRef({});
   const choosenCountryCode = useRef(null);
+  const [isScreenMinimized, setIsScreenMinimized] = useState(false);
   const { showAlert } = useAlert();
 
   let globalHardcodedVariables = useRef({
@@ -263,6 +264,7 @@ const GlobalStoreProvider = ({ children }) => {
       }
 
       if (!isFullScreen && hasVideoConsent && !isRichMediaOrLastNode) {
+        setIsScreenMinimized(true);
         showAlert({
           title: "Warning!",
           titleClass: "text-red-500",
@@ -479,12 +481,14 @@ const GlobalStoreProvider = ({ children }) => {
           form_field_variables: form_field_variables
             ? form_field_variables
             : payload,
+          is_fullscreen_answered: isScreenMinimized ? "1" : "0",
         }),
         method: "POST",
       }
     );
     const interactlyResponseData = await res.json();
     if (interactlyResponseData.status) {
+      setIsScreenMinimized(false);
       setQuestionContainerHeight("bottom");
       setWebsite_scroll_config(null);
       setIsLoading(false);
