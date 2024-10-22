@@ -210,22 +210,38 @@ const RecordVideo = ({ setShowVideoConsent }) => {
             >
               {({ remainingTime }) => remainingTime}
             </CountdownCircleTimer>
-            <Button
-              className="flex-center w-max rounded-full p-2 bg-black"
-              onClick={isPaused ? resumeRecording : pauseRecording}
-            >
-              {isPaused ? (
-                <IoPlay className="text-white text-xl cursor-pointer" />
-              ) : (
-                <MdOutlinePause className="text-white text-xl cursor-pointer" />
-              )}
-            </Button>
-            <Button
-              className="flex-center w-max rounded-full p-2 bg-black"
-              onClick={handleStopRecording}
-            >
-              <FaStop className="text-white text-lg cursor-pointer" />
-            </Button>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className="flex-center w-max rounded-full p-2 bg-black"
+                  onClick={isPaused ? resumeRecording : pauseRecording}
+                >
+                  {isPaused ? (
+                    <IoPlay className="text-white text-xl ml-[1px] cursor-pointer" />
+                  ) : (
+                    <MdOutlinePause className="text-white text-xl cursor-pointer" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>{isPaused ? "Resume" : "Pause"}</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className="flex-center w-max rounded-full p-2 bg-black"
+                  onClick={handleStopRecording}
+                >
+                  <FaStop className="text-white text-lg cursor-pointer" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Stop & Save</p>
+              </TooltipContent>
+            </Tooltip>
           </>
         ) : (
           <Tooltip>
@@ -248,8 +264,8 @@ const RecordVideo = ({ setShowVideoConsent }) => {
 
       <p className="p-1 py-2 md:p-3 md:px-5 bg-gray-200 rounded-lg text-center italic">
         My name is <strong>{candidate_name}</strong>, <br />I am interviewing
-        for <strong>{job_company_name}</strong> role at{" "}
-        <strong>{job_role}</strong>
+        for <strong>{job_role}</strong> role at{" "}
+        <strong>{job_company_name}</strong>
       </p>
 
       <Button
