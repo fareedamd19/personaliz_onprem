@@ -273,7 +273,7 @@ const RecordVideo = ({ setShowVideoConsent }) => {
         disabled={!videoBlob || isRecording}
       >
         <FaCheckCircle className=" text-lg mr-2" />
-        Finish Reading
+        Submit
       </Button>
     </div>
   );
