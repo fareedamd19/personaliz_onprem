@@ -602,7 +602,7 @@ function VideoCaptioner({
           onError={handleVideoError}
           // controls
           muted
-          // autoPlay
+          autoPlay
           playsInline
           preload="auto"
           allowFullScreen

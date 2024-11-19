@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { checkIfParamsArePresent } from "../utils/Functions";
+import { useAlert } from "./AlertContext";
 
 const alphabet = [
   "",
@@ -152,8 +153,6 @@ const GlobalStoreProvider = ({ children }) => {
   const [optionThemeObj, setOptionThemeObj] = useState(null);
   const [numberThemeObj, setNumberThemeObj] = useState(null);
   const [customHeader, setCustomHeader] = useState(null);
-  const [showSessionResume, setShowSessionResume] = useState(false);
-  const [isStartOver, setIsStartOver] = useState(false);
   const [questionContainerHeight, setQuestionContainerHeight] =
     useState("bottom");
   const [showThankYouPage, setShowThankYouPage] = useState(false);
@@ -165,6 +164,8 @@ const GlobalStoreProvider = ({ children }) => {
   const [is_RTL, set_Is_RTL] = useState(0);
   const sessionVarAnswers = useRef({});
   const choosenCountryCode = useRef(null);
+  const [isScreenMinimized, setIsScreenMinimized] = useState(false);
+  const { showAlert } = useAlert();
 
   let globalHardcodedVariables = useRef({
     submitText: "Submit",
@@ -243,11 +244,47 @@ const GlobalStoreProvider = ({ children }) => {
     // Event listener for window resize
     window.addEventListener("resize", handleResize);
 
-    // Clean up
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isFullScreen = document.fullscreenElement;
+      const hasVideoConsent = !!firstLoadData?.video_consent;
+
+      const currentQuestion = currentQuestionData.current;
+      const isRichMediaOrLastNode =
+        !currentQuestion || currentQuestion.type === "video";
+
+      if (window.isRichMediaFileUpload) {
+        delete window.isRichMediaFileUpload;
+        return;
+      }
+
+      if (!isFullScreen && hasVideoConsent && !isRichMediaOrLastNode) {
+        setIsScreenMinimized(true);
+        showAlert({
+          title: "Warning!",
+          titleClass: "text-red-500",
+          description: "Minimizing the full screen will be monitored.",
+          actionButtonText: "Enable Full Screen",
+          onConfirm: () => {
+            enterFullscreen();
+          },
+        });
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+
+    // eslint-disable-next-line
+  }, [firstLoadData]);
 
   function updateGlobalHardcodedVariables(obj) {
     obj.forEach((text) => {
@@ -339,7 +376,11 @@ const GlobalStoreProvider = ({ children }) => {
     personaliz_campaign_name,
     questionmarkOrAnd
   ) {
-    return `${url}${questionmarkOrAnd}utm_campaign=${personaliz_campaign_name}&utm_medium=social&utm_source=Personaliz.ai`;
+    return `${url}${questionmarkOrAnd}utm_campaign=${personaliz_campaign_name}&utm_medium=social&utm_source=${
+      configData.campaign_origin === "middle-east"
+        ? "GoVideoPx"
+        : "Personaliz.ai"
+    }`;
   }
 
   function getStatusWatchTimeAndWatchTimePercentage(payload_status) {
@@ -363,6 +404,19 @@ const GlobalStoreProvider = ({ children }) => {
 
     return { watch_time, watch_time_percentage, status };
   }
+
+  const handleTrackEvent = async (event) => {
+    const { mode } = checkIfParamsArePresent();
+    if (mode === "test") return;
+
+    await fetch(`${process.env.NEXT_PUBLIC_API}/event_tracking`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...event, session_id: firstLoadData.session_id }),
+    });
+  };
 
   async function getNextQuestion(
     payload,
@@ -427,12 +481,14 @@ const GlobalStoreProvider = ({ children }) => {
           form_field_variables: form_field_variables
             ? form_field_variables
             : payload,
+          is_fullscreen_answered: isScreenMinimized ? "1" : "0",
         }),
         method: "POST",
       }
     );
     const interactlyResponseData = await res.json();
     if (interactlyResponseData.status) {
+      setIsScreenMinimized(false);
       setQuestionContainerHeight("bottom");
       setWebsite_scroll_config(null);
       setIsLoading(false);
@@ -452,6 +508,14 @@ const GlobalStoreProvider = ({ children }) => {
         if (interactlyResponseData?.data?.questions?.type === "video") {
           setIsQuestionOnTopOfVideo(true);
         }
+      }
+
+      const currentQuestion = currentQuestionData.current;
+      if (!!firstLoadData?.video_consent) {
+        const isLastNode = !currentQuestion || currentQuestion.type === "video";
+
+        if (isLastNode) exitFullscreen();
+        else enterFullscreen();
       }
     } else {
       setIsLoading(false);
@@ -495,7 +559,6 @@ const GlobalStoreProvider = ({ children }) => {
       );
     } catch (error) {
       console.log("err in handleJumpForURL", error);
-
     }
     setIsLoading(false);
   }
@@ -703,6 +766,26 @@ const GlobalStoreProvider = ({ children }) => {
     }
   }
 
+  const enterFullscreen = () => {
+    if (!document.fullscreenElement && !!firstLoadData?.video_consent) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(
+          `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`
+        );
+      });
+    }
+  };
+
+  const exitFullscreen = () => {
+    if (document.fullscreenElement && !!firstLoadData?.video_consent) {
+      document.exitFullscreen().catch((err) => {
+        console.error(
+          `Error attempting to exit fullscreen mode: ${err.message} (${err.name})`
+        );
+      });
+    }
+  };
+
   return (
     <GlobalStoreContext.Provider
       value={{
@@ -715,6 +798,7 @@ const GlobalStoreProvider = ({ children }) => {
         showErrorModal,
         setShowErrorModal,
         configData,
+        setConfigData,
         isQuestionOnTopOfVideo,
         fontThemeObj,
         optionThemeObj,
@@ -734,6 +818,7 @@ const GlobalStoreProvider = ({ children }) => {
         getNextQuestion,
         hanleJumpForURL,
         showThankYouPage,
+        setShowThankYouPage,
         isVideoClickedOnFirstLoad,
         max_video_watch_time,
         captureUserExit,
@@ -742,10 +827,9 @@ const GlobalStoreProvider = ({ children }) => {
         getUrlForUploadedFile,
         choosenCountryCode,
         getUrlForFIlesUploadedInUploadedType,
-        showSessionResume,
-        setShowSessionResume,
-        isStartOver,
-        setIsStartOver,
+        handleTrackEvent,
+        enterFullscreen,
+        exitFullscreen,
       }}
     >
       {children}

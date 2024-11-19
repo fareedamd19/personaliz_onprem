@@ -34,6 +34,12 @@ const UrlOption = ({ option, index }) => {
           borderRadius: `${optionThemeObj?.option_border_radius}px`,
           color: optionThemeObj?.option_text_color,
           fontSize: `${+fontThemeObj?.font_size - 3}px`,
+          justifyContent:
+            optionThemeObj?.option_text_alignment === "center"
+              ? "center"
+              : optionThemeObj?.option_text_alignment === "right"
+              ? "flex-end"
+              : "flex-start",
         }}
         href={getUrlLinkToBeRedirectedTo(option?.url, campaignName, "?")}
         target="_blank"
@@ -59,6 +65,7 @@ const UrlOption = ({ option, index }) => {
             direction: is_RTL ? "rtl" : "",
             unicodeBidi: is_RTL ? "bidi-override" : "",
           }}
+          className="text-center"
         >
           {option.text}
         </span>

@@ -8,6 +8,7 @@ import {
 } from "../utils/Functions";
 import { useGlobalStoreContext } from "../context/GlobalStoreContext";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
+import { useAlert } from "../context/AlertContext";
 
 const ChecksAndFirstDataOnLoad = () => {
   const {
@@ -15,10 +16,10 @@ const ChecksAndFirstDataOnLoad = () => {
     setFirstLoadData,
     setIsLoading,
     setShowErrorModal,
-    setShowSessionResume,
-    isStartOver,
-    setIsStartOver,
+    setShowThankYouPage,
+    setConfigData,
   } = useGlobalStoreContext();
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     const { campaignId, emailOfUser, contact_id, mode } =
@@ -44,15 +45,6 @@ const ChecksAndFirstDataOnLoad = () => {
 
     //eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    const { campaignId, contact_id, mode } = checkIfParamsArePresent();
-
-    if (isStartOver)
-      getFirstQuestionDetails(campaignId, contact_id, mode, true);
-
-    // eslint-disable-next-line
-  }, [isStartOver]);
 
   async function getCampaignDetails(campaignId, emailOfUser) {
     try {
@@ -88,6 +80,64 @@ const ChecksAndFirstDataOnLoad = () => {
       console.log(error?.message);
     }
   }
+
+  useEffect(() => {
+    if (!firstLoadData) return;
+
+    const question = firstLoadData?.questions;
+    const showRestartPopup = firstLoadData.show_restart_popup;
+    const isSessionComplete = !question || question.type === "video";
+    const isStatusDeleted = question?.status === "deleted";
+    const hasVideoConsent = !!firstLoadData?.video_consent;
+
+    const { campaignId, contact_id, mode } = checkIfParamsArePresent();
+    if (showRestartPopup) {
+      if (hasVideoConsent) {
+        if (isSessionComplete || isStatusDeleted) {
+          showAlert({
+            title: isSessionComplete
+              ? "Interview Completed"
+              : "Interview Updated",
+            description: `Your interview process has been ${
+              isSessionComplete ? "Completed" : "Updated"
+            }`,
+            actionButtonText: "Ok",
+          });
+        } else {
+          showAlert({
+            title: "Interview in Progress",
+            description: "Click Resume to continue the interview process",
+            actionButtonText: "Resume",
+          });
+        }
+      } else {
+        if (isSessionComplete || isStatusDeleted) {
+          showAlert({
+            title: isSessionComplete ? "Session Ended" : "Session Deleted",
+            description: "Click start over to start a new session",
+            actionButtonText: "Start over",
+            onConfirm: async () => {
+              await getFirstQuestionDetails(campaignId, contact_id, mode, true);
+            },
+          });
+        } else {
+          showAlert({
+            title: "Session in Progress",
+            description:
+              "Start over to delete the existing session or resume the session",
+            cancelButtonText: "Resume",
+            hideCancelButton: false,
+            actionButtonText: "Start over",
+            onConfirm: async () => {
+              await getFirstQuestionDetails(campaignId, contact_id, mode, true);
+            },
+          });
+        }
+      }
+    }
+
+    // eslint-disable-next-line
+  }, [firstLoadData]);
 
   async function getFirstQuestionDetails(
     campaignId,
@@ -150,26 +200,30 @@ const ChecksAndFirstDataOnLoad = () => {
       }),
       method: "POST",
     });
+
     const interactlyResponseData = await res.json();
     if (interactlyResponseData.status) {
       let data = interactlyResponseData.data;
       const showRestartPopup = data.show_restart_popup;
 
       if (showRestartPopup || data.resume_question_data?.questions) {
-        setShowSessionResume(showRestartPopup);
         data.questions = data.resume_question_data?.questions;
         data.session_id = data.resume_question_data?.session_id;
       }
 
-      if (isStartOver) {
+      if (firstLoadData) {
         const updatedData = firstLoadData;
         updatedData.questions = data.questions;
         updatedData.session_id = data.session_id;
         updatedData.dynamic_text_display = data.dynamic_text_display;
         updatedData.website_scroll_config = data.website_scroll_config;
+        updatedData.show_restart_popup = data.show_restart_popup;
 
         data = { ...updatedData };
       }
+
+      if (!data.questions) setShowThankYouPage(true);
+      setConfigData(data.videoConfig);
 
       setFirstLoadData(data);
       makingGeoIpCallAndUpdatingSession(data);
@@ -215,8 +269,6 @@ const ChecksAndFirstDataOnLoad = () => {
         "https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg",
       ]);
     }
-
-    setIsStartOver(false);
   }
 
   const makingGeoIpCallAndUpdatingSession = async (interactlyResponseData) => {

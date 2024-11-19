@@ -1,4 +1,5 @@
 import MainEntryPoint from "./components/Main Entry Point/MainEntryPoint";
+import { AlertProvider } from "./context/AlertContext";
 
 let server_personaliz_branding = null;
 
@@ -62,7 +63,11 @@ export async function generateMetadata({ searchParams }) {
 export default function Home() {
   return (
     <>
-      <MainEntryPoint server_personaliz_branding={server_personaliz_branding} />
+      <AlertProvider>
+        <MainEntryPoint
+          server_personaliz_branding={server_personaliz_branding}
+        />
+      </AlertProvider>
     </>
   );
 }

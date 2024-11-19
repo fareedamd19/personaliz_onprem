@@ -1,21 +1,32 @@
 import { useGlobalStoreContext } from "@/app/context/GlobalStoreContext";
+import { pauseAllVideos } from "@/app/utils/Functions";
+import Link from "next/link";
 import React from "react";
 
-const BranchOption = ({ option, index }) => {
+const CallOption = ({ option, index }) => {
   const {
     fontThemeObj,
     optionThemeObj,
     isQuestionOnTopOfVideo,
     numberThemeObj,
     returnNumberOrAlpabet,
-    getNextQuestion,
+    getUrlLinkToBeRedirectedTo,
+    campaignName,
+    hanleJumpForURL,
     is_RTL,
   } = useGlobalStoreContext();
 
+  function handleOptionClick() {
+    pauseAllVideos();
+    setTimeout(() => {
+      hanleJumpForURL(option.text);
+    }, 500);
+  }
+
   return (
     <>
-      <div
-        onClick={() => getNextQuestion(option.text)}
+      <a
+        onClick={handleOptionClick}
         style={{
           fontFamily: fontThemeObj?.font_name,
           backgroundColor: optionThemeObj?.option_background_color,
@@ -30,6 +41,7 @@ const BranchOption = ({ option, index }) => {
               ? "flex-end"
               : "flex-start",
         }}
+        href={`tel:+911234567890`}
         className={`${
           isQuestionOnTopOfVideo ? "w-[90%] md:w-[40%] mx-auto" : "w-full"
         } h-max p-4 py-3 md:-mb-2 cursor-pointer hover:scale-105 flex items-center`}
@@ -52,13 +64,12 @@ const BranchOption = ({ option, index }) => {
             direction: is_RTL ? "rtl" : "",
             unicodeBidi: is_RTL ? "bidi-override" : "",
           }}
-          className="text-center"
         >
           {option.text}
         </span>
-      </div>
+      </a>
     </>
   );
 };
 
-export default BranchOption;
+export default CallOption;

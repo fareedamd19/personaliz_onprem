@@ -6,7 +6,8 @@ import LayoutContainer from "../Layout Container/LayoutContainer";
 import { useGlobalStoreContext } from "@/app/context/GlobalStoreContext";
 import ErrorModal from "../Error Modal/ErrorModal";
 import ThankYouPage from "../Thank you Page/ThankYouPage";
-import SessionResume from "../Dialogs/SessionResume";
+import SessionResume from "../SessionResume";
+import VideoConsent from "../VideoConsent";
 
 const Dashboard = ({ server_personaliz_branding }) => {
   const {
@@ -32,7 +33,7 @@ const Dashboard = ({ server_personaliz_branding }) => {
       {!isLoading && showErrorModal && <ErrorModal />}
       {!isLoading && showThankYouPage && <ThankYouPage />}
 
-      <SessionResume />
+      <VideoConsent />
     </>
   );
 };

@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import BranchOption from "./Options/BranchOption";
 import UrlOption from "./Options/UrlOption";
 import QuestionTitle from "../../Question Container/QuestionTitle";
+import CallOption from "./Options/CallOption";
 
 const SingleChoice = () => {
   const {
@@ -43,8 +44,10 @@ const SingleChoice = () => {
                 <Fragment key={index}>
                   {option.type === "branch" ? (
                     <BranchOption option={option} index={index} />
-                  ) : (
+                  ) : option.type === "url" ? (
                     <UrlOption option={option} index={index} />
+                  ) : (
+                    <CallOption option={option} index={index} />
                   )}
                 </Fragment>
               );
