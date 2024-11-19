@@ -43,7 +43,7 @@ const VideoContainer = () => {
   const [isMuted, setIsMuted] = useState(true);
   const posterUrl =
     personaliz_branding === "none"
-      ? "https://personaliz.s3.ap-south-1.amazonaws.com/Personaliz+Logos/Personaliz_custom+loader.gif"
+      ? "https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
       : "https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif";
   const alreadyAutomaticallyMovedUp = useRef(false);
 
