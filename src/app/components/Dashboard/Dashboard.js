@@ -8,6 +8,7 @@ import ErrorModal from "../Error Modal/ErrorModal";
 import ThankYouPage from "../Thank you Page/ThankYouPage";
 import SessionResume from "../SessionResume";
 import VideoConsent from "../VideoConsent";
+import CandidateRecorder from "../CandidateRecorder/CandidateRecorder";
 
 const Dashboard = ({ server_personaliz_branding }) => {
   const {
@@ -32,7 +33,7 @@ const Dashboard = ({ server_personaliz_branding }) => {
       )}
       {!isLoading && showErrorModal && <ErrorModal />}
       {!isLoading && showThankYouPage && <ThankYouPage />}
-
+      {/* <CandidateRecorder /> */}
       <VideoConsent />
     </>
   );
