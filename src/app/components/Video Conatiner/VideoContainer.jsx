@@ -489,7 +489,9 @@ const VideoContainer = () => {
 
       {/* COMPANY BRAND LOGO */}
       {personaliz_branding !== "none" && (
-        <div
+        <a
+          target="_blank"
+          href={process.env.NEXT_PUBLIC_PERSONALIZ_URL}
           style={{
             display:
               isQuestionOnTopOfVideo && questionContainerHeight === "bottom"
@@ -507,7 +509,7 @@ const VideoContainer = () => {
             height={30}
           />{" "}
           <em>Personaliz.ai</em>
-        </div>
+        </a>
       )}
     </section>
   );

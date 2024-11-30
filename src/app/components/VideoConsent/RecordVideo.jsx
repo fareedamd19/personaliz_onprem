@@ -26,6 +26,8 @@ const RecordVideo = ({ setShowVideoConsent }) => {
   const recordedChunks = useRef([]);
   const videoRef = useRef(null);
 
+  const isSubmitDisabled = !videoBlob || isRecording;
+
   useEffect(() => {
     if (recordingStartTime && isRecording) {
       const checkMaxDuration = setInterval(() => {
@@ -179,6 +181,7 @@ const RecordVideo = ({ setShowVideoConsent }) => {
             autoPlay
             muted
             poster="https://via.placeholder.com/400x300?text=No+Video"
+            className="rounded-md"
           />
         )}
       </div>
@@ -211,7 +214,7 @@ const RecordVideo = ({ setShowVideoConsent }) => {
               {({ remainingTime }) => remainingTime}
             </CountdownCircleTimer>
 
-            <Tooltip>
+            {/* <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   className="flex-center w-max rounded-full p-2 bg-black"
@@ -227,7 +230,7 @@ const RecordVideo = ({ setShowVideoConsent }) => {
               <TooltipContent side="bottom">
                 <p>{isPaused ? "Resume" : "Pause"}</p>
               </TooltipContent>
-            </Tooltip>
+            </Tooltip> */}
 
             <Tooltip>
               <TooltipTrigger asChild>
@@ -268,13 +271,12 @@ const RecordVideo = ({ setShowVideoConsent }) => {
         <strong>{job_company_name}</strong>
       </p>
 
-      <Button
-        onClick={handleFinishReading}
-        disabled={!videoBlob || isRecording}
-      >
-        <FaCheckCircle className=" text-lg mr-2" />
-        Submit
-      </Button>
+      {!isSubmitDisabled && (
+        <Button onClick={handleFinishReading}>
+          <FaCheckCircle className=" text-lg mr-2" />
+          Submit
+        </Button>
+      )}
     </div>
   );
 };
