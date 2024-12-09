@@ -36,6 +36,7 @@ const VideoContainer = () => {
 
   const personalizVideoSetInterval = useRef(null);
   const videoElm = useRef(null);
+  const personalizedVideoRef = useRef(null);
   const scrollVideoElm = useRef(null);
   const videoTimerRef = useRef(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -91,6 +92,44 @@ const VideoContainer = () => {
     };
     //eslint-disable-next-line
   }, [videoElm?.current?.src, scrollVideoElm?.current?.src, configData]);
+
+  const updatePersonalizedVideoTime = () => {
+    if (
+      videoElm &&
+      personalizedVideoRef &&
+      personalizedVideoRef?.current?.duration
+    ) {
+      const videoElement = videoElm.current;
+      const currentTime = videoElement.currentTime;
+
+      const personalizedVideoElement = personalizedVideoRef.current;
+      const personalizedVideoDuration = personalizedVideoElement.duration;
+
+      if (currentTime < personalizedVideoDuration) {
+        videoElement.muted = true;
+        personalizedVideoElement.muted = isMuted;
+
+        if (!videoElement.paused) personalizedVideoElement.play();
+        else personalizedVideoElement.pause();
+
+        personalizedVideoElement.style.zIndex = "10";
+
+        personalizedVideoElement.currentTime = currentTime;
+      } else {
+        personalizedVideoElement.muted = true;
+        videoElement.muted = isMuted;
+
+        personalizedVideoElement.pause();
+        personalizedVideoElement.style.zIndex = "-10";
+      }
+    }
+  };
+
+  useEffect(() => {
+    updatePersonalizedVideoTime();
+
+    // eslint-disable-next-line
+  }, [isMuted, videoElm?.current?.paused]);
 
   function startVideoTracking(video) {
     personalizVideoSetInterval.current = setInterval(() => {
@@ -169,6 +208,7 @@ const VideoContainer = () => {
       videoElm.current.play();
     }
   }
+
   function personalizPauseVideoFunction() {
     setIsVideoPlaying(false);
     videoElm.current.pause();
@@ -193,6 +233,8 @@ const VideoContainer = () => {
     } else {
       videoElm.current.currentTime = interactlyCurrentRange;
     }
+
+    updatePersonalizedVideoTime();
   }
 
   function handleCheckForAutomaticallyMoveUp(video) {
@@ -249,6 +291,8 @@ const VideoContainer = () => {
     if (!website_scroll_config) {
       videoElm.current.muted = false;
     }
+
+    updatePersonalizedVideoTime();
   }
 
   function handleRestartSessionClick() {
@@ -323,12 +367,15 @@ const VideoContainer = () => {
 
       {firstLoadData?.dynamic_text_display.type === "web" && (
         <VideoCaptioner
+          currentQuestionData={currentQuestionData}
           videoSrc={`${currentQuestionData.current?.video_url}#t=0.001`}
           captions={firstLoadData?.dynamic_text_display.config}
           videoRef={videoElm}
+          personalizedVideoRef={personalizedVideoRef}
           posterUrl={posterUrl}
           handleVideoClick={handleVideoClick}
           handleVideoError={handleVideoError}
+          updatePersonalizedVideoTime={updatePersonalizedVideoTime}
         />
       )}
       {firstLoadData?.dynamic_text_display.type === "render" && (
@@ -386,7 +433,7 @@ const VideoContainer = () => {
       {!isVideoPlaying && (
         <Image
           onClick={handleVideoClick}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+          className="absolute z-[999] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
           src="https://dyolkjkaata8s.cloudfront.net/personaliz_play_Icon.svg"
           height={80}
           width={80}
@@ -395,7 +442,7 @@ const VideoContainer = () => {
       )}
 
       <div
-        className={`bg-black bg-opacity-10 w-full flex flex-col absolute top-0 ${
+        className={`bg-black bg-opacity-10 w-full flex flex-col absolute top-0 z-[999] ${
           !isVideoPlaying ? "block" : "hidden"
         } transition-all`}
       >
@@ -518,16 +565,22 @@ const VideoContainer = () => {
 export default VideoContainer;
 
 function VideoCaptioner({
+  currentQuestionData,
   videoSrc,
   captions,
   videoRef,
+  personalizedVideoRef,
   posterUrl,
   handleVideoClick,
   handleVideoError,
+  updatePersonalizedVideoTime,
 }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [videoHeight, setVideoHeight] = useState(1);
   const [videoWidth, setVideoWidth] = useState(1);
+
+  const personalizedVideoUrl =
+    currentQuestionData.current?.personaliz_video_url;
 
   useEffect(() => {
     const video = videoRef.current;
@@ -594,11 +647,30 @@ function VideoCaptioner({
           justifyContent: "center",
         }}
       >
+        {personalizedVideoUrl && (
+          <video
+            ref={personalizedVideoRef}
+            src={`${personalizedVideoUrl}#t=0.001`}
+            className="h-full object-cover absolute top-0 bottom-0 z-[-10]"
+            poster={posterUrl}
+            onClick={handleVideoClick}
+            onError={handleVideoError}
+            onEnded={updatePersonalizedVideoTime}
+            onLoadedMetadata={updatePersonalizedVideoTime}
+            muted
+            // autoPlay
+            playsInline
+            preload="auto"
+            allowFullScreen
+          />
+        )}
+
+        {/* Main Video */}
         <video
           id="webRenderVideo"
           ref={videoRef}
           src={videoSrc}
-          style={{ height: "100%", objectFit: "cover" }}
+          className="h-full object-cover"
           poster={posterUrl}
           onClick={handleVideoClick}
           onError={handleVideoError}
@@ -616,7 +688,8 @@ function VideoCaptioner({
             }
           }}
         />
-        <div className="caption-container">{renderCaptions()}</div>
+
+        <div className="caption-container z-[999]">{renderCaptions()}</div>
       </div>
     </div>
   );
