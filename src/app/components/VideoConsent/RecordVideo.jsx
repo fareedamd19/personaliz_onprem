@@ -256,20 +256,26 @@ const RecordVideo = ({ setShowVideoConsent }) => {
                 <IoMdRefresh className="text-white text-xl cursor-pointer" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="bottom">
+            <TooltipContent side="right">
               <p>Re-record</p>
             </TooltipContent>
           </Tooltip>
         )}
       </div>
 
-      <p cTooltipe="text-center">Face the camera and read the message below.</p>
+      {isSubmitDisabled && (
+        <>
+          <p className="text-center">
+            Face the camera and read the message below.
+          </p>
 
-      <p className="p-1 py-2 md:p-3 md:px-5 bg-gray-200 rounded-lg text-center italic">
-        My name is <strong>{candidate_name}</strong>, <br />I am interviewing
-        for <strong>{job_role}</strong> role at{" "}
-        <strong>{job_company_name}</strong>
-      </p>
+          <p className="p-1 py-2 md:p-3 md:px-5 bg-gray-200 rounded-lg text-center italic">
+            My name is <strong>{candidate_name}</strong>, <br />I am
+            interviewing for <strong>{job_role}</strong> role at{" "}
+            <strong>{job_company_name}</strong>
+          </p>
+        </>
+      )}
 
       {!isSubmitDisabled && (
         <Button onClick={handleFinishReading}>
