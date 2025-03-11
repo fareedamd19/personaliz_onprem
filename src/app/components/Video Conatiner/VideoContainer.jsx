@@ -360,47 +360,48 @@ const VideoContainer = () => {
   }
 
   // console.log("harsh", firstLoadData?.dynamic_text_display.config);
+  const isFirstQuestion = currentQuestionData.current?.isFirstQuestion;
 
   return (
     <section className={`${styles.videoOuterConatiner} w-full h-full relative`}>
       {/* MAIN VIDEO */}
 
-      {firstLoadData?.dynamic_text_display.type === "web" && (
-        <VideoCaptioner
-          currentQuestionData={currentQuestionData}
-          videoSrc={`${currentQuestionData.current?.video_url}#t=0.001`}
-          captions={firstLoadData?.dynamic_text_display.config}
-          videoRef={videoElm}
-          personalizedVideoRef={personalizedVideoRef}
-          posterUrl={posterUrl}
-          handleVideoClick={handleVideoClick}
-          handleVideoError={handleVideoError}
-          updatePersonalizedVideoTime={updatePersonalizedVideoTime}
-        />
-      )}
-      {firstLoadData?.dynamic_text_display.type === "render" && (
-        <>
-          {currentQuestionData.current?.video_url && (
-            <video
-              onClick={handleVideoClick}
-              muted
-              autoPlay
-              ref={videoElm}
-              poster={posterUrl}
-              onError={handleVideoError}
-              className={`w-full h-full ${
-                currentQuestionData.current?.video_fit === "zoomed"
-                  ? "object-cover"
-                  : "object-contain"
-              }`}
-              src={`${currentQuestionData.current?.video_url}#t=0.001`}
-              playsInline
-              preload="auto"
-              allowFullScreen
-            ></video>
-          )}
-        </>
-      )}
+      {isFirstQuestion &&
+        firstLoadData?.dynamic_text_display.type === "web" && (
+          <VideoCaptioner
+            currentQuestionData={currentQuestionData}
+            videoSrc={`${currentQuestionData.current?.video_url}#t=0.001`}
+            captions={firstLoadData?.dynamic_text_display.config}
+            videoRef={videoElm}
+            personalizedVideoRef={personalizedVideoRef}
+            posterUrl={posterUrl}
+            handleVideoClick={handleVideoClick}
+            handleVideoError={handleVideoError}
+            updatePersonalizedVideoTime={updatePersonalizedVideoTime}
+          />
+        )}
+
+      {(!isFirstQuestion ||
+        firstLoadData?.dynamic_text_display.type === "render") &&
+        currentQuestionData.current?.video_url && (
+          <video
+            onClick={handleVideoClick}
+            muted
+            autoPlay
+            ref={videoElm}
+            poster={posterUrl}
+            onError={handleVideoError}
+            className={`w-full h-full ${
+              currentQuestionData.current?.video_fit === "zoomed"
+                ? "object-cover"
+                : "object-contain"
+            }`}
+            src={`${currentQuestionData.current?.video_url}#t=0.001`}
+            playsInline
+            preload="auto"
+            allowFullScreen
+          ></video>
+        )}
 
       {/* WEBSITE SCROLL VIDEO */}
       {website_scroll_config && (
