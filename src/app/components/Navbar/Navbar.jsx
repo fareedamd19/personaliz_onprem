@@ -51,56 +51,46 @@ const Navbar = () => {
       </Link>
 
       <div onClick={() => handleTrackEvent({ is_header_cta_clicked: "1" })}>
-        <div className="flex items-center justify-between gap-6">
-          {customHeader?.custom_button_type === "call" ? (
-            <a
-              style={{ background: customHeader?.custom_button_color }}
-              className="flex items-center px-[10px] py-[9px] text-white rounded-md"
-              href={`tel:${customHeader?.custom_button_redirect_url}`}
-            >
-              <p className="flex items-center gap-2">
-                <IoCallSharp />
-                {customHeader?.custom_button_text}
-              </p>
-            </a>
-          ) : (
-            <Link
-              style={{
-                background: customHeader?.custom_button_color,
-                direction: is_RTL ? "rtl" : "",
-                unicodeBidi: is_RTL ? "bidi-override" : "",
-              }}
-              className={`flex items-center px-[10px] py-[9px] text-white rounded-md`}
-              target="_blank"
-              href={
-                getUrlLinkToBeRedirectedTo(
-                  customHeader?.custom_button_redirect_url,
-                  campaignName,
-                  "?"
-                ) || ""
-              }
-            >
-              {customHeader?.custom_button_text}
-            </Link>
-          )}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              {customHeader?.custom_button_type === "call" ? (
                 <a
-                  href={process.env.NEXT_PUBLIC_CONTACT_US_URL}
-                  target="_blank"
+                  style={{ background: customHeader?.custom_button_color }}
+                  className="flex items-center px-[10px] py-[9px] text-white rounded-md"
+                  href={`tel:${customHeader?.custom_button_redirect_url}`}
                 >
-                  <div className="flex items-center justify-center h-8 w-8 border border-black rounded-full text-xl">
-                    ?
-                  </div>
+                  <p className="flex items-center gap-2">
+                    <IoCallSharp />
+                    {customHeader?.custom_button_text}
+                  </p>
                 </a>
-              </TooltipTrigger>
-              <TooltipContent className="bg-[#000000] mt-4 text-base">
-                <p>Need help? Contact us.</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+              ) : (
+                <Link
+                  style={{
+                    background: customHeader?.custom_button_color,
+                    direction: is_RTL ? "rtl" : "",
+                    unicodeBidi: is_RTL ? "bidi-override" : "",
+                  }}
+                  className={`flex items-center px-[10px] py-[9px] text-white rounded-md`}
+                  target="_blank"
+                  href={
+                    getUrlLinkToBeRedirectedTo(
+                      customHeader?.custom_button_redirect_url,
+                      campaignName,
+                      "?"
+                    ) || ""
+                  }
+                >
+                  {customHeader?.custom_button_text}
+                </Link>
+              )}
+            </TooltipTrigger>
+            <TooltipContent side="left" className="bg-[#000000] text-sm">
+              <p>Need help? Contact us.</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
 
       {showWarningText && (
