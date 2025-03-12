@@ -18,6 +18,7 @@ const ChecksAndFirstDataOnLoad = () => {
     setShowErrorModal,
     setShowThankYouPage,
     setConfigData,
+    currentQuestionData,
   } = useGlobalStoreContext();
   const { showAlert } = useAlert();
 
@@ -224,6 +225,9 @@ const ChecksAndFirstDataOnLoad = () => {
 
       if (!data.questions) setShowThankYouPage(true);
       setConfigData(data.videoConfig);
+
+      currentQuestionData.current = data?.questions;
+      currentQuestionData.current.isFirstQuestion = true;
 
       setFirstLoadData(data);
       makingGeoIpCallAndUpdatingSession(data);

@@ -361,7 +361,7 @@ const VideoContainer = () => {
 
   const isFirstQuestion =
     currentQuestionData.current?.isFirstQuestion ||
-    +currentQuestionData.current?.is_firstquestion;
+    Boolean(+currentQuestionData.current?.is_firstquestion);
 
   return (
     <section className={`${styles.videoOuterConatiner} w-full h-full relative`}>

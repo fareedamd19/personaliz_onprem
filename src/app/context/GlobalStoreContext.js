@@ -184,7 +184,6 @@ const GlobalStoreProvider = ({ children }) => {
         updateGlobalHardcodedVariables(firstLoadData?.translated_texts);
       }
       currentQuestionData.current = firstLoadData?.questions;
-      currentQuestionData.current.isFirstQuestion = true;
       setCampaignName(firstLoadData?.campaign_name);
       setPersonaliz_branding(firstLoadData?.personaliz_branding);
       setPersonalizSessionId(firstLoadData?.session_id);
