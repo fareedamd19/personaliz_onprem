@@ -51,8 +51,8 @@ const BranchOption = ({ option, index }) => {
           style={{
             direction: is_RTL ? "rtl" : "",
             unicodeBidi: is_RTL ? "bidi-override" : "",
+            textAlign: optionThemeObj?.option_text_alignment,
           }}
-          className="text-center"
         >
           {option.text}
         </span>
