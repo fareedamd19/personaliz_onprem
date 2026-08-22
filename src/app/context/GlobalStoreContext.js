@@ -348,7 +348,7 @@ const GlobalStoreProvider = ({ children }) => {
       if (questionContainerHeight === "top") {
         return "100%";
       } else if (questionContainerHeight === "mid") {
-        return "40%";
+        return "30%";
       } else if (questionContainerHeight === "bottom") {
         return "3%";
       }

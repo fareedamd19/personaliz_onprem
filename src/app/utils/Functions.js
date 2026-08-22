@@ -25,6 +25,16 @@ export function checkIfParamsArePresent(){
     let emailOfUser = actualUrl.searchParams.get("email")
     let contact_id = actualUrl.searchParams.get("uid")
     let mode = actualUrl.searchParams.get("mode")
+    // Fallback for single-param links (?d=<campaignId>_<contactId>). Used when a URL tracker/shortener
+    // (e.g. Meta WhatsApp URL tracking) strips everything after '&'. Existing ?id=&uid= links are unaffected.
+    const combined = actualUrl.searchParams.get("d")
+    if (combined) {
+        const sep = combined.indexOf("_")
+        if (sep !== -1) {
+            if (!campaignId) campaignId = combined.slice(0, sep)
+            if (!contact_id) contact_id = combined.slice(sep + 1)
+        }
+    }
     return {campaignId,emailOfUser,contact_id,mode}
 }
 

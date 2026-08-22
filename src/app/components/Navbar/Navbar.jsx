@@ -26,7 +26,7 @@ const Navbar = () => {
   return (
     <nav className="w-full h-[65px] px-5 py-1 flex items-center justify-between bg-white shadow-md relative">
       <Link
-        className="overflow-hidden"
+        className="relative z-50"
         target="_blank"
         href={
           getUrlLinkToBeRedirectedTo(
@@ -44,9 +44,9 @@ const Navbar = () => {
           }
           loading="lazy"
           alt="logo"
-          width={150}
-          height={50}
-          className="w-[120px] md:w-auto max-h-[50px]"
+          width={220}
+          height={60}
+          className="w-auto h-[50px] object-contain"
         />
       </Link>
 

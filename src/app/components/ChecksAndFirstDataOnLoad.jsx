@@ -159,6 +159,7 @@ const ChecksAndFirstDataOnLoad = () => {
       delete custom_personalized_variable_obj.id;
       delete custom_personalized_variable_obj.mode;
       delete custom_personalized_variable_obj.uid;
+      delete custom_personalized_variable_obj.d;
     }
     let visitorUniqueId;
     const fp = await FingerprintJS.load();
