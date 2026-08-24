@@ -38,6 +38,9 @@ const websiteSrollContShape = {
   square: "rounded-md",
 };
 
+// Feature flag for overlay engine v2 — defaults to OFF (legacy engine)
+const USE_OVERLAY_V2 = process.env.NEXT_PUBLIC_OVERLAY_V2 === "1";
+
 const VideoContainer = () => {
   const {
     currentQuestionData,
@@ -381,10 +384,10 @@ const VideoContainer = () => {
       {/* MAIN VIDEO */}
 
       {isFirstQuestion &&
-        firstLoadData?.dynamic_text_display.type === "web" && (
+        firstLoadData?.dynamic_text_display.type === "web" && USE_OVERLAY_V2 && (
           <VideoCaptioner
             currentQuestionData={currentQuestionData}
-            videoSrc={`${currentQuestionData.current?.video_url}#t=0.001`}
+            videoSrc={`${currentQuestionData.current?.video_url}#t=0.001}`}
             captions={
               isFixtureMode()
                 ? fixtureCaptions
@@ -403,6 +406,25 @@ const VideoContainer = () => {
                 overlay_href: href,
               })
             }
+          />
+        )}
+
+      {isFirstQuestion &&
+        firstLoadData?.dynamic_text_display.type === "web" && !USE_OVERLAY_V2 && (
+          <VideoCaptionerLegacy
+            currentQuestionData={currentQuestionData}
+            videoSrc={`${currentQuestionData.current?.video_url}#t=0.001}`}
+            captions={
+              isFixtureMode()
+                ? fixtureCaptions
+                : firstLoadData?.dynamic_text_display.config
+            }
+            videoRef={videoElm}
+            personalizedVideoRef={personalizedVideoRef}
+            posterUrl={posterUrl}
+            handleVideoClick={handleVideoClick}
+            handleVideoError={handleVideoError}
+            updatePersonalizedVideoTime={updatePersonalizedVideoTime}
           />
         )}
 
@@ -899,6 +921,121 @@ export function VideoCaptioner({
     });
   };
 
+return (
+    <div className="flex justify-center h-full">
+      <div
+        style={{
+          height: "100%",
+          overflow: "hidden",
+          position: "relative",
+          display: "flex",
+          alignItem: "center",
+          justifyContent: "center",
+        }}
+      >
+        {personalizedVideoUrl && (
+          <video
+            ref={personalizedVideoRef}
+            src={`${personalizedVideoUrl}#t=0.001`}
+            className="h-full object-cover absolute top-0 bottom-0 z-[-10]"
+            poster={posterUrl}
+            onClick={handleVideoClick}
+            onError={handleVideoError}
+            onEnded={updatePersonalizedVideoTime}
+            onLoadedMetadata={updatePersonalizedVideoTime}
+            muted
+            playsInline
+            preload="auto"
+            allowFullScreen
+          />
+        )}
+
+        {/* Main Video */}
+        <video
+          id="webRenderVideo"
+          ref={videoRef}
+          src={videoSrc}
+          className="h-full object-cover"
+          poster={posterUrl}
+          onClick={handleVideoClick}
+          onError={handleVideoError}
+          muted
+          autoPlay
+          playsInline
+          preload="auto"
+          allowFullScreen
+        />
+
+        <div className="caption-container z-[999]">{renderCaptions()}</div>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Legacy VideoCaptioner — preserved exactly as it was before overlay engine v2 */
+/* -------------------------------------------------------------------------- */
+export function VideoCaptionerLegacy({
+  currentQuestionData,
+  videoSrc,
+  captions,
+  videoRef,
+  personalizedVideoRef,
+  posterUrl,
+  handleVideoClick,
+  handleVideoError,
+  updatePersonalizedVideoTime,
+}) {
+  const [currentTime, setCurrentTime] = useState(0);
+  const [videoHeight, setVideoHeight] = useState(1);
+  const [videoWidth, setVideoWidth] = useState(1);
+
+  const personalizedVideoUrl =
+    currentQuestionData.current?.personaliz_video_url;
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      const handleTimeUpdate = () => {
+        setCurrentTime(video.currentTime);
+      };
+      video.addEventListener("timeupdate", handleTimeUpdate);
+      return () => video.removeEventListener("timeupdate", handleTimeUpdate);
+    }
+  }, [videoRef]);
+
+  const renderCaptions = () => {
+    return captions.map((caption, index) => {
+      const shouldShow =
+        currentTime >= caption.start_time && currentTime <= caption.end_time;
+
+      return (
+        <div
+          key={index}
+          style={{
+            pointerEvents: "none",
+            userSelect: "none",
+            position: "absolute",
+            fontSize: `${caption.fontsize * videoHeight}px`,
+            top: `${caption.textbox_y * videoHeight}px`,
+            left: `${caption.textbox_x * videoWidth}px`,
+            height: `${caption.textbox_h * 100}%`,
+            width: `${caption.textbox_w * 100}%`,
+            color: caption.fontcolor,
+            background: caption.boxcolor,
+            textAlign: caption.alignment,
+            opacity: `${shouldShow ? "1" : "0"}`,
+            fontWeight: `${caption?.textStyle?.B}`,
+            fontStyle: `${caption?.textStyle?.I}`,
+            textDecoration: `${caption?.textStyle?.U}`,
+          }}
+        >
+          {caption.text}
+        </div>
+      );
+    });
+  };
+
   return (
     <div className="flex justify-center h-full">
       <div
@@ -942,6 +1079,13 @@ export function VideoCaptioner({
           playsInline
           preload="auto"
           allowFullScreen
+          onLoadedData={() => {
+            const videoElement = document.getElementById("webRenderVideo");
+            if (videoElement) {
+              setVideoHeight(1 * videoElement.clientHeight);
+              setVideoWidth(1 * videoElement.clientWidth);
+            }
+          }}
         />
 
         <div className="caption-container z-[999]">{renderCaptions()}</div>
