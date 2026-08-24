@@ -9,3 +9,8 @@
 .videoOuterConatiner{
     position: relative;
 }
+
+.overlayLink {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}

@@ -1,10 +1,30 @@
 import { useGlobalStoreContext } from "@/app/context/GlobalStoreContext";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./VideoContainer.module.css";
 import { Tooltip } from "react-tooltip";
 import { RiFullscreenFill } from "react-icons/ri";
 import SubTitleContainer from "./SubTitleContainer";
+import { isFixtureMode, installFixtureNetworkGuard } from "@/app/utils/fixtureMode";
+import { fixtureCaptions, fixtureVariables } from "@/app/fixtures/overlay.fixture";
+import {
+  sampleElement,
+  shouldRender,
+  hasKeyframes,
+  normalizeKeyframes,
+  resolveRef,
+  safeHref,
+  boundProportion,
+  elementType,
+  formatValue,
+  expandRepeaters,
+  chapterSkipTarget,
+} from "@/app/utils/overlayElement";
+
+// Install fixture network guard at module load (client-side only)
+if (typeof window !== "undefined") {
+  installFixtureNetworkGuard();
+}
 
 const websiteSrollContPosition = {
   bottom_left: "bottom-[0.5rem] left-[0.5rem]",
@@ -32,6 +52,7 @@ const VideoContainer = () => {
     captureUserExit,
     isQuestionOnTopOfVideo,
     firstLoadData,
+    handleTrackEvent,
   } = useGlobalStoreContext();
 
   const personalizVideoSetInterval = useRef(null);
@@ -90,7 +111,6 @@ const VideoContainer = () => {
     return () => {
       removeVideoTracking();
     };
-    //eslint-disable-next-line
   }, [videoElm?.current?.src, scrollVideoElm?.current?.src, configData]);
 
   const updatePersonalizedVideoTime = () => {
@@ -127,8 +147,6 @@ const VideoContainer = () => {
 
   useEffect(() => {
     updatePersonalizedVideoTime();
-
-    // eslint-disable-next-line
   }, [isMuted, videoElm?.current?.paused]);
 
   function startVideoTracking(video) {
@@ -336,22 +354,17 @@ const VideoContainer = () => {
     } else if (personaliz_video_outer_conatiner.requestFullscreen) {
       personaliz_video_outer_conatiner.requestFullscreen();
     } else if (personaliz_video_outer_conatiner.mozRequestFullScreen) {
-      // Firefox
       personaliz_video_outer_conatiner.mozRequestFullScreen();
     } else if (personaliz_video_outer_conatiner.webkitRequestFullscreen) {
-      // Chrome, Safari, Opera
       personaliz_video_outer_conatiner.webkitRequestFullscreen();
     } else if (personaliz_video_outer_conatiner.msRequestFullscreen) {
-      // Edge
       personaliz_video_outer_conatiner.msRequestFullscreen();
     } else if (videoElm.current.webkitEnterFullScreen) {
-      // Iphone
       videoElm.current.webkitEnterFullScreen();
     }
   }
 
   function handleVideoError(event) {
-    // console.log("handleVideoError event",event)
     event.target.src = `${currentQuestionData.current?.original_s3url}#t=0.001`;
   }
 
@@ -372,13 +385,24 @@ const VideoContainer = () => {
           <VideoCaptioner
             currentQuestionData={currentQuestionData}
             videoSrc={`${currentQuestionData.current?.video_url}#t=0.001`}
-            captions={firstLoadData?.dynamic_text_display.config}
+            captions={
+              isFixtureMode()
+                ? fixtureCaptions
+                : firstLoadData?.dynamic_text_display.config
+            }
             videoRef={videoElm}
             personalizedVideoRef={personalizedVideoRef}
             posterUrl={posterUrl}
             handleVideoClick={handleVideoClick}
             handleVideoError={handleVideoError}
             updatePersonalizedVideoTime={updatePersonalizedVideoTime}
+            onLinkClick={(element, href) =>
+              handleTrackEvent?.({
+                is_overlay_link_clicked: "1",
+                overlay_element: element,
+                overlay_href: href,
+              })
+            }
           />
         )}
 
@@ -433,7 +457,7 @@ const VideoContainer = () => {
 
       {/* PLAY ICON */}
       {!isVideoPlaying && (
-        <Image
+        <img
           onClick={handleVideoClick}
           className="absolute z-[999] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
           src="https://dyolkjkaata8s.cloudfront.net/personaliz_play_Icon.svg"
@@ -467,7 +491,7 @@ const VideoContainer = () => {
               id="restart_video_tooltip_id"
               className="cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30"
             >
-              <Image
+              <img
                 src="https://d34um3r0i45esv.cloudfront.net/Control+Options/Replay+Icon.svg"
                 width={20}
                 height={20}
@@ -485,7 +509,7 @@ const VideoContainer = () => {
               id="restart_session_tooltip_id"
               className="cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30"
             >
-              <Image
+              <img
                 src="https://d34um3r0i45esv.cloudfront.net/Control+Options/Restart+Icon.svg"
                 width={20}
                 height={20}
@@ -510,7 +534,7 @@ const VideoContainer = () => {
               className="cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30"
             >
               {isMuted ? (
-                <Image
+                <img
                   className="w-[20px] h-[20px] aspect-auto"
                   src="https://d34um3r0i45esv.cloudfront.net/Control+Options/Mute+icon.svg"
                   width={20}
@@ -518,7 +542,7 @@ const VideoContainer = () => {
                   alt="mute icon"
                 />
               ) : (
-                <Image
+                <img
                   src="https://d34um3r0i45esv.cloudfront.net/Control+Options/Sound+icon.svg"
                   width={20}
                   height={20}
@@ -540,7 +564,7 @@ const VideoContainer = () => {
       {personaliz_branding !== "none" && (
         <a
           target="_blank"
-          href={process.env.NEXT_PUBLIC_PERSONALIZ_URL}
+          href={import.meta.env.VITE_PERSONALIZ_URL}
           style={{
             display:
               isQuestionOnTopOfVideo && questionContainerHeight === "bottom"
@@ -550,7 +574,7 @@ const VideoContainer = () => {
           className="bg-black bg-opacity-50 text-white text-lg font-sans font-bold w-full h-[35px] absolute right-0 bottom-0 flex items-center justify-center gap-2 z-50"
         >
           <em>Powered by</em>
-          <Image
+          <img
             className="size-[30px]"
             src="https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png"
             alt="brandLogo"
@@ -566,7 +590,7 @@ const VideoContainer = () => {
 
 export default VideoContainer;
 
-function VideoCaptioner({
+export function VideoCaptioner({
   currentQuestionData,
   videoSrc,
   captions,
@@ -576,6 +600,8 @@ function VideoCaptioner({
   handleVideoClick,
   handleVideoError,
   updatePersonalizedVideoTime,
+  onLinkClick,
+  chapters,
 }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [videoHeight, setVideoHeight] = useState(1);
@@ -583,6 +609,98 @@ function VideoCaptioner({
 
   const personalizedVideoUrl =
     currentQuestionData.current?.personaliz_video_url;
+
+  // Recipient variable map, used for conditions and data-bound elements.
+  // Text values arrive already substituted by the backend, so an empty map here
+  // is safe: conditions fail open and render.
+  const variables = isFixtureMode() ? fixtureVariables : {};
+
+  // Repeating rows are expanded to individual elements before anything else
+  // runs, so keyframes, conditions, links and formatting all treat a repeated
+  // cell exactly like a hand-placed one.
+  const elements = useMemo(
+    () => expandRepeaters(captions, variables),
+    [captions, variables]
+  );
+
+  // Keyframed elements are animated imperatively against the video clock.
+  //
+  // Two reasons this does not go through React state: the "timeupdate" event
+  // fires only about four times a second, which is far too coarse for smooth
+  // movement, and re-rendering every overlay element at 60fps does not scale to
+  // the element counts this engine now has to carry. Elements WITHOUT keyframes
+  // are untouched by this and keep rendering through React exactly as before.
+  const elRefs = useRef([]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !Array.isArray(elements)) return;
+
+    const animated = elements
+      .map((c, i) => ({ c, i }))
+      .filter(({ c }) => hasKeyframes(c));
+
+    const hasChapters = Array.isArray(chapters) && chapters.length > 0;
+    if (animated.length === 0 && !hasChapters) return;
+
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let frame;
+    let lastSeekTarget = null;
+
+    const tick = () => {
+      const t = video.currentTime;
+
+      // Jump over chapters this recipient should not see. Adjacent skips are
+      // collapsed upstream into a single target, so playback never lands inside
+      // another excluded range.
+      if (hasChapters) {
+        const target = chapterSkipTarget(chapters, t, variables);
+        if (target !== null && Math.abs(t - target) > 0.01) {
+          // Guard against re-issuing the same seek every frame while the browser
+          // is still servicing it.
+          if (lastSeekTarget !== target || t < target - 0.25) {
+            lastSeekTarget = target;
+            video.currentTime = target;
+          }
+          frame = requestAnimationFrame(tick);
+          return;
+        }
+        if (target === null) lastSeekTarget = null;
+      }
+
+      for (const { c, i } of animated) {
+        const node = elRefs.current[i];
+        if (!node) continue;
+
+        // With reduced motion, hold the final keyframe instead of travelling.
+        const kfs = normalizeKeyframes(c);
+        const sampleTime = reduceMotion ? kfs[kfs.length - 1].t : t;
+        const sample = sampleElement(c, sampleTime);
+
+        node.style.top = `${sample.y * videoHeight}px`;
+        node.style.left = `${sample.x * videoWidth}px`;
+        node.style.width = `${sample.w * 100}%`;
+        node.style.height = `${sample.h * 100}%`;
+        node.style.opacity = String(sample.opacity);
+
+        // Data-driven fill for bar and arc: how far the value reaches (bind)
+        // multiplied by how far the animation has run (progress).
+        const bound = boundProportion(c, variables);
+        if (bound > 0) {
+          node.style.setProperty("--p", String(bound * sample.progress));
+        }
+      }
+      frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [elements, videoRef, videoHeight, videoWidth, variables, chapters]);
+
 
   useEffect(() => {
     const video = videoRef.current;
@@ -595,44 +713,188 @@ function VideoCaptioner({
     }
   }, [videoRef]);
 
-  // useEffect(() => {
-  //   const videoElement = document.getElementById("webRenderVideo");
-  //   if (videoElement) {
-  //     setVideoHeight(1 * videoElement.clientHeight);
-  //     setVideoWidth(1 * videoElement.clientWidth);
-  //   }
-  // }, []);
+  // Overlay positions are stored as fractions of the RENDERED video box, so the
+  // box must be re-measured whenever it changes size. Measuring once on load (the
+  // previous behaviour) left every element misplaced after a resize or rotation.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const measure = () => {
+      const w = video.clientWidth;
+      const h = video.clientHeight;
+      // Ignore transient zero sizes while the element is laying out.
+      if (w > 0 && h > 0) {
+        setVideoWidth((prev) => (prev === w ? prev : w));
+        setVideoHeight((prev) => (prev === h ? prev : h));
+      }
+    };
+
+    measure();
+
+    let observer;
+    if (typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(measure);
+      observer.observe(video);
+    } else {
+      window.addEventListener("resize", measure);
+    }
+
+    video.addEventListener("loadedmetadata", measure);
+    video.addEventListener("loadeddata", measure);
+    window.addEventListener("orientationchange", measure);
+
+    return () => {
+      if (observer) observer.disconnect();
+      else window.removeEventListener("resize", measure);
+      video.removeEventListener("loadedmetadata", measure);
+      video.removeEventListener("loadeddata", measure);
+      window.removeEventListener("orientationchange", measure);
+    };
+  }, [videoRef]);
+
+  // Body of a single overlay element, chosen by type. Unknown types fall back to
+  // text so an unrecognised config can never render as a blank box.
+  const renderElementBody = (caption) => {
+    const type = elementType(caption);
+
+    if (type === "box") return null;
+
+    if (type === "image") {
+      const src = resolveRef(caption.src, variables);
+      if (!src) return null;
+      return (
+        <img
+          src={src}
+          alt={caption.alt || ""}
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+          onError={(e) => {
+            // A missing image must not leave a broken icon over the film.
+            e.currentTarget.style.display = "none";
+          }}
+        />
+      );
+    }
+
+    if (type === "bar") {
+      const vertical = caption.orientation !== "horizontal";
+      return (
+        <span
+          style={{
+            position: "absolute",
+            background: caption.boxcolor || "#B2832Cff",
+            ...(vertical
+              ? { left: 0, right: 0, bottom: 0, height: "calc(var(--p, 0) * 100%)" }
+              : { left: 0, top: 0, bottom: 0, width: "calc(var(--p, 0) * 100%)" }),
+          }}
+        />
+      );
+    }
+
+    if (type === "arc") {
+      // Circumference of r=45 in a 100x100 viewBox, used as the dash length so
+      // stroke-dashoffset can express progress as a fraction.
+      const CIRC = 2 * Math.PI * 45;
+      return (
+        <svg
+          viewBox="0 0 100 100"
+          style={{ width: "100%", height: "100%", overflow: "visible" }}
+          aria-hidden="true"
+        >
+          <circle
+            cx="50" cy="50" r="45"
+            fill="none"
+            stroke={caption.trackcolor || "#00000018"}
+            strokeWidth={(caption.strokewidth || 0.02) * 500}
+          />
+          <circle
+            cx="50" cy="50" r="45"
+            fill="none"
+            stroke={caption.strokecolor || "#B2832Cff"}
+            strokeWidth={(caption.strokewidth || 0.02) * 500}
+            strokeLinecap="round"
+            transform="rotate(-90 50 50)"
+            style={{
+              strokeDasharray: CIRC,
+              strokeDashoffset: `calc(${CIRC} * (1 - var(--p, 0)))`,
+            }}
+          />
+        </svg>
+      );
+    }
+
+    // text and link
+    const bound = caption.bind ? resolveRef({ var: caption.bind.value }, variables) : undefined;
+    const value = bound !== undefined ? formatValue(bound, caption.format) : caption.text;
+    return value;
+  };
 
   const renderCaptions = () => {
-    return captions.map((caption, index) => {
-      const shouldShow =
-        currentTime >= caption.start_time && currentTime <= caption.end_time;
+    return elements.map((caption, index) => {
+      // A failing condition removes the element entirely rather than hiding it.
+      if (!shouldRender(caption, variables)) return null;
+
+      const s = sampleElement(caption, currentTime);
+
+      // Destinations come from per-recipient data, so they are validated before
+      // reaching the DOM. Anything not http(s) renders as plain text instead.
+      const href = safeHref(resolveRef(caption.href, variables));
+      const isLink = Boolean(href);
+      const Tag = isLink ? "a" : "div";
+
+      const linkProps = isLink
+        ? {
+            href,
+            target: "_blank",
+            rel: "noopener noreferrer",
+            // Deliberately does NOT call pauseAllVideos(): that is the option
+            // panel's behaviour. An overlay link must not interrupt playback.
+            onClick: (e) => {
+              e.stopPropagation();
+              // Reporting must never be able to break navigation.
+              try {
+                onLinkClick?.(caption.variable_name, href);
+              } catch {
+                /* ignore */
+              }
+            },
+          }
+        : {};
 
       return (
-        <div
+        <Tag
           key={index}
+          className={isLink ? styles.overlayLink : undefined}
+          {...linkProps}
+          ref={(node) => {
+            elRefs.current[index] = node;
+          }}
           style={{
-            // border: "1px solid red",
-            pointerEvents: "none",
+            // The layer stays click-through except where a link exists.
+            pointerEvents: isLink ? "auto" : "none",
+            cursor: isLink ? "pointer" : undefined,
             userSelect: "none",
             position: "absolute",
+            zIndex: caption.z || 0,
             fontSize: `${caption.fontsize * videoHeight}px`,
-            top: `${caption.textbox_y * videoHeight}px`,
-            left: `${caption.textbox_x * videoWidth}px`,
-            height: `${caption.textbox_h * 100}%`,
-            width: `${caption.textbox_w * 100}%`,
+            top: `${s.y * videoHeight}px`,
+            left: `${s.x * videoWidth}px`,
+            height: `${s.h * 100}%`,
+            width: `${s.w * 100}%`,
             color: caption.fontcolor,
-            background: caption.boxcolor,
+            background:
+              elementType(caption) === "bar" || elementType(caption) === "arc"
+                ? "transparent"
+                : caption.boxcolor,
             textAlign: caption.alignment,
-            opacity: `${shouldShow ? "1" : "0"}`,
+            opacity: s.opacity,
             fontWeight: `${caption?.textStyle?.B}`,
             fontStyle: `${caption?.textStyle?.I}`,
             textDecoration: `${caption?.textStyle?.U}`,
-            // transform: "translate(-50%, -50%)",
           }}
         >
-          {caption.text}
-        </div>
+          {renderElementBody(caption)}
+        </Tag>
       );
     });
   };
@@ -660,7 +922,6 @@ function VideoCaptioner({
             onEnded={updatePersonalizedVideoTime}
             onLoadedMetadata={updatePersonalizedVideoTime}
             muted
-            // autoPlay
             playsInline
             preload="auto"
             allowFullScreen
@@ -676,19 +937,11 @@ function VideoCaptioner({
           poster={posterUrl}
           onClick={handleVideoClick}
           onError={handleVideoError}
-          // controls
           muted
           autoPlay
           playsInline
           preload="auto"
           allowFullScreen
-          onLoadedData={() => {
-            const videoElement = document.getElementById("webRenderVideo");
-            if (videoElement) {
-              setVideoHeight(1 * videoElement.clientHeight);
-              setVideoWidth(1 * videoElement.clientWidth);
-            }
-          }}
         />
 
         <div className="caption-container z-[999]">{renderCaptions()}</div>
