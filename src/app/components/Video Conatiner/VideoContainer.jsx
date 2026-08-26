@@ -586,7 +586,7 @@ const VideoContainer = () => {
       {personaliz_branding !== "none" && (
         <a
           target="_blank"
-          href={import.meta.env.VITE_PERSONALIZ_URL}
+          href={process.env.NEXT_PUBLIC_PERSONALIZ_URL}
           style={{
             display:
               isQuestionOnTopOfVideo && questionContainerHeight === "bottom"
