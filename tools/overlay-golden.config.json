@@ -1,0 +1,130 @@
+{
+  "_comment": "Golden fixture INPUT. Shared verbatim between personaliz-app-frontend and personaliz-play-frontend-new. Exercises every field name the player reads, so a rename on one side fails the check instead of rendering nothing.",
+  "sampleTimes": [0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 20, 25, 30],
+  "variables": {
+    "first_name": "Sample Trading LLC",
+    "percent_skilled": 62.5,
+    "total_workers": 184,
+    "fines_count": 2,
+    "quota_available": 0,
+    "statement_url": "https://example.invalid/statement.pdf",
+    "bad_url": "javascript:alert(1)",
+    "logo": "https://example.invalid/logo.png",
+    "owner_count": 3
+  },
+  "elements": [
+    {
+      "_case": "legacy element with no v2 fields at all — must behave exactly as before",
+      "uniq_id": "g-legacy",
+      "text": "Hello",
+      "textbox_x": 0.1, "textbox_y": 0.2, "textbox_w": 0.4, "textbox_h": 0.1,
+      "start_time": 0, "end_time": 6
+    },
+    {
+      "_case": "keyframe track: field is t, not time. slide in with easing.",
+      "uniq_id": "g-keyframes",
+      "type": "text",
+      "text": "Status",
+      "textbox_x": 0.08, "textbox_y": 0.26, "textbox_w": 0.4, "textbox_h": 0.08,
+      "start_time": 2, "end_time": 10,
+      "keyframes": [
+        { "t": 2, "x": -0.3, "y": 0.26, "w": 0.4, "h": 0.08, "opacity": 0, "progress": 1, "ease": "linear" },
+        { "t": 3, "x": 0.08, "y": 0.26, "w": 0.4, "h": 0.08, "opacity": 1, "progress": 1, "ease": "easeOutCubic" },
+        { "t": 9, "x": 0.08, "y": 0.26, "w": 0.4, "h": 0.08, "opacity": 1, "progress": 1, "ease": "linear" },
+        { "t": 10, "x": 0.08, "y": 0.26, "w": 0.4, "h": 0.08, "opacity": 0, "progress": 1, "ease": "easeInCubic" }
+      ]
+    },
+    {
+      "_case": "every easing name, so a renamed curve is caught",
+      "uniq_id": "g-easings",
+      "type": "box",
+      "textbox_x": 0, "textbox_y": 0, "textbox_w": 0.2, "textbox_h": 0.2,
+      "start_time": 0, "end_time": 30,
+      "keyframes": [
+        { "t": 0,  "x": 0,   "y": 0, "w": 0.2, "h": 0.2, "opacity": 1, "progress": 0, "ease": "linear" },
+        { "t": 8,  "x": 0.2, "y": 0, "w": 0.2, "h": 0.2, "opacity": 1, "progress": 0.3, "ease": "easeInCubic" },
+        { "t": 16, "x": 0.5, "y": 0, "w": 0.2, "h": 0.2, "opacity": 1, "progress": 0.6, "ease": "easeOutCubic" },
+        { "t": 24, "x": 0.8, "y": 0, "w": 0.2, "h": 0.2, "opacity": 1, "progress": 1, "ease": "easeInOutCubic" }
+      ]
+    },
+    {
+      "_case": "bind.value NOT bind.variable. progress scaled by bound proportion.",
+      "uniq_id": "g-bar",
+      "type": "bar",
+      "textbox_x": 0.1, "textbox_y": 0.5, "textbox_w": 0.34, "textbox_h": 0.04,
+      "start_time": 5, "end_time": 14,
+      "bind": { "value": "percent_skilled", "min": 0, "max": 100 },
+      "format": { "kind": "percent", "decimals": 1 },
+      "keyframes": [
+        { "t": 5, "x": 0.1, "y": 0.5, "w": 0.34, "h": 0.04, "opacity": 1, "progress": 0, "ease": "linear" },
+        { "t": 7, "x": 0.1, "y": 0.5, "w": 0.34, "h": 0.04, "opacity": 1, "progress": 1, "ease": "easeOutCubic" }
+      ]
+    },
+    {
+      "_case": "bind with a non-default max, to catch a hardcoded 100",
+      "uniq_id": "g-arc",
+      "type": "arc",
+      "textbox_x": 0.58, "textbox_y": 0.44, "textbox_w": 0.18, "textbox_h": 0.24,
+      "start_time": 5, "end_time": 14,
+      "bind": { "value": "total_workers", "min": 0, "max": 300 },
+      "format": { "kind": "number" }
+    },
+    {
+      "_case": "condition true — fines_count is 2, gt 0",
+      "uniq_id": "g-visible",
+      "type": "text",
+      "text": "You have fines",
+      "textbox_x": 0.1, "textbox_y": 0.78, "textbox_w": 0.28, "textbox_h": 0.07,
+      "start_time": 8, "end_time": 16,
+      "visibleIf": { "var": "fines_count", "op": "gt", "value": 0 },
+      "href": { "var": "statement_url" }
+    },
+    {
+      "_case": "condition false — quota_available is 0, so falsy",
+      "uniq_id": "g-hidden",
+      "type": "text",
+      "text": "Quota left",
+      "textbox_x": 0.5, "textbox_y": 0.78, "textbox_w": 0.28, "textbox_h": 0.07,
+      "start_time": 8, "end_time": 16,
+      "visibleIf": { "var": "quota_available", "op": "truthy" }
+    },
+    {
+      "_case": "unknown op must fail OPEN — a bad condition never hides content",
+      "uniq_id": "g-badcond",
+      "type": "text",
+      "text": "Always shows",
+      "textbox_x": 0.1, "textbox_y": 0.9, "textbox_w": 0.2, "textbox_h": 0.05,
+      "start_time": 0, "end_time": 30,
+      "visibleIf": { "var": "fines_count", "op": "not_a_real_operator", "value": 1 }
+    },
+    {
+      "_case": "image from a variable reference",
+      "uniq_id": "g-image",
+      "type": "image",
+      "src": { "var": "logo" },
+      "textbox_x": 0.8, "textbox_y": 0.05, "textbox_w": 0.15, "textbox_h": 0.1,
+      "start_time": 0, "end_time": 30
+    },
+    {
+      "_case": "malformed keyframes: out of order, missing keys, non-numeric t",
+      "uniq_id": "g-messy",
+      "type": "text",
+      "text": "Messy",
+      "textbox_x": 0.3, "textbox_y": 0.3, "textbox_w": 0.2, "textbox_h": 0.05,
+      "start_time": 0, "end_time": 20,
+      "keyframes": [
+        { "t": 10, "opacity": 1 },
+        { "t": "not a number", "x": 0.9 },
+        { "t": 4, "y": 0.6 }
+      ]
+    }
+  ],
+  "hrefCases": [
+    { "input": "https://example.invalid/ok", "_expect": "allowed" },
+    { "input": "http://example.invalid/ok", "_expect": "allowed" },
+    { "input": "javascript:alert(1)", "_expect": "rejected" },
+    { "input": "data:text/html,<script>", "_expect": "rejected" },
+    { "input": "  ", "_expect": "rejected" },
+    { "input": null, "_expect": "rejected" }
+  ]
+}
