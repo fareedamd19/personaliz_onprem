@@ -923,6 +923,12 @@ export function VideoCaptioner({
             // Text did nothing at all.
             fontFamily: caption.fontname || undefined,
             whiteSpace: caption.wrap_text ? "normal" : "nowrap",
+            // radius is a fraction of the element's own height, resolved here
+            // against the rendered height so rounding scales with the video.
+            borderRadius: `${(Number(caption.radius) || 0) * s.h * videoHeight}px`,
+            // Without this a rounded card would still show square corners on
+            // whatever it contains - an image, or a bar's fill.
+            overflow: Number(caption.radius) > 0 ? "hidden" : undefined,
             fontWeight: `${caption?.textStyle?.B}`,
             fontStyle: `${caption?.textStyle?.I}`,
             textDecoration: `${caption?.textStyle?.U}`,
