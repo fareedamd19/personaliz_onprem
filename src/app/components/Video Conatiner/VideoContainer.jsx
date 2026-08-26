@@ -6,6 +6,7 @@ import { Tooltip } from "react-tooltip";
 import { RiFullscreenFill } from "react-icons/ri";
 import SubTitleContainer from "./SubTitleContainer";
 import { isFixtureMode, installFixtureNetworkGuard } from "@/app/utils/fixtureMode";
+import { ensureOverlayFonts } from "@/app/utils/overlayFonts";
 import { fixtureCaptions, fixtureVariables } from "@/app/fixtures/overlay.fixture";
 import {
   sampleElement,
@@ -637,6 +638,12 @@ export function VideoCaptioner({
   // is safe: conditions fail open and render.
   const variables = isFixtureMode() ? fixtureVariables : {};
 
+  // Naming a font family in CSS does nothing unless the file is fetched, so the
+  // families this config asks for are requested as soon as it arrives.
+  useEffect(() => {
+    ensureOverlayFonts(captions);
+  }, [captions]);
+
   // Repeating rows are expanded to individual elements before anything else
   // runs, so keyframes, conditions, links and formatting all treat a repeated
   // cell exactly like a hand-placed one.
@@ -910,6 +917,12 @@ export function VideoCaptioner({
                 : caption.boxcolor,
             textAlign: caption.alignment,
             opacity: s.opacity,
+            // The editor offers a font picker and a wrap toggle. Both were
+            // stored and neither was applied here, so a config that looked
+            // right in the editor arrived in a different typeface, and Wrap
+            // Text did nothing at all.
+            fontFamily: caption.fontname || undefined,
+            whiteSpace: caption.wrap_text ? "normal" : "nowrap",
             fontWeight: `${caption?.textStyle?.B}`,
             fontStyle: `${caption?.textStyle?.I}`,
             textDecoration: `${caption?.textStyle?.U}`,
