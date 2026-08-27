@@ -7,6 +7,8 @@ import { RiFullscreenFill } from "react-icons/ri";
 import SubTitleContainer from "./SubTitleContainer";
 import { isFixtureMode, installFixtureNetworkGuard } from "@/app/utils/fixtureMode";
 import { ensureOverlayFonts } from "@/app/utils/overlayFonts";
+import { fetchOverlayVariables, overlayVariablesEnabled } from "@/app/utils/overlayVariables";
+import { checkIfParamsArePresent } from "@/app/utils/Functions";
 import { fixtureCaptions, fixtureVariables } from "@/app/fixtures/overlay.fixture";
 import {
   sampleElement,
@@ -634,9 +636,35 @@ export function VideoCaptioner({
     currentQuestionData.current?.personaliz_video_url;
 
   // Recipient variable map, used for conditions and data-bound elements.
-  // Text values arrive already substituted by the backend, so an empty map here
-  // is safe: conditions fail open and render.
-  const variables = isFixtureMode() ? fixtureVariables : {};
+  //
+  // Text arrives already substituted, so it never needed this. Charts do: with
+  // an empty map boundProportion returns 0 and a gauge draws its ring at zero
+  // however its data actually reads.
+  //
+  // Fetched rather than baked in, because the substituted text in this config
+  // cannot carry a number a chart can compute a fraction from. Behind a flag,
+  // so with the API unset this is exactly the empty map it has always been.
+  const [fetchedVariables, setFetchedVariables] = useState(null);
+
+  useEffect(() => {
+    if (isFixtureMode() || !overlayVariablesEnabled()) return;
+    let cancelled = false;
+    try {
+      const { campaignId, contact_id } = checkIfParamsArePresent() || {};
+      fetchOverlayVariables(campaignId, contact_id).then((vars) => {
+        if (!cancelled) setFetchedVariables(vars);
+      });
+    } catch {
+      // Reading the URL must never stop the video playing.
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const variables = isFixtureMode()
+    ? fixtureVariables
+    : fetchedVariables || {};
 
   // Naming a font family in CSS does nothing unless the file is fetched, so the
   // families this config asks for are requested as soon as it arrives.
@@ -821,6 +849,16 @@ export function VideoCaptioner({
     }
 
     if (type === "arc") {
+      // The number the gauge reads. Falls back to the element's own text so a
+      // gauge can carry a fixed label where no variable is bound.
+      const gaugeBound = caption.bind
+        ? resolveRef({ var: caption.bind.value }, variables)
+        : undefined;
+      const gaugeLabel =
+        gaugeBound !== undefined && gaugeBound !== null && gaugeBound !== ""
+          ? formatValue(gaugeBound, caption.format)
+          : caption.text;
+
       // Circumference of r=45 in a 100x100 viewBox, used as the dash length so
       // stroke-dashoffset can express progress as a fraction.
       const CIRC = 2 * Math.PI * 45;
@@ -848,6 +886,30 @@ export function VideoCaptioner({
               strokeDashoffset: `calc(${CIRC} * (1 - var(--p, 0)))`,
             }}
           />
+          {/* The reading inside the ring. Without it a gauge drew its arc and
+              showed no number at all, which is the one thing a gauge is for.
+              Rendered only when there is something to show, so an arc with no
+              bound value and no label is unchanged. */}
+          {gaugeLabel !== "" && gaugeLabel !== undefined && gaugeLabel !== null && (
+            <text
+              x="50"
+              y="50"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fill={caption.fontcolor || "#111111"}
+              fontFamily={caption.fontname || undefined}
+              fontWeight={caption?.textStyle?.B ? "bold" : undefined}
+              // The viewBox is 100 units tall whatever the element's real size,
+              // so the stored share-of-video font size is scaled into it.
+              fontSize={
+                caption.textbox_h
+                  ? Math.max(6, (Number(caption.fontsize) / Number(caption.textbox_h)) * 100)
+                  : 22
+              }
+            >
+              {gaugeLabel}
+            </text>
+          )}
         </svg>
       );
     }
