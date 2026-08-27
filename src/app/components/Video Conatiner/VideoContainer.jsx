@@ -916,8 +916,31 @@ export function VideoCaptioner({
 
     // text and link
     const bound = caption.bind ? resolveRef({ var: caption.bind.value }, variables) : undefined;
-    const value = bound !== undefined ? formatValue(bound, caption.format) : caption.text;
-    return value;
+    if (bound !== undefined) return formatValue(bound, caption.format);
+
+    // Text usually arrives already substituted, because generation resolves it
+    // per recipient. Two cases reach here unresolved:
+    //
+    //   a repeated row, where expandRepeaters sets text to the column's
+    //   variable NAME - printing "owner1_name" instead of the person
+    //
+    //   a {placeholder} written by hand, which nothing downstream expands
+    //
+    // Both are only resolvable once the variable map exists, which it now does.
+    // A name or placeholder with no matching value is left exactly as it is,
+    // so nothing that works today changes.
+    const text = caption.text;
+    if (typeof text === "string" && text) {
+      if (/\{\w+\}/.test(text)) {
+        return text.replace(/\{(\w+)\}/g, (whole, name) =>
+          variables[name] !== undefined ? String(variables[name]) : whole
+        );
+      }
+      if (text === caption.variable_name && variables[text] !== undefined) {
+        return formatValue(variables[text], caption.format);
+      }
+    }
+    return text;
   };
 
   const renderCaptions = () => {
