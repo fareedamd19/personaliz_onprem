@@ -9,7 +9,12 @@ import { isFixtureMode, installFixtureNetworkGuard } from "@/app/utils/fixtureMo
 import { ensureOverlayFonts } from "@/app/utils/overlayFonts";
 import { fetchOverlayVariables, overlayVariablesEnabled } from "@/app/utils/overlayVariables";
 import { checkIfParamsArePresent } from "@/app/utils/Functions";
-import { fixtureCaptions, fixtureVariables } from "@/app/fixtures/overlay.fixture";
+// Aliased so the three use sites below stay untouched. Which fixture this
+// resolves to is decided by NEXT_PUBLIC_FIXTURE_SET - see active.fixture.js.
+import {
+  activeCaptions as fixtureCaptions,
+  activeVariables as fixtureVariables,
+} from "@/app/fixtures/active.fixture";
 import {
   sampleElement,
   shouldRender,
@@ -631,6 +636,45 @@ export function VideoCaptioner({
   const [currentTime, setCurrentTime] = useState(0);
   const [videoHeight, setVideoHeight] = useState(1);
   const [videoWidth, setVideoWidth] = useState(1);
+  // The master's own aspect, read from its metadata. Null until it loads.
+  const [videoAspect, setVideoAspect] = useState(null);
+  // The rectangle the picture actually occupies once letterboxed into the
+  // space available. The overlay's fractions are relative to this, so it has
+  // to be the box the caption layer lives in - not the space it was offered.
+  const [pictureBox, setPictureBox] = useState(null);
+  const hostRef = useRef(null);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host || !videoAspect) return;
+
+    const fit = () => {
+      const w = host.clientWidth;
+      const h = host.clientHeight;
+      if (!w || !h) return;
+      // Contain, computed rather than delegated: CSS aspect-ratio loses to an
+      // explicit height, which silently left the box at the container's shape.
+      const box =
+        w / h > videoAspect
+          ? { w: Math.round(h * videoAspect), h }
+          : { w, h: Math.round(w / videoAspect) };
+      setPictureBox((prev) =>
+        prev && prev.w === box.w && prev.h === box.h ? prev : box
+      );
+    };
+
+    fit();
+    let observer;
+    if (typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(fit);
+      observer.observe(host);
+    }
+    window.addEventListener("resize", fit);
+    return () => {
+      if (observer) observer.disconnect();
+      window.removeEventListener("resize", fit);
+    };
+  }, [videoAspect]);
 
   const personalizedVideoUrl =
     currentQuestionData.current?.personaliz_video_url;
@@ -1016,7 +1060,9 @@ export function VideoCaptioner({
             overflow: Number(caption.radius) > 0 ? "hidden" : undefined,
             fontWeight: `${caption?.textStyle?.B}`,
             fontStyle: `${caption?.textStyle?.I}`,
-            textDecoration: `${caption?.textStyle?.U}`,
+            // An anchor underlines itself, and the template above yields the string
+            // "undefined" when no style is set - which overrides nothing.
+            textDecoration: caption?.textStyle?.U || "none",
           }}
         >
           {renderElementBody(caption)}
@@ -1026,10 +1072,16 @@ export function VideoCaptioner({
   };
 
 return (
-    <div className="flex justify-center h-full">
+    <div ref={hostRef} className="flex justify-center items-center h-full">
       <div
         style={{
-          height: "100%",
+          // Sized to the picture, not to the space available. The caption
+          // layer is a child of this box and the overlay's fractions are
+          // relative to it, so letterbox bars left inside here put every
+          // element off by the height of the bars.
+          ...(pictureBox
+            ? { width: pictureBox.w + "px", height: pictureBox.h + "px" }
+            : { height: "100%" }),
           overflow: "hidden",
           position: "relative",
           display: "flex",
@@ -1055,11 +1107,30 @@ return (
         )}
 
         {/* Main Video */}
+        {/*
+          Overlay positions are fractions of the video ELEMENT box, measured
+          with clientWidth/clientHeight above. `object-cover` made that box and
+          the picture inside it two different rectangles: the picture was
+          cropped to fill, so elements landed where the viewer could not see
+          them. Portrait campaigns hid this for as long as they ran, because
+          their box aspect already matched the video; a 16:9 master does not.
+
+          The wrapper is now sized to the picture, so filling it here leaves
+          box and picture identical - which is what the fractions always
+          assumed. Where the two already agreed, nothing changes.
+        */}
         <video
           id="webRenderVideo"
           ref={videoRef}
           src={videoSrc}
-          className="h-full object-cover"
+          className="w-full h-full"
+          style={{ objectFit: "contain" }}
+          onLoadedMetadata={(e) => {
+            const v = e.currentTarget;
+            if (v.videoWidth && v.videoHeight) {
+              setVideoAspect(v.videoWidth / v.videoHeight);
+            }
+          }}
           poster={posterUrl}
           onClick={handleVideoClick}
           onError={handleVideoError}
@@ -1131,7 +1202,9 @@ export function VideoCaptionerLegacy({
             opacity: `${shouldShow ? "1" : "0"}`,
             fontWeight: `${caption?.textStyle?.B}`,
             fontStyle: `${caption?.textStyle?.I}`,
-            textDecoration: `${caption?.textStyle?.U}`,
+            // An anchor underlines itself, and the template above yields the string
+            // "undefined" when no style is set - which overrides nothing.
+            textDecoration: caption?.textStyle?.U || "none",
           }}
         >
           {caption.text}

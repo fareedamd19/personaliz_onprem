@@ -9,6 +9,11 @@
  * Defaults to OFF. Production behaviour is unchanged when the flag is unset.
  */
 
+import {
+  fixtureFirstLoadResponse,
+  fixtureContactResponse,
+} from "@/app/fixtures/firstLoad.fixture";
+
 export const isFixtureMode = () => process.env.NEXT_PUBLIC_FIXTURE_MODE === "1";
 
 const apiBase = () => process.env.NEXT_PUBLIC_API || "";
@@ -39,7 +44,18 @@ export function installFixtureNetworkGuard() {
     if (isApiCall(url)) {
       blocked.push({ via: "fetch", method: init?.method || "GET", url });
       console.warn("[fixture] blocked API call:", init?.method || "GET", url);
-      return new Response(JSON.stringify({ fixtureMode: true, blocked: url }), {
+      // Blocking is not the same as answering. Two endpoints stand the
+      // player up, and with no well-formed reply firstLoadData stays null,
+      // so the overlay gate never opens and nothing is drawn. Order
+      // matters: get_contact_id also begins with /video.
+      const path = String(url).split("?")[0];
+      const stub = path.endsWith("/video/get_contact_id")
+        ? fixtureContactResponse()
+        : path.endsWith("/video")
+        ? fixtureFirstLoadResponse()
+        : { fixtureMode: true, blocked: url };
+
+      return new Response(JSON.stringify(stub), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });

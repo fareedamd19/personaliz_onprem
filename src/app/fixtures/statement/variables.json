@@ -1,0 +1,110 @@
+{
+  "variables": {
+    "companyNameEN": "MERIDIAN TRADING L.L.C",
+    "companyCode": "1004472",
+    "dateFromToEN": "From March 2025 to March 2026",
+    "statusEn": "Active",
+    "establishmentCategoryEN": "Second",
+    "insurancePolicies": "4",
+    "numberOfEmirates": "3",
+    "bankGuarantees": "0",
+    "quotaAvailable": "12",
+    "abscondingRecord": "0",
+    "totalWorkersCount": "184",
+    "percentSkilled": 62,
+    "percentLowSkill": 38,
+    "nationalCount": "14",
+    "finesCount": "2",
+    "incompletedTransCount": "3",
+    "pdfUrl": "https://example.invalid/statement.pdf",
+    "ministryUrl": "https://example.invalid/ministry",
+    "workBundleUrl": "https://example.invalid/work-bundle",
+    "savingsUrl": "https://example.invalid/savings",
+    "contactUrl": "https://example.invalid/contact",
+    "owner_count": 6,
+    "owner1_name": "A. Rahman",
+    "owner1_nationality": "UAE",
+    "owner1_title": "Owner, Authorised Signatory",
+    "owner1_id": "784198000000001",
+    "owner1_private": "301050000001",
+    "owner1_mobile": "0520000001",
+    "owner1_email": "owner1@example.invalid",
+    "owner2_name": "L. Fernandes",
+    "owner2_nationality": "Portugal",
+    "owner2_title": "Owner, Authorised Signatory",
+    "owner2_id": "784198000000002",
+    "owner2_private": "301050000002",
+    "owner2_mobile": "0520000002",
+    "owner2_email": "owner2@example.invalid",
+    "owner3_name": "S. Iyer",
+    "owner3_nationality": "India",
+    "owner3_title": "Manager",
+    "owner3_id": "784198000000003",
+    "owner3_private": "301050000003",
+    "owner3_mobile": "0520000003",
+    "owner3_email": "owner3@example.invalid",
+    "owner4_name": "K. Haddad",
+    "owner4_nationality": "Lebanon",
+    "owner4_title": "Partner",
+    "owner4_id": "784198000000004",
+    "owner4_private": "301050000004",
+    "owner4_mobile": "0520000004",
+    "owner4_email": "owner4@example.invalid",
+    "owner5_name": "M. Osei",
+    "owner5_nationality": "Ghana",
+    "owner5_title": "Partner",
+    "owner5_id": "784198000000005",
+    "owner5_private": "301050000005",
+    "owner5_mobile": "0520000005",
+    "owner5_email": "owner5@example.invalid",
+    "owner6_name": "T. Nakamura",
+    "owner6_nationality": "Japan",
+    "owner6_title": "Authorised Signatory",
+    "owner6_id": "784198000000006",
+    "owner6_private": "301050000006",
+    "owner6_mobile": "0520000006",
+    "owner6_email": "owner6@example.invalid",
+    "skilledLabours": 412,
+    "limitedSkillLabours": 188,
+    "attentionEN": "Your establishment has pending transactions that require attention before renewal.",
+    "nafisUrl": "https://www.nafis.gov.ae",
+    "visionUrl": "https://mohre.gov.ae/vision"
+  },
+  "chapters": [
+    {
+      "title": "Opening",
+      "start_time": 0,
+      "end_time": 30.8
+    },
+    {
+      "title": "Overview",
+      "start_time": 33,
+      "end_time": 65
+    },
+    {
+      "title": "Workforce",
+      "start_time": 66,
+      "end_time": 95
+    },
+    {
+      "title": "Owners",
+      "start_time": 96,
+      "end_time": 125
+    },
+    {
+      "title": "Work Bundle",
+      "start_time": 126,
+      "end_time": 150
+    },
+    {
+      "title": "Savings Scheme",
+      "start_time": 151,
+      "end_time": 172
+    },
+    {
+      "title": "Get in touch",
+      "start_time": 172.5,
+      "end_time": 176
+    }
+  ]
+}

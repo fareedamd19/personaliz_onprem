@@ -36,3 +36,7 @@ yarn-error.log*
 next-env.d.ts
 .env
 bun.lockb
+
+# Local demo master for the statement fixture. 36MB, client-derived - kept out
+# of the repo deliberately. Put "Simplified EN.mp4" here to run the statement.
+public/statement-base.mp4
