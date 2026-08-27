@@ -401,6 +401,7 @@ const VideoContainer = () => {
                 ? fixtureCaptions
                 : firstLoadData?.dynamic_text_display.config
             }
+            overlayVariables={firstLoadData?.dynamic_text_display?.variables}
             videoRef={videoElm}
             personalizedVideoRef={personalizedVideoRef}
             posterUrl={posterUrl}
@@ -632,6 +633,7 @@ export function VideoCaptioner({
   updatePersonalizedVideoTime,
   onLinkClick,
   chapters,
+  overlayVariables,
 }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [videoHeight, setVideoHeight] = useState(1);
@@ -691,7 +693,8 @@ export function VideoCaptioner({
   const [fetchedVariables, setFetchedVariables] = useState(null);
 
   useEffect(() => {
-    if (isFixtureMode() || !overlayVariablesEnabled()) return;
+    // The first-load map makes this request redundant.
+    if (isFixtureMode() || overlayVariables || !overlayVariablesEnabled()) return;
     let cancelled = false;
     try {
       const { campaignId, contact_id } = checkIfParamsArePresent() || {};
@@ -706,9 +709,21 @@ export function VideoCaptioner({
     };
   }, []);
 
+  // Three sources, in the order they should win:
+  //
+  //   overlayVariables   the map the play API sends in first load. One request,
+  //                      already authenticated, already scoped to this contact.
+  //   fetchedVariables   the separate /overlay/variables call, for a backend
+  //                      that does not send the map yet.
+  //   {}                 an older backend still. Conditions fail open and
+  //                      render, which is how this behaved before either
+  //                      source existed.
+  //
+  // Once every environment sends the map in first load, the fetch and the
+  // route behind it can both go - see overlay_public.js, which says the same.
   const variables = isFixtureMode()
     ? fixtureVariables
-    : fetchedVariables || {};
+    : overlayVariables || fetchedVariables || {};
 
   // Naming a font family in CSS does nothing unless the file is fetched, so the
   // families this config asks for are requested as soon as it arrives.
