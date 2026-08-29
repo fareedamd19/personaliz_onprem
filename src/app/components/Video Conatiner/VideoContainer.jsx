@@ -747,6 +747,29 @@ export function VideoCaptioner({
     altVariant && activeLang && activeLang === altVariant.lang
   );
 
+  // The overlay for the language being shown.
+  //
+  // A variant that was given its own wording arrives with its text already
+  // substituted for this recipient, exactly as the campaign's own overlay is.
+  // One that was not carries no config, and every language shares the
+  // campaign's - which is the film-only switch.
+  //
+  // This is derived from activeLang in the same render as the video swap, so
+  // the film, the wording and the direction can never disagree: a swap that
+  // changed the film but kept the previous language's overlay would put
+  // English captions under Arabic speech.
+  const activeVariant = useMemo(() => {
+    if (!variants.length || !activeLang) return null;
+    return variants.find((v) => v.lang === activeLang) || null;
+  }, [variants, activeLang]);
+
+  const activeCaptions =
+    activeVariant && Array.isArray(activeVariant.config) && activeVariant.config.length
+      ? activeVariant.config
+      : captions;
+
+  const isRtl = Boolean(activeVariant?.rtl);
+
   const switchLanguage = useCallback((lang) => {
     setHasSwitched(true);
     setActiveLang(lang);
@@ -886,16 +909,21 @@ export function VideoCaptioner({
 
   // Naming a font family in CSS does nothing unless the file is fetched, so the
   // families this config asks for are requested as soon as it arrives.
+  //
+  // Keyed on the overlay actually being shown, so an Arabic variant naming
+  // Cairo or Tajawal has it fetched the moment that language is chosen. The
+  // request is made once per family, so returning to a language already seen
+  // costs nothing.
   useEffect(() => {
-    ensureOverlayFonts(captions);
-  }, [captions]);
+    ensureOverlayFonts(activeCaptions);
+  }, [activeCaptions]);
 
   // Repeating rows are expanded to individual elements before anything else
   // runs, so keyframes, conditions, links and formatting all treat a repeated
   // cell exactly like a hand-placed one.
   const elements = useMemo(
-    () => expandRepeaters(captions, variables),
-    [captions, variables]
+    () => expandRepeaters(activeCaptions, variables),
+    [activeCaptions, variables]
   );
 
   // Keyframed elements are animated imperatively against the video clock.
@@ -1347,7 +1375,14 @@ return (
           />
         )}
 
-        <div className="caption-container z-[999]">{renderCaptions()}</div>
+        {/* dir is set from the variant being shown, not from the page, so a
+            right-to-left overlay stays right-to-left only while its own
+            language is selected. Element positions are fractions of the video
+            box and are unaffected; this governs how the words inside each box
+            are ordered and aligned. */}
+        <div className="caption-container z-[999]" dir={isRtl ? "rtl" : "ltr"}>
+          {renderCaptions()}
+        </div>
 
         {/* Shown only when the campaign actually carries more than one
             language, so every existing campaign looks exactly as it did. */}
