@@ -1,6 +1,6 @@
 import { useGlobalStoreContext } from "@/app/context/GlobalStoreContext";
 import Image from "next/image";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./VideoContainer.module.css";
 import { Tooltip } from "react-tooltip";
 import { RiFullscreenFill } from "react-icons/ri";
@@ -27,6 +27,9 @@ import {
   formatValue,
   expandRepeaters,
   chapterSkipTarget,
+  normalizeVariants,
+  pickVariant,
+  mapTimeAcrossVariants,
 } from "@/app/utils/overlayElement";
 
 // Install fixture network guard at module load (client-side only)
@@ -402,6 +405,8 @@ const VideoContainer = () => {
                 : firstLoadData?.dynamic_text_display.config
             }
             overlayVariables={firstLoadData?.dynamic_text_display?.variables}
+            languages={firstLoadData?.dynamic_text_display?.languages}
+            defaultLang={firstLoadData?.dynamic_text_display?.defaultLang}
             videoRef={videoElm}
             personalizedVideoRef={personalizedVideoRef}
             posterUrl={posterUrl}
@@ -634,6 +639,8 @@ export function VideoCaptioner({
   onLinkClick,
   chapters,
   overlayVariables,
+  languages,
+  defaultLang,
 }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [videoHeight, setVideoHeight] = useState(1);
@@ -680,6 +687,158 @@ export function VideoCaptioner({
 
   const personalizedVideoUrl =
     currentQuestionData.current?.personaliz_video_url;
+
+  /* ---------------------------------------------------------- language switch */
+
+  // The same campaign carried in more than one language. Only the film changes:
+  // the overlay above it is one element set, shared by every language, so
+  // nothing here touches `captions`, `elements` or `variables`.
+  //
+  // The master element - videoRef, the one below with id webRenderVideo - stays
+  // the overlay's clock at ALL times, whichever language is showing. That is
+  // the whole design. The keyframe loop reads videoRef.current, and repointing
+  // it mid-play would restart every animated element against a different
+  // timeline. So the second language is a follower: it comes to the front and
+  // takes the audio while the master keeps running, silent, behind it.
+  //
+  // Nothing below acts until someone presses the button, so a campaign with no
+  // variants behaves exactly as it did before this existed.
+  const altVideoRef = useRef(null);
+
+  const variants = useMemo(
+    () => normalizeVariants({ variants: languages }),
+    [languages]
+  );
+
+  const baseLang = defaultLang || variants[0]?.lang || null;
+
+  const [activeLang, setActiveLang] = useState(() => {
+    const opening = pickVariant(variants, null, baseLang);
+    return opening ? opening.lang : null;
+  });
+
+  // Until the viewer presses the button, the master's muted state is left
+  // exactly as the rest of the player set it. Unmuting on mount would break
+  // autoplay, which browsers only permit while a video is silent.
+  const [hasSwitched, setHasSwitched] = useState(false);
+
+  // The follower is not mounted until the master is playing, so nothing about
+  // the second language competes with getting the first frame on screen. Once
+  // mounted it costs a metadata request and nothing more - see the preload note
+  // on the element itself.
+  const [altMounted, setAltMounted] = useState(false);
+
+  const altCandidate = useMemo(
+    () => variants.find((v) => v.lang !== baseLang) || null,
+    [variants, baseLang]
+  );
+
+  // Which film the follower carries. It holds the selected language whenever
+  // that is not the default, so switching back and forth never reloads it.
+  const altVariant = useMemo(() => {
+    if (!altCandidate) return null;
+    if (activeLang && activeLang !== baseLang) {
+      return variants.find((v) => v.lang === activeLang) || altCandidate;
+    }
+    return altCandidate;
+  }, [variants, activeLang, baseLang, altCandidate]);
+
+  const isAltShowing = Boolean(
+    altVariant && activeLang && activeLang === altVariant.lang
+  );
+
+  const switchLanguage = useCallback((lang) => {
+    setHasSwitched(true);
+    setActiveLang(lang);
+  }, []);
+
+  useEffect(() => {
+    const master = videoRef.current;
+    if (!master || !altCandidate) return;
+    const arm = () => setAltMounted(true);
+    if (!master.paused) {
+      arm();
+      return;
+    }
+    master.addEventListener("playing", arm, { once: true });
+    return () => master.removeEventListener("playing", arm);
+  }, [videoRef, altCandidate]);
+
+  // Carry the master's position onto the follower.
+  //
+  // Proportionally, because the two cuts are usually the same edit in another
+  // language but rarely the same length.
+  const alignFollower = useCallback(() => {
+    const master = videoRef.current;
+    const alt = altVideoRef.current;
+    if (!master || !alt || !master.duration || !alt.duration) return;
+    const want = mapTimeAcrossVariants(
+      master.currentTime,
+      master.duration,
+      alt.duration
+    );
+    // Corrected on drift rather than on every tick: assigning currentTime to a
+    // playing element stutters it, and "timeupdate" fires about four times a
+    // second, which would be visible.
+    if (Math.abs(alt.currentTime - want) > 0.3) alt.currentTime = want;
+  }, [videoRef]);
+
+  // Keep the follower aligned with the master - but only once it is actually
+  // being watched.
+  //
+  // The follower is deliberately NOT played alongside the master from the
+  // start. Doing that keeps it perfectly in step, but it also streams a second
+  // film for every viewer, including the majority who never press the button,
+  // which doubles the bandwidth of an ordinary view. It stays paused and
+  // buffering instead, and is started on the first switch. The cost is a short
+  // wait the first time someone chooses another language, which is the one
+  // moment a viewer has asked for something and will tolerate one.
+  useEffect(() => {
+    const master = videoRef.current;
+    const alt = altVideoRef.current;
+    if (!master || !alt || !altVariant || !isAltShowing) return;
+
+    const follow = () => {
+      alignFollower();
+      if (master.paused && !alt.paused) alt.pause();
+      else if (!master.paused && alt.paused) alt.play().catch(() => {});
+    };
+
+    follow();
+    master.addEventListener("timeupdate", follow);
+    master.addEventListener("seeked", follow);
+    master.addEventListener("play", follow);
+    master.addEventListener("pause", follow);
+    return () => {
+      master.removeEventListener("timeupdate", follow);
+      master.removeEventListener("seeked", follow);
+      master.removeEventListener("play", follow);
+      master.removeEventListener("pause", follow);
+    };
+  }, [videoRef, altVariant, altMounted, isAltShowing, alignFollower]);
+
+  // Move the audio to whichever film is in front.
+  useEffect(() => {
+    if (!hasSwitched) return;
+    const master = videoRef.current;
+    const alt = altVideoRef.current;
+    if (!master) return;
+
+    if (alt && isAltShowing) {
+      // Seek before playing: while it was behind it was buffering, not
+      // following, so its position is wherever it was last left.
+      alignFollower();
+      master.muted = true;
+      alt.muted = false;
+      if (!master.paused) alt.play().catch(() => {});
+    } else {
+      if (alt) {
+        alt.muted = true;
+        alt.pause();
+      }
+      master.muted = false;
+    }
+  }, [hasSwitched, isAltShowing, videoRef, alignFollower]);
 
   // Recipient variable map, used for conditions and data-bound elements.
   //
@@ -1156,7 +1315,66 @@ return (
           allowFullScreen
         />
 
+        {/*
+          The alternate-language film.
+
+          Always muted in markup and brought forward only by the effects above,
+          so it can never autoplay audibly on top of the master. It sits above
+          the master but below the personalized intro clip, which keeps its own
+          priority for the window in which it plays, and below the captions.
+
+          Preload is "metadata" until this film is the one being watched, which
+          is the whole bandwidth story: "auto" would pull a second complete film
+          down for every viewer, and the majority never press the button.
+          Metadata rather than "none" because the proportional position mapping
+          needs this film's duration, and that arrives with the header alone.
+        */}
+        {altVariant && altMounted && (
+          <video
+            ref={altVideoRef}
+            src={`${altVariant.videoUrl}#t=0.001`}
+            className="w-full h-full absolute top-0 left-0"
+            style={{
+              objectFit: "contain",
+              zIndex: isAltShowing ? 5 : -20,
+            }}
+            poster={posterUrl}
+            onClick={handleVideoClick}
+            onError={handleVideoError}
+            muted
+            playsInline
+            preload={isAltShowing ? "auto" : "metadata"}
+          />
+        )}
+
         <div className="caption-container z-[999]">{renderCaptions()}</div>
+
+        {/* Shown only when the campaign actually carries more than one
+            language, so every existing campaign looks exactly as it did. */}
+        {variants.length > 1 && (
+          <div
+            className="absolute bottom-3 right-3 flex gap-1 rounded-md bg-black/60 p-1"
+            style={{ zIndex: 1000 }}
+          >
+            {variants.map((v) => (
+              <button
+                key={v.lang}
+                type="button"
+                lang={v.lang}
+                dir={v.rtl ? "rtl" : "ltr"}
+                aria-pressed={activeLang === v.lang}
+                onClick={() => switchLanguage(v.lang)}
+                className={`rounded px-2 py-1 text-xs transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+                  activeLang === v.lang
+                    ? "bg-white text-black"
+                    : "text-white hover:bg-white/20"
+                }`}
+              >
+                {v.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
