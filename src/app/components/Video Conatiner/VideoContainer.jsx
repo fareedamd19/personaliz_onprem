@@ -14,6 +14,7 @@ import { checkIfParamsArePresent } from "@/app/utils/Functions";
 import {
   activeCaptions as fixtureCaptions,
   activeVariables as fixtureVariables,
+  activeFixtureRtl,
 } from "@/app/fixtures/active.fixture";
 import {
   sampleElement,
@@ -728,8 +729,11 @@ export function VideoCaptioner({
   // on the element itself.
   const [altMounted, setAltMounted] = useState(false);
 
+  // Only a language whose film lives on THIS campaign can be a follower. One
+  // that points at another campaign is a navigation, so there is nothing to
+  // preload and no second element to mount for it.
   const altCandidate = useMemo(
-    () => variants.find((v) => v.lang !== baseLang) || null,
+    () => variants.find((v) => v.lang !== baseLang && v.videoUrl) || null,
     [variants, baseLang]
   );
 
@@ -738,7 +742,11 @@ export function VideoCaptioner({
   const altVariant = useMemo(() => {
     if (!altCandidate) return null;
     if (activeLang && activeLang !== baseLang) {
-      return variants.find((v) => v.lang === activeLang) || altCandidate;
+      // Guarded on videoUrl: a language reached by navigation never becomes the
+      // active one here, but if it ever did, mounting a video element with no
+      // source would black out the picture.
+      const chosen = variants.find((v) => v.lang === activeLang);
+      return chosen && chosen.videoUrl ? chosen : altCandidate;
     }
     return altCandidate;
   }, [variants, activeLang, baseLang, altCandidate]);
@@ -768,12 +776,58 @@ export function VideoCaptioner({
       ? activeVariant.config
       : captions;
 
-  const isRtl = Boolean(activeVariant?.rtl);
+  // In fixture mode there is no campaign and so no variant; the chosen fixture
+  // says which way it reads instead. That is what lets the Arabic layout be
+  // checked with no backend, no Arabic film and no data from the ministry.
+  const isRtl = isFixtureMode()
+    ? Boolean(activeFixtureRtl)
+    : Boolean(activeVariant?.rtl);
 
-  const switchLanguage = useCallback((lang) => {
-    setHasSwitched(true);
-    setActiveLang(lang);
-  }, []);
+  // Two ways a language is reached, and the variant says which.
+  //
+  // A language on another campaign is a different link, so it is a navigation:
+  // the campaign id in the URL changes and the recipient id does not. That
+  // works because a recipient id identifies the person, not their place on a
+  // campaign - the same uid opens the same person's statement on either one,
+  // and their variables are held against the person too, so the Arabic
+  // campaign renders the same recipient's own data.
+  //
+  // The page reloads and the video restarts. That is inherent to the language
+  // being a separate campaign; only a variant on this campaign can keep the
+  // viewer's position.
+  const switchLanguage = useCallback(
+    (lang) => {
+      const target = variants.find((v) => v.lang === lang);
+
+      if (target?.campaignId) {
+        try {
+          const url = new URL(window.location.href);
+          // Some links carry both ids in one parameter, as ?d=<campaign>_<uid>,
+          // for trackers that truncate at the first '&'. Rewriting `id` alone
+          // would leave that pair intact and put the viewer straight back on
+          // the campaign they just left - so it is unpacked first, and the
+          // recipient carried across explicitly.
+          const combined = url.searchParams.get("d");
+          if (combined) {
+            const sep = combined.indexOf("_");
+            if (sep !== -1) {
+              url.searchParams.set("uid", combined.slice(sep + 1));
+            }
+            url.searchParams.delete("d");
+          }
+          url.searchParams.set("id", target.campaignId);
+          window.location.assign(url.toString());
+        } catch (error) {
+          /* a failed navigation must not take the player down with it */
+        }
+        return;
+      }
+
+      setHasSwitched(true);
+      setActiveLang(lang);
+    },
+    [variants]
+  );
 
   useEffect(() => {
     const master = videoRef.current;
