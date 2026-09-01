@@ -13,10 +13,15 @@
 
 import { activeCaptions, activeFixtureName } from "./active.fixture";
 
-const isStatement = activeFixtureName === "statement";
+const isStatement = activeFixtureName === "statement" || activeFixtureName === "statement-ar";
+const isMohreAr = activeFixtureName === "mohre-ar";
 
-/** Both masters live in public/. The statement one is gitignored: 36MB. */
-const VIDEO = isStatement ? "/statement-base.mp4" : "/fixture-base.mp4";
+/** All three masters live in public/. The two real films are gitignored: ~36MB each. */
+const VIDEO = isMohreAr
+  ? "/mohre-ar-base.mp4"
+  : isStatement
+  ? "/statement-base.mp4"
+  : "/fixture-base.mp4";
 
 export function fixtureFirstLoadResponse() {
   const question = {
@@ -36,7 +41,11 @@ export function fixtureFirstLoadResponse() {
   return {
     status: true,
     data: {
-      campaign_name: isStatement ? "Establishment Statement (fixture)" : "Overlay fixture",
+      campaign_name: isMohreAr
+        ? "MOHRE Commitment POS AR (fixture)"
+        : isStatement
+        ? "Establishment Statement (fixture)"
+        : "Overlay fixture",
       session_id: "fixture-session",
       questions: question,
       // The captions the player actually draws are taken from the fixture in

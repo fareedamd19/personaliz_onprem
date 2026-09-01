@@ -40,3 +40,7 @@ bun.lockb
 # Local demo master for the statement fixture. 36MB, client-derived - kept out
 # of the repo deliberately. Put "Simplified EN.mp4" here to run the statement.
 public/statement-base.mp4
+
+# Same story for the MOHRE "Commitment POS AR" master used by the mohre-ar
+# fixture set. 36MB, client-derived - kept out of the repo deliberately.
+public/mohre-ar-base.mp4
