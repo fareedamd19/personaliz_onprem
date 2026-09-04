@@ -1626,7 +1626,7 @@
           "kind": "number"
         },
         "strokecolor": "#B2832C",
-        "trackcolor": "#B2832C",
+        "trackcolor": "#333333",
         "strokewidth": 0.015,
         "textStyle": {
           "B": "bold"
