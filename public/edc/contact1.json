@@ -11,13 +11,13 @@
     "bankGuarantees": "0",
     "quotaAvailable": "4",
     "abscondingRecord": "1",
-    "totalWorkersCount": "8",
+    "totalWorkersCount": "64",
     "incompletedTransCount": "0",
     "finesCount": "0",
-    "limitedSkillLabours": "8",
-    "percentLowSkillSentence": "100",
-    "skilledLabours": "0",
-    "percentSkilledSentence": "0",
+    "limitedSkillLabours": "26",
+    "percentLowSkillSentence": "٤١٪ من إجمالي العمالة محدودة المهارة",
+    "skilledLabours": "38",
+    "percentSkilledSentence": "٥٩٪ من إجمالي العمالة ماهرة",
     "attentionAR": "هناك 0 بطاقات العمل التي تنتهي صلاحيتها هذا الشهر. 1 عدد التقارير المسجلة. 0 عدد الشكاوى المسجلة.",
     "month1percentagear": 99,
     "month2percentagear": 99.2,
@@ -51,6 +51,8 @@
     "savingsUrl": "https://www.mohre.gov.ae/ar/media-center/awareness-and-guidance/alternative-end-of-service-benefits-system-savings-scheme.aspx",
     "ministerialDecisionURL": "https://www.mohre.gov.ae/ar/laws-and-legislation.aspx",
     "ministryURL": "https://www.mohre.gov.ae",
-    "statementURL": "https://mohreestatement.reports.ae/MVS/AR_StepstoobtainEmiratizationreportfromMOHREAPP.pdf"
+    "statementURL": "https://mohreestatement.reports.ae/MVS/AR_StepstoobtainEmiratizationreportfromMOHREAPP.pdf",
+    "percentLowSkill": "41",
+    "percentSkilled": "59"
   }
 }

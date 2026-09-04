@@ -1149,13 +1149,31 @@ export function VideoCaptioner({
     }
 
     if (type === "arc") {
-      // The number the gauge reads. Falls back to the element's own text so a
-      // gauge can carry a fixed label where no variable is bound.
+      // What the ring fills to and what it reads in the middle are not always
+      // the same quantity. A workforce donut fills by the share that is
+      // limited-skill and reads the headcount - binding one to the other makes
+      // it impossible to show both.
+      //
+      // So an explicit `text` wins for the label, with its {placeholders}
+      // resolved like any other text, and `bind` is left to drive the fill.
+      // Without a `text` this behaves exactly as before: the bound value,
+      // formatted, which is what every gauge that only shows its own reading
+      // already relies on.
       const gaugeBound = caption.bind
         ? resolveRef({ var: caption.bind.value }, variables)
         : undefined;
+
+      const explicitLabel =
+        typeof caption.text === "string" && caption.text
+          ? caption.text.replace(/\{(\w+)\}/g, (whole, name) =>
+              variables[name] !== undefined ? String(variables[name]) : whole
+            )
+          : undefined;
+
       const gaugeLabel =
-        gaugeBound !== undefined && gaugeBound !== null && gaugeBound !== ""
+        explicitLabel !== undefined
+          ? explicitLabel
+          : gaugeBound !== undefined && gaugeBound !== null && gaugeBound !== ""
           ? formatValue(gaugeBound, caption.format)
           : caption.text;
 
