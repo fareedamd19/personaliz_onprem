@@ -8,7 +8,7 @@ const IframeLoader = () => {
           <video
             className={`w-full h-full object-cover object-center`}
             src={
-              "https://personaliz.s3.ap-south-1.amazonaws.com/PersonalizBlackLogoAnimatedForLoading.mp4"
+              "/edc/chrome/PersonalizBlackLogoAnimatedForLoading.mp4"
             }
             playsInline
             muted

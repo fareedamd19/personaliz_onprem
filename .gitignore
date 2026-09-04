@@ -44,3 +44,7 @@ public/statement-base.mp4
 # Same story for the MOHRE "Commitment POS AR" master used by the mohre-ar
 # fixture set. 36MB, client-derived - kept out of the repo deliberately.
 public/mohre-ar-base.mp4
+
+# The template master. 11MB - kept out of the repo like the others, and
+# regenerated with the ffmpeg command in the EDC plan.
+public/edc/media/*.mp4

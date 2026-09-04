@@ -1,73 +1,34 @@
 import MainEntryPoint from "./components/Main Entry Point/MainEntryPoint";
 import { AlertProvider } from "./context/AlertContext";
 
-let server_personaliz_branding = null;
-
-export async function generateMetadata({ searchParams }) {
-  let campaignId = searchParams["id"];
-  let emailOfUser = searchParams["email"];
-  let contact_id = searchParams["uid"];
-
-  if (campaignId && (contact_id || emailOfUser)) {
-    let options = {
-      method: "POST",
-      url: `${process.env.NEXT_PUBLIC_API}/ivideo_dynamic_data`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ivideo_id: campaignId,
-        contact_id: contact_id ?? null,
-        email_id: emailOfUser ?? null,
-      }),
-    };
-    try {
-      const response = await fetch(options.url, options);
-      const finalData = await response.json();
-      server_personaliz_branding = finalData.personaliz_branding;
-      return {
-        title: "Personaliz",
-        description: finalData?.wid_thumbnail_description,
-        openGraph: {
-          title: finalData?.wid_thumbnail_title ?? "Created with Personaliz.ai",
-          description:
-            finalData?.wid_thumbnail_description ??
-            "Start your personalized interactive video experience",
-          images: [
-            {
-              url: finalData?.wid_thumbnail_url,
-            },
-          ],
-        },
-      };
-    } catch (error) {
-      console.error("There was a problem with your fetch operation:", error);
-    }
-  } else {
-    return {
-      title: "Personaliz",
-      description: "Start your personalized interactive video experience",
-      openGraph: {
-        title: "Created with Personaliz.ai",
-        description: "Start your personalized interactive video experience",
-        images: [
-          {
-            url: "https://dyolkjkaata8s.cloudfront.net/PersonalizBanner.jpg",
-          },
-        ],
-      },
-    };
-  }
-}
+/**
+ * Static metadata, on purpose.
+ *
+ * The stock player builds this per recipient: `generateMetadata` reads the
+ * query string, asks our API for that campaign's thumbnail and branding, and
+ * returns an OpenGraph card so a shared link previews with the right image.
+ *
+ * Two reasons it cannot stay:
+ *
+ *   - It runs on the server and reads searchParams, which forces Next to
+ *     render this route dynamically. A statically exported build - the whole
+ *     point of an on-premise hand-over - is then impossible.
+ *   - It would be a call to Personaliz on every page load, which is exactly
+ *     what this deployment exists to remove.
+ *
+ * What is lost is the personalised link preview. For a statutory report that
+ * is arguably a gain: nothing about the recipient leaks into a WhatsApp or
+ * email preview card.
+ */
+export const metadata = {
+  title: "Establishment Executive Summary",
+  description: "Your establishment's statement.",
+};
 
 export default function Home() {
   return (
-    <>
-      <AlertProvider>
-        <MainEntryPoint
-          server_personaliz_branding={server_personaliz_branding}
-        />
-      </AlertProvider>
-    </>
+    <AlertProvider>
+      <MainEntryPoint server_personaliz_branding={null} />
+    </AlertProvider>
   );
 }

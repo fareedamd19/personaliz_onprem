@@ -80,8 +80,8 @@ const VideoContainer = () => {
   const [isMuted, setIsMuted] = useState(true);
   const posterUrl =
     personaliz_branding === "none"
-      ? "https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif"
-      : "https://dyolkjkaata8s.cloudfront.net/Personaliz+Logo+ANimation+For+Video+Poster.gif";
+      ? "/edc/chrome/Personaliz_Logo_ANimation_For_Video_Poster.gif"
+      : "/edc/chrome/Personaliz_Logo_ANimation_For_Video_Poster.gif";
   const alreadyAutomaticallyMovedUp = useRef(false);
 
   const subtitile_data = currentQuestionData?.current?.subtitle_data ?? null;
@@ -497,7 +497,7 @@ const VideoContainer = () => {
         <img
           onClick={handleVideoClick}
           className="absolute z-[999] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
-          src="https://dyolkjkaata8s.cloudfront.net/personaliz_play_Icon.svg"
+          src="/edc/chrome/personaliz_play_Icon.svg"
           height={80}
           width={80}
           alt="personaliz play icon"
@@ -529,7 +529,7 @@ const VideoContainer = () => {
               className="cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30"
             >
               <img
-                src="https://d34um3r0i45esv.cloudfront.net/Control+Options/Replay+Icon.svg"
+                src="/edc/chrome/Replay_Icon.svg"
                 width={20}
                 height={20}
                 alt="replay icon"
@@ -547,7 +547,7 @@ const VideoContainer = () => {
               className="cursor-pointer border border-white rounded-md p-1 bg-black bg-opacity-30"
             >
               <img
-                src="https://d34um3r0i45esv.cloudfront.net/Control+Options/Restart+Icon.svg"
+                src="/edc/chrome/Restart_Icon.svg"
                 width={20}
                 height={20}
                 alt="replay icon"
@@ -573,14 +573,14 @@ const VideoContainer = () => {
               {isMuted ? (
                 <img
                   className="w-[20px] h-[20px] aspect-auto"
-                  src="https://d34um3r0i45esv.cloudfront.net/Control+Options/Mute+icon.svg"
+                  src="/edc/chrome/Mute_icon.svg"
                   width={20}
                   height={20}
                   alt="mute icon"
                 />
               ) : (
                 <img
-                  src="https://d34um3r0i45esv.cloudfront.net/Control+Options/Sound+icon.svg"
+                  src="/edc/chrome/Sound_icon.svg"
                   width={20}
                   height={20}
                   alt="sound icon"
@@ -613,7 +613,7 @@ const VideoContainer = () => {
           <em>Powered by</em>
           <img
             className="size-[30px]"
-            src="https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png"
+            src="/edc/chrome/Personaliz_white_logo.png"
             alt="brandLogo"
             width={30}
             height={30}

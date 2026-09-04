@@ -1,9 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // images: {
-  //     domains: ['personaliz.s3.ap-south-1.amazonaws.com','personaliz-uploads.s3.ap-south-1.amazonaws.com','dyolkjkaata8s.cloudfront.net','d34um3r0i45esv.cloudfront.net','d311yj556j5ydo.cloudfront.net'],
-  //   },
+  // Emit a folder of plain files instead of a server.
+  //
+  // This is what makes the hand-over possible: `next build` produces ./out,
+  // which is HTML, JS, CSS and assets and nothing else. The host serves it
+  // from any ordinary web server - nginx, IIS, Apache - with no Node process,
+  // no install and no runtime dependency on Personaliz.
+  output: "export",
+
+  // Next's image optimiser runs on a server, which by definition is not
+  // present here. Unoptimised means <Image> emits a plain <img> and the files
+  // are served as they ship.
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",

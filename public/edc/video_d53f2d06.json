@@ -1,0 +1,2821 @@
+{
+  "campaign_id": "d53f2d06",
+  "name": "MOHRE Establishment Executive Summary — Arabic",
+  "video_url": "/edc/media/mohre_ar.mp4",
+  "rtl": true,
+  "dynamic_text_display": {
+    "type": "web",
+    "config": [
+      {
+        "uniq_id": "intro_card_banner",
+        "type": "box",
+        "isStatic": false,
+        "boxcolor": "#E7E7E7",
+        "radius": 0.046948356807511735,
+        "textbox_x": 0.2427,
+        "textbox_y": 0.3074,
+        "textbox_w": 0.7281,
+        "textbox_h": 0.3944,
+        "start_time": 10.2,
+        "end_time": 19.9667,
+        "keyframes": [
+          {
+            "t": 10.2,
+            "x": 1.0187,
+            "y": 0.3074,
+            "opacity": 1
+          },
+          {
+            "t": 12.2333,
+            "x": 0.2427,
+            "y": 0.3074,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 18.2667,
+            "x": 0.2427,
+            "y": 0.3074,
+            "opacity": 1
+          },
+          {
+            "t": 19.9667,
+            "x": -0.78855,
+            "y": 0.3074,
+            "opacity": 1,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 9
+      },
+      {
+        "uniq_id": "الملخص_التنفيذي_للمنشأة",
+        "type": "text",
+        "fontsize": 0.0491,
+        "fontcolor": "#000000",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.6178,
+        "textbox_y": 0.35949999999999993,
+        "textbox_w": 0.2985,
+        "textbox_h": 0.0427,
+        "start_time": 0,
+        "end_time": 19.9667,
+        "keyframes": [
+          {
+            "t": 0,
+            "x": 0.6178,
+            "y": 0.5689,
+            "opacity": 1
+          },
+          {
+            "t": 10.2,
+            "x": 0.6178,
+            "y": 0.5689,
+            "opacity": 1
+          },
+          {
+            "t": 12.1667,
+            "x": 0.6178,
+            "y": 0.35949999999999993,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 18.2667,
+            "x": 0.6178,
+            "y": 0.35949999999999993,
+            "opacity": 1
+          },
+          {
+            "t": 19.9667,
+            "x": -0.41345,
+            "y": 0.35949999999999993,
+            "opacity": 1,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 10,
+        "text": "الملخص التنفيذي للمنشأة",
+        "textStyle": {
+          "B": "bold"
+        }
+      },
+      {
+        "uniq_id": "companynamear",
+        "type": "text",
+        "fontsize": 0.0903,
+        "fontcolor": "#B2832C",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.495,
+        "textbox_y": 0.4256,
+        "textbox_w": 0.421,
+        "textbox_h": 0.0785,
+        "start_time": 0,
+        "end_time": 19.9667,
+        "keyframes": [
+          {
+            "t": 0,
+            "x": 0.495,
+            "y": 0.635,
+            "opacity": 1
+          },
+          {
+            "t": 10.2,
+            "x": 0.495,
+            "y": 0.635,
+            "opacity": 1
+          },
+          {
+            "t": 12.1667,
+            "x": 0.495,
+            "y": 0.4256,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 18.2667,
+            "x": 0.495,
+            "y": 0.4256,
+            "opacity": 1
+          },
+          {
+            "t": 19.9667,
+            "x": -0.53625,
+            "y": 0.4256,
+            "opacity": 1,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 10,
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{companynamear}"
+      },
+      {
+        "uniq_id": "رقم_المنشأة",
+        "type": "text",
+        "fontsize": 0.0475,
+        "fontcolor": "#000000",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.7915,
+        "textbox_y": 0.5413,
+        "textbox_w": 0.1248,
+        "textbox_h": 0.0413,
+        "start_time": 0,
+        "end_time": 19.9667,
+        "keyframes": [
+          {
+            "t": 0,
+            "x": 0.7915,
+            "y": 0.7507,
+            "opacity": 1
+          },
+          {
+            "t": 10.2,
+            "x": 0.7915,
+            "y": 0.7507,
+            "opacity": 1
+          },
+          {
+            "t": 12.1667,
+            "x": 0.7915,
+            "y": 0.5413,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 18.2667,
+            "x": 0.7915,
+            "y": 0.5413,
+            "opacity": 1
+          },
+          {
+            "t": 19.9667,
+            "x": -0.23975000000000002,
+            "y": 0.5413,
+            "opacity": 1,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 10,
+        "text": "رقم المنشأة",
+        "textStyle": {
+          "B": "bold"
+        }
+      },
+      {
+        "uniq_id": "estabnumberar",
+        "type": "text",
+        "fontsize": 0.0365,
+        "fontcolor": "#B2832C",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.7,
+        "textbox_y": 0.5413,
+        "textbox_w": 0.0667,
+        "textbox_h": 0.0317,
+        "start_time": 0,
+        "end_time": 19.9667,
+        "keyframes": [
+          {
+            "t": 0,
+            "x": 0.7,
+            "y": 0.7507,
+            "opacity": 1
+          },
+          {
+            "t": 10.2,
+            "x": 0.7,
+            "y": 0.7507,
+            "opacity": 1
+          },
+          {
+            "t": 12.1667,
+            "x": 0.7,
+            "y": 0.5413,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 18.2667,
+            "x": 0.7,
+            "y": 0.5413,
+            "opacity": 1
+          },
+          {
+            "t": 19.9667,
+            "x": -0.33125000000000004,
+            "y": 0.5413,
+            "opacity": 1,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 10,
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{estabnumberar}"
+      },
+      {
+        "uniq_id": "reportperiodar",
+        "type": "text",
+        "fontsize": 0.0444,
+        "fontcolor": "#000000",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5605,
+        "textbox_y": 0.6198,
+        "textbox_w": 0.3736,
+        "textbox_h": 0.0386,
+        "start_time": 0,
+        "end_time": 19.9667,
+        "keyframes": [
+          {
+            "t": 0,
+            "x": 0.5605,
+            "y": 0.8292,
+            "opacity": 1
+          },
+          {
+            "t": 10.2,
+            "x": 0.5605,
+            "y": 0.8292,
+            "opacity": 1
+          },
+          {
+            "t": 12.1667,
+            "x": 0.5605,
+            "y": 0.6198,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 18.2667,
+            "x": 0.5605,
+            "y": 0.6198,
+            "opacity": 1
+          },
+          {
+            "t": 19.9667,
+            "x": -0.47075,
+            "y": 0.6198,
+            "opacity": 1,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 10,
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{reportperiodar}"
+      },
+      {
+        "uniq_id": "month1percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.1318,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0326,
+        "textbox_h": 0.2644,
+        "start_time": 70.403,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 70.403,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month1percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month2percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.1961,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0326,
+        "textbox_h": 0.2644,
+        "start_time": 70.469,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 70.469,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month2percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month3percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.2605,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0326,
+        "textbox_h": 0.2644,
+        "start_time": 70.536,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 70.536,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month3percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month4percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.3248,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0318,
+        "textbox_h": 0.2644,
+        "start_time": 70.603,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 70.603,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month4percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month5percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.3891,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0318,
+        "textbox_h": 0.2644,
+        "start_time": 70.67,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 70.67,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month5percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month6percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.4527,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0326,
+        "textbox_h": 0.2644,
+        "start_time": 70.736,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 70.736,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month6percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month7percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5171,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0326,
+        "textbox_h": 0.2644,
+        "start_time": 70.803,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 70.803,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month7percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month8percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5814,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0326,
+        "textbox_h": 0.2644,
+        "start_time": 70.87,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 70.87,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month8percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month9percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.6457,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0326,
+        "textbox_h": 0.2644,
+        "start_time": 70.936,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 70.936,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month9percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month10percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.7101,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0318,
+        "textbox_h": 0.2644,
+        "start_time": 71.003,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 71.003,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month10percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month11percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.7744,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0318,
+        "textbox_h": 0.2644,
+        "start_time": 71.07,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 71.07,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month11percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "month12percentagear",
+        "type": "bar",
+        "boxcolor": "#CAA47C",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.838,
+        "textbox_y": 0.2204,
+        "textbox_w": 0.0326,
+        "textbox_h": 0.2644,
+        "start_time": 71.137,
+        "end_time": 91.5,
+        "keyframes": [
+          {
+            "t": 71.137,
+            "y": 1.1139185185185185,
+            "progress": 0
+          },
+          {
+            "t": 73.039,
+            "y": 0.3879925925925926,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 79.945,
+            "y": 0.3879925925925926,
+            "progress": 1
+          },
+          {
+            "t": 81.414,
+            "y": 0.2204,
+            "progress": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "y": 0.2204,
+            "progress": 1
+          },
+          {
+            "t": 91.5,
+            "y": 0.2204,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "bind": {
+          "value": "month12percentagear",
+          "min": 0,
+          "max": 100
+        },
+        "format": {
+          "kind": "percent"
+        }
+      },
+      {
+        "uniq_id": "pdf_download_link",
+        "type": "text",
+        "text": "تحميل نسخة PDF",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.2547,
+        "textbox_y": 0.044,
+        "textbox_w": 0.1139,
+        "textbox_h": 0.02600000000000001,
+        "start_time": 21,
+        "end_time": 206.1,
+        "href": {
+          "var": "statementURL"
+        },
+        "z": 12,
+        "textStyle": {
+          "B": "bold"
+        },
+        "keyframes": [
+          {
+            "t": 21,
+            "opacity": 1
+          },
+          {
+            "t": 31.2454,
+            "opacity": 1
+          },
+          {
+            "t": 31.2954,
+            "opacity": 0
+          },
+          {
+            "t": 34.6621,
+            "opacity": 0
+          },
+          {
+            "t": 34.7121,
+            "opacity": 1
+          },
+          {
+            "t": 67.55,
+            "opacity": 1
+          },
+          {
+            "t": 67.6,
+            "opacity": 0
+          },
+          {
+            "t": 70.9667,
+            "opacity": 0
+          },
+          {
+            "t": 71.0167,
+            "opacity": 1
+          },
+          {
+            "t": 91.3167,
+            "opacity": 1
+          },
+          {
+            "t": 91.3667,
+            "opacity": 0
+          },
+          {
+            "t": 95.7333,
+            "opacity": 0
+          },
+          {
+            "t": 95.7833,
+            "opacity": 1
+          },
+          {
+            "t": 206.1,
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "uniq_id": "ministry_website_link",
+        "type": "text",
+        "text": "موقع الوزارة",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.4066,
+        "textbox_y": 0.044,
+        "textbox_w": 0.0791,
+        "textbox_h": 0.02600000000000001,
+        "start_time": 21,
+        "end_time": 206.1,
+        "href": {
+          "var": "ministryURL"
+        },
+        "z": 12,
+        "textStyle": {
+          "B": "bold"
+        },
+        "keyframes": [
+          {
+            "t": 21,
+            "opacity": 1
+          },
+          {
+            "t": 31.2454,
+            "opacity": 1
+          },
+          {
+            "t": 31.2954,
+            "opacity": 0
+          },
+          {
+            "t": 34.6621,
+            "opacity": 0
+          },
+          {
+            "t": 34.7121,
+            "opacity": 1
+          },
+          {
+            "t": 67.55,
+            "opacity": 1
+          },
+          {
+            "t": 67.6,
+            "opacity": 0
+          },
+          {
+            "t": 70.9667,
+            "opacity": 0
+          },
+          {
+            "t": 71.0167,
+            "opacity": 1
+          },
+          {
+            "t": 91.3167,
+            "opacity": 1
+          },
+          {
+            "t": 91.3667,
+            "opacity": 0
+          },
+          {
+            "t": 95.7333,
+            "opacity": 0
+          },
+          {
+            "t": 95.7833,
+            "opacity": 1
+          },
+          {
+            "t": 206.1,
+            "opacity": 1
+          }
+        ]
+      },
+      {
+        "uniq_id": "statusEn",
+        "type": "text",
+        "fontsize": 0.032,
+        "fontcolor": "#FFFFFF",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5302,
+        "textbox_y": 0.3047,
+        "textbox_w": 0.3516,
+        "textbox_h": 0.0505,
+        "start_time": 34.768,
+        "end_time": 51.9,
+        "keyframes": [
+          {
+            "t": 34.768,
+            "opacity": 0
+          },
+          {
+            "t": 35.168,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 51.5,
+            "opacity": 1
+          },
+          {
+            "t": 51.9,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{statusEn}"
+      },
+      {
+        "uniq_id": "establishmentCategoryEN",
+        "type": "text",
+        "fontsize": 0.032,
+        "fontcolor": "#FFFFFF",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5302,
+        "textbox_y": 0.4533,
+        "textbox_w": 0.3516,
+        "textbox_h": 0.05,
+        "start_time": 35.335,
+        "end_time": 51.9,
+        "keyframes": [
+          {
+            "t": 35.335,
+            "opacity": 0
+          },
+          {
+            "t": 35.735,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 51.5,
+            "opacity": 1
+          },
+          {
+            "t": 51.9,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{establishmentCategoryEN}"
+      },
+      {
+        "uniq_id": "insurancePolicies",
+        "type": "text",
+        "fontsize": 0.024,
+        "fontcolor": "#FFFFFF",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5302,
+        "textbox_y": 0.6006,
+        "textbox_w": 0.3516,
+        "textbox_h": 0.05,
+        "start_time": 36.136,
+        "end_time": 51.9,
+        "keyframes": [
+          {
+            "t": 36.136,
+            "opacity": 0
+          },
+          {
+            "t": 36.536,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 51.5,
+            "opacity": 1
+          },
+          {
+            "t": 51.9,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "format": {
+          "kind": "number"
+        },
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{insurancePolicies}"
+      },
+      {
+        "uniq_id": "nationalCount",
+        "type": "text",
+        "fontsize": 0.024,
+        "fontcolor": "#FFFFFF",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5302,
+        "textbox_y": 0.7487,
+        "textbox_w": 0.3516,
+        "textbox_h": 0.05,
+        "start_time": 36.537,
+        "end_time": 51.9,
+        "keyframes": [
+          {
+            "t": 36.537,
+            "opacity": 0
+          },
+          {
+            "t": 36.937,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 51.5,
+            "opacity": 1
+          },
+          {
+            "t": 51.9,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "format": {
+          "kind": "number"
+        },
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{nationalCount}"
+      },
+      {
+        "uniq_id": "bankGuarantees",
+        "type": "text",
+        "fontsize": 0.024,
+        "fontcolor": "#FFFFFF",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.0573,
+        "textbox_y": 0.3047,
+        "textbox_w": 0.3516,
+        "textbox_h": 0.0505,
+        "start_time": 37.371,
+        "end_time": 51.9,
+        "keyframes": [
+          {
+            "t": 37.371,
+            "opacity": 0
+          },
+          {
+            "t": 37.771,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 51.5,
+            "opacity": 1
+          },
+          {
+            "t": 51.9,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "format": {
+          "kind": "number"
+        },
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{bankGuarantees}"
+      },
+      {
+        "uniq_id": "quotaAvailable",
+        "type": "text",
+        "fontsize": 0.024,
+        "fontcolor": "#FFFFFF",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.0573,
+        "textbox_y": 0.4533,
+        "textbox_w": 0.3516,
+        "textbox_h": 0.05,
+        "start_time": 37.137,
+        "end_time": 51.9,
+        "keyframes": [
+          {
+            "t": 37.137,
+            "opacity": 0
+          },
+          {
+            "t": 37.537,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 51.5,
+            "opacity": 1
+          },
+          {
+            "t": 51.9,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "format": {
+          "kind": "number"
+        },
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{quotaAvailable}"
+      },
+      {
+        "uniq_id": "abscondingRecord",
+        "type": "text",
+        "fontsize": 0.024,
+        "fontcolor": "#FFFFFF",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.0573,
+        "textbox_y": 0.6006,
+        "textbox_w": 0.3516,
+        "textbox_h": 0.05,
+        "start_time": 37.738,
+        "end_time": 51.9,
+        "keyframes": [
+          {
+            "t": 37.738,
+            "opacity": 0
+          },
+          {
+            "t": 38.138,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 51.5,
+            "opacity": 1
+          },
+          {
+            "t": 51.9,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "format": {
+          "kind": "number"
+        },
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{abscondingRecord}"
+      },
+      {
+        "uniq_id": "totalWorkersCount",
+        "type": "text",
+        "fontsize": 0.024,
+        "fontcolor": "#FFFFFF",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.0573,
+        "textbox_y": 0.7487,
+        "textbox_w": 0.3516,
+        "textbox_h": 0.05,
+        "start_time": 38.305,
+        "end_time": 51.9,
+        "keyframes": [
+          {
+            "t": 38.305,
+            "opacity": 0
+          },
+          {
+            "t": 38.705,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 51.5,
+            "opacity": 1
+          },
+          {
+            "t": 51.9,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "format": {
+          "kind": "number"
+        },
+        "textStyle": {
+          "B": "bold"
+        },
+        "text": "{totalWorkersCount}"
+      },
+      {
+        "uniq_id": "incompletedTransCount",
+        "type": "text",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.0798,
+        "textbox_y": 0.3614,
+        "textbox_w": 0.2558,
+        "textbox_h": 0.0496,
+        "start_time": 58.826,
+        "end_time": 68.07,
+        "keyframes": [
+          {
+            "t": 58.826,
+            "opacity": 0
+          },
+          {
+            "t": 59.226,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 67.66999999999999,
+            "opacity": 1
+          },
+          {
+            "t": 68.07,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "format": {
+          "kind": "number"
+        },
+        "text": "{incompletedTransCount}"
+      },
+      {
+        "uniq_id": "finesCount",
+        "type": "text",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.0798,
+        "textbox_y": 0.5074,
+        "textbox_w": 0.2558,
+        "textbox_h": 0.0496,
+        "start_time": 58.826,
+        "end_time": 68.07,
+        "keyframes": [
+          {
+            "t": 58.826,
+            "opacity": 0
+          },
+          {
+            "t": 59.226,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 67.66999999999999,
+            "opacity": 1
+          },
+          {
+            "t": 68.07,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "format": {
+          "kind": "number"
+        },
+        "text": "{finesCount}"
+      },
+      {
+        "uniq_id": "totalWorkersCount_ring",
+        "type": "arc",
+        "fontsize": 0.035,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.7271,
+        "textbox_y": 0.2582,
+        "textbox_w": 0.1922,
+        "textbox_h": 0.3416,
+        "start_time": 55.522,
+        "end_time": 68.07,
+        "keyframes": [
+          {
+            "t": 55.522,
+            "opacity": 0
+          },
+          {
+            "t": 55.922,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 67.66999999999999,
+            "opacity": 1
+          },
+          {
+            "t": 68.07,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "bind": {
+          "value": "totalWorkersCount",
+          "min": 0,
+          "max": 1
+        },
+        "z": 6,
+        "format": {
+          "kind": "number"
+        },
+        "strokecolor": "#B2832C",
+        "trackcolor": "#B2832C",
+        "strokewidth": 0.015,
+        "textStyle": {
+          "B": "bold"
+        }
+      },
+      {
+        "uniq_id": "percentLowSkillSentence",
+        "type": "text",
+        "fontsize": 0.018,
+        "fontcolor": "#FFFFFF",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.6605,
+        "textbox_y": 0.4105,
+        "textbox_w": 0.0488,
+        "textbox_h": 0.0455,
+        "start_time": 57.391,
+        "end_time": 68.07,
+        "keyframes": [
+          {
+            "t": 57.391,
+            "opacity": 0
+          },
+          {
+            "t": 57.791,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 67.66999999999999,
+            "opacity": 1
+          },
+          {
+            "t": 68.07,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "boxcolor": "#B2832C",
+        "format": {
+          "kind": "percent"
+        },
+        "text": "{percentLowSkillSentence}"
+      },
+      {
+        "uniq_id": "percentSkilledSentence",
+        "type": "text",
+        "fontsize": 0.018,
+        "fontcolor": "#FFFFFF",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.6605,
+        "textbox_y": 0.548,
+        "textbox_w": 0.0488,
+        "textbox_h": 0.0455,
+        "start_time": 57.391,
+        "end_time": 68.07,
+        "keyframes": [
+          {
+            "t": 57.391,
+            "opacity": 0
+          },
+          {
+            "t": 57.791,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 67.66999999999999,
+            "opacity": 1
+          },
+          {
+            "t": 68.07,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "boxcolor": "#333333",
+        "format": {
+          "kind": "percent"
+        },
+        "text": "{percentSkilledSentence}"
+      },
+      {
+        "uniq_id": "limitedSkillLabours",
+        "type": "text",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.45,
+        "textbox_y": 0.4215,
+        "textbox_w": 0.03,
+        "textbox_h": 0.0234,
+        "start_time": 56.924,
+        "end_time": 68.07,
+        "keyframes": [
+          {
+            "t": 56.924,
+            "opacity": 0
+          },
+          {
+            "t": 57.324,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 67.66999999999999,
+            "opacity": 1
+          },
+          {
+            "t": 68.07,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "format": {
+          "kind": "number"
+        },
+        "text": "{limitedSkillLabours}"
+      },
+      {
+        "uniq_id": "skilledLabours",
+        "type": "text",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.45,
+        "textbox_y": 0.5138,
+        "textbox_w": 0.03,
+        "textbox_h": 0.0234,
+        "start_time": 56.99,
+        "end_time": 68.07,
+        "keyframes": [
+          {
+            "t": 56.99,
+            "opacity": 0
+          },
+          {
+            "t": 57.39,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 67.66999999999999,
+            "opacity": 1
+          },
+          {
+            "t": 68.07,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "format": {
+          "kind": "number"
+        },
+        "text": "{skilledLabours}"
+      },
+      {
+        "uniq_id": "attentionAR",
+        "type": "text",
+        "fontsize": 0.02,
+        "fontcolor": "#1A1A1A",
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": true,
+        "textbox_x": 0.44,
+        "textbox_y": 0.7,
+        "textbox_w": 0.5,
+        "textbox_h": 0.24,
+        "start_time": 60.828,
+        "end_time": 68.07,
+        "keyframes": [
+          {
+            "t": 60.828,
+            "opacity": 0
+          },
+          {
+            "t": 61.228,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 67.66999999999999,
+            "opacity": 1
+          },
+          {
+            "t": 68.07,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "z": 5,
+        "text": "{attentionAR}"
+      },
+      {
+        "uniq_id": "owners_table",
+        "type": "text",
+        "fontsize": 0.014,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_y": 0.3375,
+        "textbox_h": 0.045,
+        "rowHeight": 0.0757,
+        "start_time": 52.15,
+        "end_time": 55.5,
+        "keyframes": [
+          {
+            "t": 52.15,
+            "opacity": 0
+          },
+          {
+            "t": 52.55,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 55,
+            "opacity": 1
+          },
+          {
+            "t": 55.5,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "repeat": {
+          "count": 6,
+          "as": "owner",
+          "countVar": "owner_count"
+        },
+        "columns": [
+          {
+            "variable": "{as}{n}_name",
+            "textbox_x": 0.719176,
+            "textbox_w": 0.166848
+          },
+          {
+            "variable": "{as}{n}_nationality",
+            "textbox_x": 0.6341979999999999,
+            "textbox_w": 0.06890399999999999
+          },
+          {
+            "variable": "{as}{n}_title",
+            "textbox_x": 0.507394,
+            "textbox_w": 0.114312
+          },
+          {
+            "variable": "{as}{n}_id",
+            "textbox_x": 0.425998,
+            "textbox_w": 0.06890399999999999
+          },
+          {
+            "variable": "{as}{n}_private",
+            "textbox_x": 0.347698,
+            "textbox_w": 0.06890399999999999
+          },
+          {
+            "variable": "{as}{n}_mobile",
+            "textbox_x": 0.269774,
+            "textbox_w": 0.068552
+          },
+          {
+            "variable": "{as}{n}_email",
+            "textbox_x": 0.11611,
+            "textbox_w": 0.13948
+          }
+        ],
+        "z": 5,
+        "radius": 0.02
+      },
+      {
+        "uniq_id": "wps_threshold_line",
+        "type": "box",
+        "boxcolor": "#FF0000",
+        "textbox_x": 0.1318,
+        "textbox_y": 0.2737,
+        "textbox_w": 0.7387,
+        "textbox_h": 0.0015,
+        "start_time": 73,
+        "end_time": 91.5,
+        "z": 6,
+        "keyframes": [
+          {
+            "t": 73,
+            "opacity": 0
+          },
+          {
+            "t": 73.4,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 91,
+            "opacity": 1
+          },
+          {
+            "t": 91.5,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ]
+      },
+      {
+        "uniq_id": "owners_table_row_lines",
+        "type": "box",
+        "boxcolor": "#0000001A",
+        "textbox_y": 0.3885,
+        "textbox_h": 0.0015,
+        "rowHeight": 0.0757,
+        "start_time": 52.15,
+        "end_time": 55.5,
+        "keyframes": [
+          {
+            "t": 52.15,
+            "opacity": 0
+          },
+          {
+            "t": 52.55,
+            "opacity": 1,
+            "ease": "easeOutCubic"
+          },
+          {
+            "t": 55,
+            "opacity": 1
+          },
+          {
+            "t": 55.5,
+            "opacity": 0,
+            "ease": "easeInCubic"
+          }
+        ],
+        "repeat": {
+          "count": 6,
+          "as": "owner",
+          "countVar": "owner_count"
+        },
+        "columns": [
+          {
+            "variable": "{as}{n}_name",
+            "textbox_x": 0.1066,
+            "textbox_w": 0.7908
+          }
+        ],
+        "z": 4
+      },
+      {
+        "uniq_id": "closing_ministry_name",
+        "type": "text",
+        "text": "وزارة الموارد البشرية والتوطين",
+        "fontsize": 0.024,
+        "fontcolor": "#B2832C",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.35,
+        "textbox_y": 0.2997,
+        "textbox_w": 0.3,
+        "textbox_h": 0.0619,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "wps_footer_left",
+        "type": "text",
+        "text": "القرار الوزاري",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "fontname": "Cairo",
+        "textStyle": {
+          "B": "bold"
+        },
+        "alignment": "center",
+        "wrap_text": false,
+        "textbox_x": 0.572,
+        "textbox_w": 0.1005,
+        "textbox_y": 0.894,
+        "textbox_h": 0.0275,
+        "start_time": 80.62,
+        "end_time": 91.5,
+        "href": {
+          "var": "ministerialDecisionURL"
+        },
+        "z": 12
+      },
+      {
+        "uniq_id": "wps_footer_right",
+        "type": "text",
+        "text": "لمزيد من المعلومات",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "fontname": "Cairo",
+        "textStyle": {
+          "B": "bold"
+        },
+        "alignment": "center",
+        "wrap_text": false,
+        "textbox_x": 0.78,
+        "textbox_w": 0.185,
+        "textbox_y": 0.894,
+        "textbox_h": 0.0275,
+        "start_time": 80.62,
+        "end_time": 91.5,
+        "href": {
+          "var": "ministerialDecisionURL"
+        },
+        "z": 12
+      },
+      {
+        "uniq_id": "section1_footer_left",
+        "type": "text",
+        "text": "اضغط هنا للاطلاع والاستفادة من برنامج نافس",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "fontname": "Cairo",
+        "textStyle": {
+          "B": "bold"
+        },
+        "alignment": "center",
+        "wrap_text": false,
+        "textbox_x": 0.05,
+        "textbox_w": 0.55,
+        "textbox_y": 0.894,
+        "textbox_h": 0.0275,
+        "start_time": 93.53,
+        "end_time": 135.17,
+        "href": {
+          "var": "nafisUrl"
+        },
+        "z": 12
+      },
+      {
+        "uniq_id": "section1_footer_right",
+        "type": "text",
+        "text": "كيفية الحصول على تقرير التوطين",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "fontname": "Cairo",
+        "textStyle": {
+          "B": "bold"
+        },
+        "alignment": "center",
+        "wrap_text": false,
+        "textbox_x": 0.68,
+        "textbox_w": 0.285,
+        "textbox_y": 0.894,
+        "textbox_h": 0.0275,
+        "start_time": 93.53,
+        "end_time": 135.17,
+        "href": {
+          "var": "nafisUrl"
+        },
+        "z": 12
+      },
+      {
+        "uniq_id": "section2_footer_left",
+        "type": "text",
+        "text": "اضغط هنا للاطلاع والاستفادة من باقة العمل",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "fontname": "Cairo",
+        "textStyle": {
+          "B": "bold"
+        },
+        "alignment": "center",
+        "wrap_text": false,
+        "textbox_x": 0.05,
+        "textbox_w": 0.55,
+        "textbox_y": 0.894,
+        "textbox_h": 0.0275,
+        "start_time": 136.35,
+        "end_time": 173.63,
+        "href": {
+          "var": "workBundleUrl"
+        },
+        "z": 12
+      },
+      {
+        "uniq_id": "section2_footer_right",
+        "type": "text",
+        "text": "لمزيد من المعلومات",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "fontname": "Cairo",
+        "textStyle": {
+          "B": "bold"
+        },
+        "alignment": "center",
+        "wrap_text": false,
+        "textbox_x": 0.68,
+        "textbox_w": 0.285,
+        "textbox_y": 0.894,
+        "textbox_h": 0.0275,
+        "start_time": 136.35,
+        "end_time": 173.63,
+        "href": {
+          "var": "workBundleUrl"
+        },
+        "z": 12
+      },
+      {
+        "uniq_id": "section3_footer_left",
+        "type": "text",
+        "text": "اضغط هنا للاطلاع والاستفادة من برنامج نافس",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "fontname": "Cairo",
+        "textStyle": {
+          "B": "bold"
+        },
+        "alignment": "center",
+        "wrap_text": false,
+        "textbox_x": 0.05,
+        "textbox_w": 0.55,
+        "textbox_y": 0.894,
+        "textbox_h": 0.0275,
+        "start_time": 173.63,
+        "end_time": 194.5,
+        "href": {
+          "var": "savingsUrl"
+        },
+        "z": 12
+      },
+      {
+        "uniq_id": "section3_footer_right",
+        "type": "text",
+        "text": "كيفية الحصول على تقرير التوطين",
+        "fontsize": 0.024,
+        "fontcolor": "#1A1A1A",
+        "fontname": "Cairo",
+        "textStyle": {
+          "B": "bold"
+        },
+        "alignment": "center",
+        "wrap_text": false,
+        "textbox_x": 0.68,
+        "textbox_w": 0.285,
+        "textbox_y": 0.894,
+        "textbox_h": 0.0275,
+        "start_time": 173.63,
+        "end_time": 194.5,
+        "href": {
+          "var": "savingsUrl"
+        },
+        "z": 12
+      },
+      {
+        "uniq_id": "closing_channel_0_label",
+        "type": "text",
+        "text": "فيسبوك",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.08669999999999999,
+        "textbox_y": 0.6,
+        "textbox_w": 0.16,
+        "textbox_h": 0.03,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://www.facebook.com/MOHREUAE/",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_1_handle",
+        "type": "text",
+        "text": "@MOHREUAE",
+        "fontsize": 0.014,
+        "fontcolor": "#B2832C",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.08669999999999999,
+        "textbox_y": 0.632,
+        "textbox_w": 0.16,
+        "textbox_h": 0.026,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://www.facebook.com/MOHREUAE/",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_2_label",
+        "type": "text",
+        "text": "انستغرام",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.2522,
+        "textbox_y": 0.6,
+        "textbox_w": 0.16,
+        "textbox_h": 0.03,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://www.instagram.com/mohre_UAE/",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_3_handle",
+        "type": "text",
+        "text": "MOHRE_UAE@",
+        "fontsize": 0.014,
+        "fontcolor": "#B2832C",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.2522,
+        "textbox_y": 0.632,
+        "textbox_w": 0.16,
+        "textbox_h": 0.026,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://www.instagram.com/mohre_UAE/",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_4_label",
+        "type": "text",
+        "text": "لنكد ان",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.41809999999999997,
+        "textbox_y": 0.6,
+        "textbox_w": 0.16,
+        "textbox_h": 0.03,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://www.linkedin.com/company/ministry-of-human-resources-and-emiratisation",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_5_handle",
+        "type": "text",
+        "text": "وزارة الموارد البشرية والتوطين",
+        "fontsize": 0.014,
+        "fontcolor": "#B2832C",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.41809999999999997,
+        "textbox_y": 0.632,
+        "textbox_w": 0.16,
+        "textbox_h": 0.026,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://www.linkedin.com/company/ministry-of-human-resources-and-emiratisation",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_6_label",
+        "type": "text",
+        "text": "إكس",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5859000000000001,
+        "textbox_y": 0.6,
+        "textbox_w": 0.16,
+        "textbox_h": 0.03,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://x.com/MOHRE_UAE",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_7_handle",
+        "type": "text",
+        "text": "@MOHRE_UAE",
+        "fontsize": 0.014,
+        "fontcolor": "#B2832C",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5859000000000001,
+        "textbox_y": 0.632,
+        "textbox_w": 0.16,
+        "textbox_h": 0.026,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://x.com/MOHRE_UAE",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_8_label",
+        "type": "text",
+        "text": "يوتيوب",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.7538,
+        "textbox_y": 0.6,
+        "textbox_w": 0.16,
+        "textbox_h": 0.03,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://www.youtube.com/user/MOLUAE/",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_9_handle",
+        "type": "text",
+        "text": "@MOHREUAE",
+        "fontsize": 0.014,
+        "fontcolor": "#B2832C",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.7538,
+        "textbox_y": 0.632,
+        "textbox_w": 0.16,
+        "textbox_h": 0.026,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://www.youtube.com/user/MOLUAE/",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_10_label",
+        "type": "text",
+        "text": "مركز الاتصال",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.08669999999999999,
+        "textbox_y": 0.8,
+        "textbox_w": 0.16,
+        "textbox_h": 0.03,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "tel:00971600590000",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_11_handle",
+        "type": "text",
+        "text": "600590000",
+        "fontsize": 0.014,
+        "fontcolor": "#B2832C",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.08669999999999999,
+        "textbox_y": 0.8320000000000001,
+        "textbox_w": 0.16,
+        "textbox_h": 0.026,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "tel:00971600590000",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_12_label",
+        "type": "text",
+        "text": "المحادثة المباشرة",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.2522,
+        "textbox_y": 0.8,
+        "textbox_w": 0.16,
+        "textbox_h": 0.03,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://reports.ae/lps/ar/index.html?source=mohre&lang=ar",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_14_label",
+        "type": "text",
+        "text": "البريد الإلكتروني",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.41809999999999997,
+        "textbox_y": 0.8,
+        "textbox_w": 0.16,
+        "textbox_h": 0.03,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "mailto:ask@mohre.gov.ae",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_15_handle",
+        "type": "text",
+        "text": "ask@mohre.gov.ae",
+        "fontsize": 0.014,
+        "fontcolor": "#B2832C",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.41809999999999997,
+        "textbox_y": 0.8320000000000001,
+        "textbox_w": 0.16,
+        "textbox_h": 0.026,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "mailto:ask@mohre.gov.ae",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_16_label",
+        "type": "text",
+        "text": "صوت المتعامل",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5859000000000001,
+        "textbox_y": 0.8,
+        "textbox_w": 0.16,
+        "textbox_h": 0.03,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://customervoice.mohre.gov.ae",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_17_handle",
+        "type": "text",
+        "text": "customervoice.mohre.gov.ae",
+        "fontsize": 0.014,
+        "fontcolor": "#B2832C",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.5859000000000001,
+        "textbox_y": 0.8320000000000001,
+        "textbox_w": 0.16,
+        "textbox_h": 0.026,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://customervoice.mohre.gov.ae",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_18_label",
+        "type": "text",
+        "text": "واتس اب",
+        "fontsize": 0.018,
+        "fontcolor": "#1A1A1A",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.7538,
+        "textbox_y": 0.8,
+        "textbox_w": 0.16,
+        "textbox_h": 0.03,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://api.whatsapp.com/send/?phone=971600590000",
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_19_handle",
+        "type": "text",
+        "text": "600590000",
+        "fontsize": 0.014,
+        "fontcolor": "#B2832C",
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.7538,
+        "textbox_y": 0.8320000000000001,
+        "textbox_w": 0.16,
+        "textbox_h": 0.026,
+        "start_time": 194.7,
+        "end_time": 206,
+        "href": "https://api.whatsapp.com/send/?phone=971600590000",
+        "z": 5
+      },
+      {
+        "uniq_id": "our_vision_tab",
+        "type": "text",
+        "text": "رؤيتنا",
+        "fontsize": 0.02,
+        "fontcolor": "#B2832C",
+        "textStyle": {
+          "B": "bold"
+        },
+        "alignment": "right",
+        "fontname": "Cairo",
+        "wrap_text": false,
+        "textbox_x": 0.55,
+        "textbox_y": 0.044,
+        "textbox_w": 0.1,
+        "textbox_h": 0.026,
+        "start_time": 21,
+        "end_time": 31.25,
+        "href": "http://www.mohre.gov.ae/ar/about-us/mohre-strategy.aspx",
+        "z": 12
+      },
+      {
+        "uniq_id": "mohre_logo",
+        "type": "image",
+        "src": "/edc/images/mohre_logo.png",
+        "textbox_x": 0.02,
+        "textbox_y": 0.015,
+        "textbox_w": 0.2,
+        "textbox_h": 0.08,
+        "start_time": 0,
+        "end_time": 206,
+        "z": 15
+      },
+      {
+        "uniq_id": "wps_footer_left_icon",
+        "type": "image",
+        "src": "/edc/images/wps_footer_left_icon.png",
+        "textbox_x": 0.7422,
+        "textbox_y": 0.889,
+        "textbox_w": 0.025,
+        "textbox_h": 0.037,
+        "start_time": 80.62,
+        "end_time": 91.5,
+        "z": 13
+      },
+      {
+        "uniq_id": "wps_footer_right_icon",
+        "type": "image",
+        "src": "/edc/images/wps_footer_right_icon.png",
+        "textbox_x": 0.9438,
+        "textbox_y": 0.889,
+        "textbox_w": 0.03,
+        "textbox_h": 0.037,
+        "start_time": 80.62,
+        "end_time": 91.5,
+        "z": 13
+      },
+      {
+        "uniq_id": "section1_footer_right_icon",
+        "type": "image",
+        "src": "/edc/images/section1_footer_right_icon.png",
+        "textbox_x": 0.9438,
+        "textbox_y": 0.889,
+        "textbox_w": 0.03,
+        "textbox_h": 0.037,
+        "start_time": 93.53,
+        "end_time": 135.17,
+        "z": 13
+      },
+      {
+        "uniq_id": "section2_footer_right_icon",
+        "type": "image",
+        "src": "/edc/images/section2_footer_right_icon.png",
+        "textbox_x": 0.9438,
+        "textbox_y": 0.889,
+        "textbox_w": 0.03,
+        "textbox_h": 0.037,
+        "start_time": 136.35,
+        "end_time": 173.63,
+        "z": 13
+      },
+      {
+        "uniq_id": "section3_footer_right_icon",
+        "type": "image",
+        "src": "/edc/images/section3_footer_right_icon.png",
+        "textbox_x": 0.9438,
+        "textbox_y": 0.889,
+        "textbox_w": 0.03,
+        "textbox_h": 0.037,
+        "start_time": 173.63,
+        "end_time": 194.5,
+        "z": 13
+      },
+      {
+        "uniq_id": "closing_channel_icon_0",
+        "type": "image",
+        "src": "/edc/images/closing_channel_icon_0.png",
+        "textbox_x": 0.1367,
+        "textbox_y": 0.5449999999999999,
+        "textbox_w": 0.06,
+        "textbox_h": 0.045,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_icon_1",
+        "type": "image",
+        "src": "/edc/images/closing_channel_icon_1.png",
+        "textbox_x": 0.3022,
+        "textbox_y": 0.5449999999999999,
+        "textbox_w": 0.06,
+        "textbox_h": 0.045,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_icon_2",
+        "type": "image",
+        "src": "/edc/images/closing_channel_icon_2.png",
+        "textbox_x": 0.46809999999999996,
+        "textbox_y": 0.5449999999999999,
+        "textbox_w": 0.06,
+        "textbox_h": 0.045,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_icon_3",
+        "type": "image",
+        "src": "/edc/images/closing_channel_icon_3.png",
+        "textbox_x": 0.6359,
+        "textbox_y": 0.5449999999999999,
+        "textbox_w": 0.06,
+        "textbox_h": 0.045,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_icon_4",
+        "type": "image",
+        "src": "/edc/images/closing_channel_icon_4.png",
+        "textbox_x": 0.8038,
+        "textbox_y": 0.5449999999999999,
+        "textbox_w": 0.06,
+        "textbox_h": 0.045,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_icon_5",
+        "type": "image",
+        "src": "/edc/images/closing_channel_icon_5.png",
+        "textbox_x": 0.1367,
+        "textbox_y": 0.745,
+        "textbox_w": 0.06,
+        "textbox_h": 0.045,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_icon_6",
+        "type": "image",
+        "src": "/edc/images/closing_channel_icon_6.png",
+        "textbox_x": 0.3022,
+        "textbox_y": 0.745,
+        "textbox_w": 0.06,
+        "textbox_h": 0.045,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_icon_7",
+        "type": "image",
+        "src": "/edc/images/closing_channel_icon_7.png",
+        "textbox_x": 0.46809999999999996,
+        "textbox_y": 0.745,
+        "textbox_w": 0.06,
+        "textbox_h": 0.045,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_icon_8",
+        "type": "image",
+        "src": "/edc/images/closing_channel_icon_8.png",
+        "textbox_x": 0.6359,
+        "textbox_y": 0.745,
+        "textbox_w": 0.06,
+        "textbox_h": 0.045,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_channel_icon_9",
+        "type": "image",
+        "src": "/edc/images/closing_channel_icon_9.png",
+        "textbox_x": 0.8038,
+        "textbox_y": 0.745,
+        "textbox_w": 0.06,
+        "textbox_h": 0.045,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_big_crest",
+        "type": "image",
+        "src": "/edc/images/closing_big_crest.png",
+        "textbox_x": 0.4554,
+        "textbox_y": 0.1377,
+        "textbox_w": 0.0814,
+        "textbox_h": 0.1309,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_ministry_name_en",
+        "type": "text",
+        "text": "MINISTRY OF HUMAN RESOURCES & EMIRATISATION",
+        "fontsize": 0.018,
+        "fontcolor": "#B2832C",
+        "textStyle": {
+          "B": "bold"
+        },
+        "alignment": "center",
+        "fontname": "Cairo",
+        "wrap_text": true,
+        "textbox_x": 0.3,
+        "textbox_y": 0.3684,
+        "textbox_w": 0.4,
+        "textbox_h": 0.0551,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 5
+      },
+      {
+        "uniq_id": "closing_divider_line",
+        "type": "box",
+        "boxcolor": "#00000022",
+        "textbox_x": 0.15,
+        "textbox_y": 0.44,
+        "textbox_w": 0.7,
+        "textbox_h": 0.0015,
+        "start_time": 194.7,
+        "end_time": 206,
+        "z": 4
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "title": "Intro",
+      "start_time": 0,
+      "end_time": 12.5
+    },
+    {
+      "title": "نظرة عامة - KPI boxes",
+      "start_time": 34.768,
+      "end_time": 52.986
+    },
+    {
+      "title": "نظرة عامة - workforce/alerts",
+      "start_time": 55.022,
+      "end_time": 68.669
+    },
+    {
+      "title": "الالتزام بنظام حماية الأجور",
+      "start_time": 72,
+      "end_time": 95
+    },
+    {
+      "title": "مبادرات الوزارة (static)",
+      "start_time": 98,
+      "end_time": 182
+    },
+    {
+      "title": "قنوات التواصل (static, closing)",
+      "start_time": 185,
+      "end_time": 206.1
+    }
+  ]
+}

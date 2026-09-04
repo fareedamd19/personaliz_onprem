@@ -11,6 +11,20 @@
  * requested again.
  */
 
+/**
+ * On-premise: the families ship with the bundle.
+ *
+ * The stock player asks Google for whatever family the config names. That is a
+ * third-party request on every view - and on a government page, a request that
+ * tells Google who is reading a statutory report. Here the faces are in
+ * public/edc/fonts, declared by fonts.css, which layout.js links once.
+ *
+ * The consequence to know about: a config naming a family that was not bundled
+ * falls back to a system face rather than fetching it. Bundling is done by
+ * localise_fonts.cjs, and adding a family to a design means re-running it.
+ */
+const LOCAL_STYLESHEET = "/edc/fonts/fonts.css";
+
 const REQUESTED = new Set();
 
 /** Only families that look like a real name; never inject arbitrary strings. */
@@ -40,17 +54,17 @@ export function ensureOverlayFonts(elements) {
 
   families.forEach((f) => REQUESTED.add(f));
 
-  // Weights are requested explicitly because elements can be bold, and a
-  // default request returns regular only — which would render bold text with a
-  // synthesised weight instead of the real face.
-  const query = families
-    .map((f) => `family=${encodeURIComponent(f).replace(/%20/g, "+")}:wght@400;500;600;700`)
-    .join("&");
-
+  // One local stylesheet covers every bundled family, so it is linked once
+  // rather than per family. Requesting it again is harmless but pointless.
   try {
+    const already = window.document.querySelector(
+      `link[href="${LOCAL_STYLESHEET}"]`
+    );
+    if (already) return;
+
     const link = window.document.createElement("link");
     link.rel = "stylesheet";
-    link.href = `https://fonts.googleapis.com/css2?${query}&display=swap`;
+    link.href = LOCAL_STYLESHEET;
     // A font that fails to load must not take the overlay with it.
     link.onerror = () => families.forEach((f) => REQUESTED.delete(f));
     window.document.head.appendChild(link);

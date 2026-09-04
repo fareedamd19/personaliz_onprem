@@ -40,7 +40,7 @@ const Navbar = () => {
         <Image
           src={
             customHeader?.custom_logo_img_url ||
-            "https://personaliz-uploads.s3.ap-south-1.amazonaws.com/Personaliz_white_logo.png"
+            "/edc/chrome/Personaliz_white_logo.png"
           }
           loading="lazy"
           alt="logo"

@@ -7,8 +7,8 @@ import {
   checkIfParamsArePresent,
 } from "../utils/Functions";
 import { useGlobalStoreContext } from "../context/GlobalStoreContext";
-import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { useAlert } from "../context/AlertContext";
+import { loadFirstLoad } from "../edc/edcData";
 
 const ChecksAndFirstDataOnLoad = () => {
   const {
@@ -73,7 +73,7 @@ const ChecksAndFirstDataOnLoad = () => {
           setShowErrorModal([
             "Contact not found for this personalized video",
             null,
-            "https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg",
+            "/edc/chrome/noStripeSubscription.jpg",
           ]);
         }
       }
@@ -146,64 +146,18 @@ const ChecksAndFirstDataOnLoad = () => {
     mode,
     singleSessionRestart
   ) {
-    let custom_personalized_variable_obj = {};
-
-    let parentUrl = window?.parent?.location?.href;
-    if (parentUrl) {
-      const finalurl = new URL(parentUrl);
-      const queryParamsForCustomParams = finalurl.searchParams;
-      // You can now loop through the parameters and their values
-      for (const [param, value] of queryParamsForCustomParams) {
-        custom_personalized_variable_obj[param] = value;
-      }
-      delete custom_personalized_variable_obj.id;
-      delete custom_personalized_variable_obj.mode;
-      delete custom_personalized_variable_obj.uid;
-      delete custom_personalized_variable_obj.d;
-    }
-    let visitorUniqueId;
-    const fp = await FingerprintJS.load();
-    const { visitorId } = await fp.get();
-    if (visitorId) {
-      visitorUniqueId = visitorId;
-    } else {
-      visitorUniqueId = `run_${generateRandomString(32)}`;
-    }
-    let geoIpLocationKeyObject = { city: null, state: null, country: null };
-    const deviceWidth = window.innerWidth;
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/video`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        single_session_restart: singleSessionRestart,
-        ip_address: null,
-        external_source_url: `${document.referrer ? document.referrer : null}`,
-        internal_source_url: `${
-          window.location.href ? window.location.href : null
-        }`,
-        device_print: visitorUniqueId,
-        // "location": `${interactlyIpData?.city ? interactlyIpData?.city : null}, ${interactlyIpData?.country_name ? interactlyIpData?.country_name : null}`,
-        location: JSON.stringify(geoIpLocationKeyObject),
-        channel: "landing_page",
-        ivideo_id: campaignId,
-        mode: mode || "live",
-        contact_id: contact_id,
-        device_type:
-          deviceWidth < 768
-            ? "mobile"
-            : deviceWidth >= 768 && deviceWidth < 1024
-            ? "tablet"
-            : "desktop",
-        personaliz_params_obj:
-          JSON.stringify(custom_personalized_variable_obj) !== "{}"
-            ? JSON.stringify(custom_personalized_variable_obj)
-            : null,
-      }),
-      method: "POST",
-    });
-
-    const interactlyResponseData = await res.json();
+    // On-premise: nothing is asked of Personaliz here.
+    //
+    // The stock player posts the campaign, the contact, a device fingerprint
+    // and a referrer to our API, and gets the video, the overlay, the
+    // recipient's values and a session back. None of that is available to a
+    // deployment that may not reach us - and the fingerprint and referrer are
+    // not things a government host should be sending anywhere regardless.
+    //
+    // Both halves now come from the host's own domain instead. See
+    // edc/edcData.js: one file for the campaign, one for the recipient, and a
+    // single function to swap for their own service.
+    const interactlyResponseData = await loadFirstLoad(campaignId, contact_id);
     if (interactlyResponseData.status) {
       let data = interactlyResponseData.data;
       const showRestartPopup = data.show_restart_popup;
@@ -241,7 +195,7 @@ const ChecksAndFirstDataOnLoad = () => {
       setShowErrorModal([
         "Contact not found for this personalized video",
         null,
-        "https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg",
+        "/edc/chrome/noStripeSubscription.jpg",
       ]);
     } else if (
       interactlyResponseData.status === false &&
@@ -251,7 +205,7 @@ const ChecksAndFirstDataOnLoad = () => {
       setShowErrorModal([
         "uid is requred!",
         "Please add uid in url and try again",
-        "https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg",
+        "/edc/chrome/noStripeSubscription.jpg",
       ]);
     } else if (
       interactlyResponseData.status === false &&
@@ -261,7 +215,7 @@ const ChecksAndFirstDataOnLoad = () => {
       setShowErrorModal([
         "No question available to display for this Personalized video!",
         null,
-        "https://d34um3r0i45esv.cloudfront.net/no_first_question_available_imageFinal.jpg",
+        "/edc/chrome/no_first_question_available_imageFinal.jpg",
       ]);
     } else if (
       interactlyResponseData.status === false &&
@@ -271,60 +225,24 @@ const ChecksAndFirstDataOnLoad = () => {
       setShowErrorModal([
         "Content is temporarily unavailable!",
         "Please try after some time",
-        "https://d34um3r0i45esv.cloudfront.net/noStripeSubscription.jpg",
+        "/edc/chrome/noStripeSubscription.jpg",
       ]);
     }
   }
 
-  const makingGeoIpCallAndUpdatingSession = async (interactlyResponseData) => {
-    let interactlyIpData;
-    let interactlyDefaultAPIFORSESSIONUPDATE = `${process.env.NEXT_PUBLIC_API}/video/update_session_data`;
-    try {
-      const interactlyIpDataResponse = await fetch(
-        "https://interactly.video:3000/v1/geoIp"
-      );
-      if (interactlyIpDataResponse) {
-        interactlyIpData = await interactlyIpDataResponse.json();
-      } else {
-        interactlyIpData = { city: false, country_name: false, IPv4: false };
-      }
-    } catch (error) {
-      console.log("IP response error", error.message);
-    }
-
-    interactlyIpData = interactlyIpData._ip;
-
-    let geoIpLocationKeyObject = {
-      city: interactlyIpData?.city ? interactlyIpData?.city : null,
-      state: interactlyIpData?.state ? interactlyIpData?.state : null,
-      country: interactlyIpData?.country_name
-        ? interactlyIpData?.country_name
-        : null,
-    };
-
-    const deviceWidth = window.innerWidth;
-
-    const res = await fetch(`${interactlyDefaultAPIFORSESSIONUPDATE}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ip_address: interactlyIpData?._myip,
-        location: JSON.stringify(geoIpLocationKeyObject),
-        session_id: interactlyResponseData.session_id,
-        device_type:
-          deviceWidth < 768
-            ? "mobile"
-            : deviceWidth >= 768 && deviceWidth < 1024
-            ? "tablet"
-            : "desktop",
-      }),
-      method: "POST",
-    });
-
-    //eslint-disable-next-line no-unused-vars
-    const response = await res.json();
-  };
+  /**
+   * Deliberately empty on-premise.
+   *
+   * The stock player looks the viewer's IP up against a third-party geo
+   * service and posts their city, country and device back to us as session
+   * data. Both halves are out of the question here: the first sends a
+   * citizen's address to a third party, the second is the call home this
+   * deployment exists to remove.
+   *
+   * Kept as a no-op rather than deleted, so the call site upstream still
+   * reads the same and this file stays easy to diff against the stock player.
+   */
+  const makingGeoIpCallAndUpdatingSession = async () => {};
 
   return <></>;
 };

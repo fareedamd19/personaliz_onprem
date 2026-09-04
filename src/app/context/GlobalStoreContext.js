@@ -206,8 +206,11 @@ const GlobalStoreProvider = ({ children }) => {
             firstLoadData.videoConfig.font_obj
           ).font_name;
           if (fontFamilyName) {
+            // On-premise: the widget's own face comes from the bundle, for the
+            // same reason the overlay's does - see utils/overlayFonts.js. The
+            // family named in videoConfig has to be one that was bundled.
             let style = window.document.createElement("style");
-            style.textContent = `@import url("https://fonts.googleapis.com/css2?family=${fontFamilyName}&display=swap")`;
+            style.textContent = `@import url("/edc/fonts/fonts.css")`;
             window.document.head.appendChild(style);
           }
         }

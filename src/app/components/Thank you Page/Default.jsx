@@ -16,7 +16,7 @@ const Default = () => {
             >
                 <div className="flex flex-col justify-center items-center gap-5">
                     <Image
-                        src="https://dyolkjkaata8s.cloudfront.net/thanks.png"
+                        src="/edc/chrome/thanks.png"
                         alt="thanks"
                         width={120}
                         height={120}
@@ -27,7 +27,7 @@ const Default = () => {
                     </p>
                     <div className="flex items-center gap-4">
                         <Image
-                            src="https://d34um3r0i45esv.cloudfront.net/lamp.svg"
+                            src="/edc/chrome/lamp.svg"
                             alt="lamp"
                             className="w-[50px]"
                             width={100}

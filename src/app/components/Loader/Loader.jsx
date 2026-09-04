@@ -42,7 +42,7 @@ const Loader = ({ server_personaliz_branding }) => {
           {server_personaliz_branding === "none" ? (
             <Image
               src={
-                "https://personaliz.s3.ap-south-1.amazonaws.com/Personaliz+Logos/Personaliz_custom+loader.gif"
+                "/edc/chrome/Personaliz_custom_loader.gif"
               }
               height={117}
               width={117}
@@ -52,7 +52,7 @@ const Loader = ({ server_personaliz_branding }) => {
             <video
               className={styles.videoElm}
               src={
-                "https://personaliz.s3.ap-south-1.amazonaws.com/PersonalizBlackLogoAnimatedForLoading.mp4"
+                "/edc/chrome/PersonalizBlackLogoAnimatedForLoading.mp4"
               }
               playsInline
               muted
