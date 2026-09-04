@@ -124,7 +124,10 @@ export async function loadFirstLoad(campaignId, contactId) {
       translated_texts: null,
       video_consent: false,
       is_consent_video_url: false,
-      personaliz_branding: false,
+      // The player tests this against the literal "none" - a falsy value is
+      // not the same thing and still renders the bar. White-label is the
+      // point here: the page belongs to the host, not to us.
+      personaliz_branding: "none",
     },
   };
 }

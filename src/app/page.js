@@ -26,9 +26,12 @@ export const metadata = {
 };
 
 export default function Home() {
+  // "none" rather than null: the loader and the player both test for that
+  // exact string, and anything else shows the Personaliz bar. The deployment
+  // is white-label - the page is the host's.
   return (
     <AlertProvider>
-      <MainEntryPoint server_personaliz_branding={null} />
+      <MainEntryPoint server_personaliz_branding="none" />
     </AlertProvider>
   );
 }
