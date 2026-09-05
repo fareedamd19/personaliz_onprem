@@ -83,9 +83,16 @@ export function installOnPremiseNetworkGuard() {
     const url = typeof input === "string" ? input : input?.url ?? "";
     if (!isPermitted(url)) {
       note("fetch", init?.method || "GET", url);
-      // Refused, not failed: a rejected promise surfaces as an unhandled error
-      // in call sites that do not catch. An empty 204 lets them carry on.
-      return new Response(null, { status: 204, statusText: "Blocked on-premise" });
+      // Refused, not failed - and refused in a shape the caller can actually
+      // swallow. Every one of these call sites does `await res.json()` without
+      // catching, so an empty body (a 204, or a null one) throws
+      // "Unexpected end of input" straight into the console and looks like a
+      // broken page. A well-formed JSON body is parsed, found unusable, and
+      // ignored, which is what "this call did not happen" should look like.
+      return new Response(
+        JSON.stringify({ status: false, blocked: "on-premise" }),
+        { status: 200, headers: { "Content-Type": "application/json" } }
+      );
     }
     return realFetch(input, init);
   };
@@ -106,11 +113,13 @@ export function installOnPremiseNetworkGuard() {
     RealXHR.prototype.send = function (...args) {
       if (this.__edcBlocked) {
         note("xhr", this.__edcMethod || "GET", this.__edcUrl || "");
-        // Report a finished, empty request rather than an error, for the same
-        // reason as above.
+        // A finished request carrying parseable JSON, for the same reason as
+        // above: an empty responseText throws in anything that JSON.parses it.
+        const body = JSON.stringify({ status: false, blocked: "on-premise" });
         Object.defineProperty(this, "readyState", { value: 4, configurable: true });
-        Object.defineProperty(this, "status", { value: 204, configurable: true });
-        Object.defineProperty(this, "responseText", { value: "", configurable: true });
+        Object.defineProperty(this, "status", { value: 200, configurable: true });
+        Object.defineProperty(this, "responseText", { value: body, configurable: true });
+        Object.defineProperty(this, "response", { value: body, configurable: true });
         setTimeout(() => {
           this.onreadystatechange?.();
           this.onload?.();
