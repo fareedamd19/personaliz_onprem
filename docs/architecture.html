@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On-Premise Player Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+  :root {
+    --ground:      #F7F8FA;
+    --surface:     #FFFFFF;
+    --sunk:        #EEF1F5;
+    --ink:         #16191F;
+    --ink-soft:    #454C56;
+    --muted:       #767D87;
+    --rule:        #E1E5EA;
+    --rule-firm:   #C6CDD6;
+
+    /* Ownership is the argument, so it carries the palette. Three roles,
+       and the distinction between the second and third is the whole point:
+       one is contacted while a recipient watches, the other never is. */
+    --host:        #1F6F5C;   /* on the host's own infrastructure          */
+    --host-soft:   #E3F0EC;
+    --cdn:         #8A6321;   /* outside, but contacted at playback        */
+    --cdn-soft:    #F7EEDD;
+    --structure:   #3E5C8A;   /* outside, and only at design time          */
+    --removed:     #A8452F;   /* only ever used for what was taken out     */
+
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    --measure: 66ch;
+    --pad: clamp(1.25rem, 4vw, 3.25rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #14171C;
+      --surface:     #1C2027;
+      --sunk:        #22272F;
+      --ink:         #E8EBEF;
+      --ink-soft:    #B4BAC3;
+      --muted:       #838A94;
+      --rule:        #2B313A;
+      --rule-firm:   #3B434E;
+      --host:        #5FBFA4;
+      --host-soft:   #16302A;
+      --cdn:         #D6A94F;
+      --cdn-soft:    #2E2617;
+      --structure:   #8AAAD6;
+      --removed:     #E08A6E;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:      #14171C;
+    --surface:     #1C2027;
+    --sunk:        #22272F;
+    --ink:         #E8EBEF;
+    --ink-soft:    #B4BAC3;
+    --muted:       #838A94;
+    --rule:        #2B313A;
+    --rule-firm:   #3B434E;
+    --host:        #5FBFA4;
+    --host-soft:   #16302A;
+    --cdn:         #D6A94F;
+    --cdn-soft:    #2E2617;
+    --structure:   #8AAAD6;
+    --removed:     #E08A6E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1060px; margin: 0 auto; padding: var(--pad) var(--pad) 5rem; }
+  .measure { max-width: var(--measure); }
+
+  /* ---------- masthead ---------- */
+
+  header.masthead {
+    display: grid;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 2.75rem;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--host);
+    margin: 0;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    font-weight: 600;
+    letter-spacing: -.025em;
+    line-height: 1.08;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-size: clamp(1.02rem, 2vw, 1.14rem);
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  /* ---------- section headings ---------- */
+
+  h2.section {
+    font-family: var(--mono);
+    font-size: .74rem;
+    font-weight: 600;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    margin: 3.25rem 0 1.4rem;
+  }
+  h2.section::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  p { max-width: var(--measure); }
+  h2.section + p { margin-top: 0; }
+
+  code {
+    font-family: var(--mono);
+    font-size: .85em;
+    background: var(--sunk);
+    padding: .1em .36em;
+    border-radius: 2px;
+    word-break: break-word;
+  }
+
+  /* ---------- the claim ---------- */
+
+  .claim {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--host);
+    padding: 1.4rem 1.6rem;
+    display: grid;
+    gap: .55rem;
+  }
+  .claim strong { font-weight: 600; }
+  .claim p { margin: 0; max-width: 64ch; }
+  .claim .lead { font-size: 1.12rem; color: var(--ink); }
+
+  /* ---------- figure ---------- */
+
+  figure { margin: 0; }
+  .fig-scroll { overflow-x: auto; }
+  figure svg {
+    display: block;
+    width: 100%;
+    min-width: 790px;
+    height: auto;
+    color: var(--ink-soft);
+  }
+  .s-fill   { fill: var(--surface); }
+  .s-sunk   { fill: var(--sunk); }
+  .t-title  { font-family: var(--mono); font-size: 13px; font-weight: 600; fill: var(--ink); }
+  .t-body   { font-family: var(--sans); font-size: 11.5px; fill: var(--ink-soft); }
+  .t-dim    { font-family: var(--sans); font-size: 11.5px; fill: var(--muted); }
+  .t-zone   { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .12em; }
+  .t-edge   { font-family: var(--mono); font-size: 11px; fill: var(--ink-soft); }
+
+  figcaption {
+    margin-top: 1rem;
+    font-size: .88rem;
+    color: var(--muted);
+    max-width: var(--measure);
+    line-height: 1.65;
+  }
+  figcaption b { color: var(--ink-soft); font-weight: 600; }
+
+  /* legend — the three roles the palette encodes */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.4rem;
+    margin-top: 1.2rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+    font-size: .84rem;
+    color: var(--ink-soft);
+  }
+  .legend span { display: flex; align-items: baseline; gap: .5rem; }
+  .legend i {
+    width: .62rem; height: .62rem;
+    flex: none;
+    transform: translateY(1px);
+  }
+  .legend .k-host { background: var(--host); }
+  .legend .k-cdn  { background: var(--cdn); }
+  .legend .k-str  { background: var(--structure); }
+
+  /* ---------- two phases ---------- */
+
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 1.4rem;
+  }
+  .phase { background: var(--surface); padding: 1.3rem 1.45rem 1.5rem; }
+  .phase h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 .2rem;
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    flex-wrap: wrap;
+  }
+  .phase .when {
+    font-family: var(--mono);
+    font-size: .68rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: .16rem .45rem;
+  }
+  .phase.build .when { background: var(--sunk); color: var(--structure); }
+  .phase.run .when   { background: var(--host-soft); color: var(--host); }
+  .phase > p { font-size: .93rem; color: var(--ink-soft); margin: .5rem 0 0; }
+  .phase ul { margin: .8rem 0 0; padding-left: 1.05rem; display: grid; gap: .4rem; }
+  .phase li { font-size: .92rem; color: var(--ink-soft); }
+  .phase li::marker { color: var(--host); }
+  .phase.build li::marker { color: var(--structure); }
+
+  /* ---------- manifest ---------- */
+
+  .table-scroll { overflow-x: auto; margin-top: 1.4rem; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 580px; }
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: .68rem;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 0 1.1rem .55rem 0;
+    border-bottom: 1px solid var(--rule-firm);
+  }
+  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td {
+    padding: .7rem 1.1rem .7rem 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  td.file { font-family: var(--mono); font-size: .84rem; color: var(--ink); white-space: nowrap; }
+  tr.total td { border-top: 1px solid var(--rule-firm); border-bottom: none; font-weight: 600; color: var(--ink); padding-top: .9rem; }
+  tr.optional td { color: var(--muted); }
+  tr.optional td.file { color: var(--muted); }
+
+  /* ---------- removed ---------- */
+
+  .removed-list { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 1.4rem; }
+  .removed-item {
+    background: var(--surface);
+    display: grid;
+    grid-template-columns: minmax(180px, 15rem) 1fr;
+    gap: 1.2rem;
+    padding: .95rem 1.3rem;
+  }
+  .removed-item .what {
+    font-family: var(--mono);
+    font-size: .82rem;
+    color: var(--removed);
+    font-weight: 500;
+  }
+  .removed-item .why { font-size: .91rem; color: var(--ink-soft); }
+  @media (max-width: 620px) {
+    .removed-item { grid-template-columns: 1fr; gap: .3rem; }
+  }
+
+  /* ---------- requirements ---------- */
+
+  .reqs { display: grid; gap: .9rem; margin-top: 1.4rem; padding: 0; list-style: none; max-width: var(--measure); }
+  .reqs li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .85rem;
+    align-items: baseline;
+    font-size: .95rem;
+    color: var(--ink-soft);
+  }
+  .reqs li::before {
+    content: "";
+    width: .5rem; height: .5rem;
+    background: var(--host);
+    transform: translateY(-1px);
+  }
+  .reqs strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- verification ---------- */
+
+  .verified {
+    margin-top: 1.4rem;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--host);
+    background: var(--surface);
+    padding: 1.25rem 1.5rem;
+  }
+  .verified h3 {
+    font-family: var(--mono);
+    font-size: .72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--host);
+    margin: 0 0 .8rem;
+    font-weight: 600;
+  }
+  .verified table { min-width: 0; font-size: .87rem; }
+  .verified td { border-bottom: 1px solid var(--rule); }
+  .verified tr:last-child td { border-bottom: none; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: .72rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+</style>
+<style>
+  /* Supplied by the artifact host when published; needed when opened from
+     disk. Kept minimal and last so the page's own rules still win. */
+  html { color-scheme: light dark; }
+  body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+
+  @media print {
+    body { background: #fff; }
+    .wrap { padding: 0 1.5rem 2rem; max-width: none; }
+    figure, .phases, .removed-list, .verified, table { break-inside: avoid; }
+    h2.section { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Deployment architecture &middot; personalised video</p>
+    <h1>Running the player on someone else&rsquo;s infrastructure</h1>
+    <p class="standfirst">
+      How a personalised video statement is delivered from a client&rsquo;s own servers, with no
+      request reaching Personaliz while a recipient is watching.
+    </p>
+  </header>
+
+  <div class="claim">
+    <p class="lead">
+      <strong>The film is a static file. The personalisation is a small JSON file. The browser
+      puts them together.</strong>
+    </p>
+    <p>
+      Nothing is rendered per recipient, nothing is stored, and no service of ours sits in the
+      path. What the client hosts is a folder; what they supply is one lookup against their own
+      data.
+    </p>
+  </div>
+
+  <h2 class="section">Where everything runs</h2>
+
+  <figure>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 900 590" role="img"
+           aria-label="Architecture diagram. A boundary marks the host's own infrastructure and contains their web server, the recipient's browser and their data API; all personal data stays inside it. Two things sit outside: a CDN, which the browser contacts during playback for the film only, and the Personaliz dashboard, which is contacted only at design time and hands over a config file.">
+        <defs>
+          <marker id="a-host" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--host)"></path>
+          </marker>
+          <marker id="a-cdn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--cdn)"></path>
+          </marker>
+          <marker id="a-struct" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--structure)"></path>
+          </marker>
+        </defs>
+
+        <!-- ===== the premises ===== -->
+        <rect class="s-sunk" x="24" y="70" width="600" height="490" rx="4"
+              stroke="var(--host)" stroke-width="1.5"></rect>
+        <text class="t-zone" x="44" y="99" fill="var(--host)">THE HOST&rsquo;S OWN INFRASTRUCTURE</text>
+        <text class="t-dim" x="44" y="118">Every byte of personal data stays inside this line.</text>
+
+        <!-- web server -->
+        <rect class="s-fill" x="56" y="140" width="240" height="120" rx="3"
+              stroke="var(--host)" stroke-width="1.5"></rect>
+        <text class="t-title" x="76" y="168">Their web server</text>
+        <text class="t-body" x="76" y="190">nginx / IIS / their own CDN</text>
+        <text class="t-body" x="76" y="210">serves one folder of files</text>
+        <text class="t-dim" x="76" y="234">no application, no database</text>
+        <text class="t-dim" x="76" y="250">answers byte-range requests</text>
+
+        <!-- browser -->
+        <rect class="s-fill" x="56" y="310" width="240" height="200" rx="3"
+              stroke="var(--host)" stroke-width="1.5"></rect>
+        <text class="t-title" x="76" y="338">Recipient&rsquo;s browser</text>
+        <rect x="76" y="352" width="200" height="46" rx="2" fill="var(--host-soft)"
+              stroke="var(--host)" stroke-width="1" stroke-opacity=".4"></rect>
+        <text class="t-body" x="90" y="372" font-weight="600">Overlay layer</text>
+        <text class="t-dim" x="90" y="389">live HTML drawn over the film</text>
+        <rect x="76" y="418" width="200" height="52" rx="2" fill="var(--cdn-soft)"
+              stroke="var(--cdn)" stroke-width="1" stroke-opacity=".45"></rect>
+        <text class="t-body" x="90" y="440" font-weight="600">&lt;video&gt; element</text>
+        <text class="t-dim" x="90" y="458">streams the template</text>
+        <text class="t-dim" x="76" y="494">nothing is written to disk</text>
+
+        <!-- data api -->
+        <rect class="s-fill" x="400" y="310" width="200" height="120" rx="3"
+              stroke="var(--host)" stroke-width="1.5"></rect>
+        <text class="t-title" x="418" y="338">Their data API</text>
+        <text class="t-body" x="418" y="360">reads their own database</text>
+        <text class="t-body" x="418" y="380">returns one recipient&rsquo;s values</text>
+        <text class="t-dim" x="418" y="404">the only per-person work</text>
+        <text class="t-dim" x="418" y="420">in the whole system</text>
+
+        <!-- server -> browser -->
+        <line x1="176" y1="262" x2="176" y2="306" stroke="var(--host)" stroke-width="1.5" marker-end="url(#a-host)"></line>
+        <text class="t-edge" x="190" y="290">page, player, overlay config</text>
+
+        <!-- browser <-> api, in the corridor between them -->
+        <line x1="300" y1="348" x2="396" y2="348" stroke="var(--host)" stroke-width="1.5" marker-end="url(#a-host)"></line>
+        <text class="t-edge" x="348" y="340" text-anchor="middle">the token</text>
+        <line x1="396" y1="390" x2="300" y2="390" stroke="var(--host)" stroke-width="1.5" marker-end="url(#a-host)"></line>
+        <text class="t-edge" x="348" y="382" text-anchor="middle">their values</text>
+
+        <!-- ===== outside: personaliz, design time only ===== -->
+        <rect class="s-fill" x="680" y="140" width="200" height="120" rx="3"
+              stroke="var(--structure)" stroke-width="1.5" stroke-dasharray="5 4"></rect>
+        <text class="t-zone" x="680" y="122" fill="var(--structure)">PERSONALIZ &mdash; DESIGN TIME</text>
+        <text class="t-title" x="698" y="170">Our dashboard</text>
+        <text class="t-body" x="698" y="192">where the overlay is</text>
+        <text class="t-body" x="698" y="212">designed and exported</text>
+        <text class="t-dim" x="698" y="236">never reached while</text>
+        <text class="t-dim" x="698" y="252">anyone is watching</text>
+
+        <line x1="676" y1="200" x2="300" y2="200" stroke="var(--structure)" stroke-width="1.5"
+              stroke-dasharray="2 5" marker-end="url(#a-struct)"></line>
+        <text class="t-edge" x="660" y="192" text-anchor="end" fill="var(--structure)">a config file, by hand, when a design changes</text>
+
+        <!-- ===== outside: the cdn, playback ===== -->
+        <rect class="s-fill" x="680" y="420" width="200" height="130" rx="3"
+              stroke="var(--cdn)" stroke-width="1.5"></rect>
+        <text class="t-zone" x="680" y="402" fill="var(--cdn)">CDN &mdash; THE FILM ONLY</text>
+        <text class="t-title" x="698" y="450">Wherever the film lives</text>
+        <text class="t-body" x="698" y="472">one blank template,</text>
+        <text class="t-body" x="698" y="492">identical for everyone</text>
+        <text class="t-dim" x="698" y="516">theirs or ours &mdash; one URL</text>
+        <text class="t-dim" x="698" y="532">in the config decides</text>
+
+        <line x1="676" y1="444" x2="300" y2="444" stroke="var(--cdn)" stroke-width="1.5" marker-end="url(#a-cdn)"></line>
+        <text class="t-edge" x="660" y="464" text-anchor="end" fill="var(--cdn)">the film, in byte ranges</text>
+      </svg>
+    </div>
+    <figcaption>
+      <b>The boundary is the argument.</b> Every recipient value, and every request carrying one,
+      stays inside the enclosure. Two lines cross it and neither carries personal data: the dotted
+      one is a file handed over when a design changes, not a connection; the solid one fetches the
+      same blank film every viewer gets, addressed by a plain URL. Point that URL at the host&rsquo;s
+      own storage and nothing crosses the boundary at all.
+    </figcaption>
+    <div class="legend">
+      <span><i class="k-host"></i> On the host&rsquo;s infrastructure</span>
+      <span><i class="k-cdn"></i> Outside, contacted during playback &mdash; the film, nothing else</span>
+      <span><i class="k-str"></i> Outside, contacted only at design time</span>
+    </div>
+  </figure>
+
+  <h2 class="section">Two phases, deliberately separate</h2>
+
+  <p class="measure">
+    Most of the confusion about this architecture comes from collapsing these two. Our dashboard
+    is involved in one of them and absent from the other.
+  </p>
+
+  <div class="phases">
+    <div class="phase build">
+      <h3>Design <span class="when">once, up front</span></h3>
+      <p>Someone positions the elements over the film, sets the timings and the animation.</p>
+      <ul>
+        <li>Happens in our dashboard, on our infrastructure</li>
+        <li>Produces one config file per campaign</li>
+        <li>Sent to the host the way any file is sent</li>
+        <li>Repeats only when a design changes</li>
+      </ul>
+    </div>
+    <div class="phase run">
+      <h3>Playback <span class="when">every view</span></h3>
+      <p>A recipient opens their link and the browser assembles the statement.</p>
+      <ul>
+        <li>Host&rsquo;s web server hands over the folder</li>
+        <li>Host&rsquo;s API returns that recipient&rsquo;s values</li>
+        <li>Browser draws the overlay over the film</li>
+        <li>Personaliz is not contacted at all</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="section">What gets deployed</h2>
+
+  <p class="measure">
+    One folder, and it is mostly the player. The figures are measured from the current build:
+    two campaigns, an Arabic film with an 87-element overlay and an English one with 61. Each is
+    a self-contained campaign reached by its own link.
+  </p>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>File</th>
+          <th>What it is</th>
+          <th class="num">Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="file">index.html</td>
+          <td>An empty shell. No recipient data, no film, no text &mdash; everything arrives after load.</td>
+          <td class="num">12 KB</td>
+        </tr>
+        <tr>
+          <td class="file">_next/</td>
+          <td>The player itself: overlay engine, animation, variable substitution.</td>
+          <td class="num">1.8 MB</td>
+        </tr>
+        <tr>
+          <td class="file">video_d53f2d06.json</td>
+          <td>Arabic campaign. Positions, timings, keyframes. Identical for every recipient.</td>
+          <td class="num">68 KB</td>
+        </tr>
+        <tr>
+          <td class="file">video_28bf7be5.json</td>
+          <td>English campaign, its own film and its own overlay.</td>
+          <td class="num">80 KB</td>
+        </tr>
+        <tr>
+          <td class="file">contact1.json</td>
+          <td>One sample recipient. <strong>The host replaces this with their own lookup.</strong></td>
+          <td class="num">4 KB</td>
+        </tr>
+        <tr>
+          <td class="file">images/ fonts/ chrome/</td>
+          <td>Overlay artwork, the Arabic typeface, and the player&rsquo;s own icons &mdash; all local rather than fetched.</td>
+          <td class="num">1.5 MB</td>
+        </tr>
+        <tr class="total">
+          <td class="file">total</td>
+          <td>No runtime, no database, nothing to install. Films stream from the CDN.</td>
+          <td class="num">3.6 MB</td>
+        </tr>
+        <tr class="optional">
+          <td class="file">media/</td>
+          <td>Optional local copies of both films, for a deployment that wants no external origin at all.</td>
+          <td class="num">+22 MB</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section">What was taken out, and why</h2>
+
+  <p class="measure">
+    The stock player is built for our own hosting. Five things had to go before it could run
+    somewhere that must not reach us.
+  </p>
+
+  <div class="removed-list">
+    <div class="removed-item">
+      <span class="what">The first-load API call</span>
+      <span class="why">Returned the film, the design, the recipient&rsquo;s values and a session in one response. Split into two files the host serves themselves.</span>
+    </div>
+    <div class="removed-item">
+      <span class="what">Server-side page metadata</span>
+      <span class="why">Fetched a link-preview thumbnail from us on every view, and forced the page to be rendered per request. Removing it is what makes a static build possible.</span>
+    </div>
+    <div class="removed-item">
+      <span class="what">Device fingerprinting</span>
+      <span class="why">Identified the browser. Not something a government host should be sending anywhere.</span>
+    </div>
+    <div class="removed-item">
+      <span class="what">Geo-IP lookup</span>
+      <span class="why">Sent the viewer&rsquo;s address to a third party.</span>
+    </div>
+    <div class="removed-item">
+      <span class="what">Fonts and icons from our CDN</span>
+      <span class="why">The Arabic typeface came from Google and the player&rsquo;s icons from our CloudFront &mdash; a third-party request on every view. Both now ship in the folder.</span>
+    </div>
+  </div>
+
+  <p class="measure" style="margin-top:1.4rem;">
+    None of this rests on having found and deleted every call. A guard sits in front of every
+    outgoing request, refuses anything not addressed to the host&rsquo;s own server, and records what
+    it refused &mdash; so the claim can be checked rather than trusted. A Content-Security-Policy
+    header on the host&rsquo;s server is the enforcement behind it, since a browser fetching an image
+    or a film never passes through the guard at all.
+  </p>
+
+  <h2 class="section">What the host has to provide</h2>
+
+  <ul class="reqs">
+    <li><strong>A web server that answers byte-range requests.</strong> nginx, IIS, Apache and S3 with a CDN all do by default. This is what lets the film stream instead of downloading whole.</li>
+    <li><strong>Somewhere to put the folder.</strong> Static hosting. No Node process, no database, no install.</li>
+    <li><strong>One API returning a recipient&rsquo;s values.</strong> It receives the token already in the play link and returns a set of names and values. This is the only integration point, and it is one function in one file.</li>
+  </ul>
+
+  <p class="measure" style="margin-top:1.4rem;">
+    Everything else &mdash; the animation, the charts, the conditional sections, the right-to-left
+    layout &mdash; runs in the recipient&rsquo;s browser from files the host already has.
+  </p>
+
+  <h2 class="section">Measured, not asserted</h2>
+
+  <p class="measure">
+    Both campaigns were built with no configuration file present, exactly as a fresh clone of the
+    repository would be, served from a plain static file server and driven in a real browser.
+  </p>
+
+  <div class="verified">
+    <h3>Current build</h3>
+    <table>
+      <tbody>
+        <tr>
+          <td class="file">Arabic</td>
+          <td>film decodes at 1920&times;1080, overlay draws throughout</td>
+          <td class="num">0 failed requests</td>
+        </tr>
+        <tr>
+          <td class="file">English</td>
+          <td>film decodes at 1024&times;576, overlay draws throughout</td>
+          <td class="num">0 failed requests</td>
+        </tr>
+        <tr>
+          <td class="file">Origins</td>
+          <td colspan="2">Two, both expected: the host&rsquo;s own server, and the CDN the film is addressed from. Nothing else was contacted.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="measure" style="margin-top:1.4rem;">
+    One known gap: the English master is 1024&times;576 against the Arabic 1920&times;1080, and it has
+    text baked into the film, so the difference is visible. Replacing it is an upload, not a code
+    change.
+  </p>
+
+  <footer>
+    Figures measured from the current build of the on-premise player &mdash; MOHRE establishment
+    statement, Arabic and English &mdash; served from a static file server with no application
+    behind it.<br>
+    Each language is a standalone campaign addressed by its own link; there is no in-player
+    language switch.
+  </footer>
+
+</div>
+</body>
+</html>

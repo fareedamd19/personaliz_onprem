@@ -4,6 +4,13 @@ A build of the Personaliz player that runs entirely on the host's own
 infrastructure. No request reaches Personaliz while a recipient is watching —
 not for the video, not for their data, not for analytics, not for a font.
 
+## Architecture
+
+`docs/architecture.html` is the deployment picture: what runs where, what
+crosses the boundary and what does not, the deployed file manifest with real
+sizes, and what the host has to provide. `docs/architecture.pdf` is the same
+document for sending on.
+
 ## What this is
 
 The stock player asks our API one question on load and gets everything back:
