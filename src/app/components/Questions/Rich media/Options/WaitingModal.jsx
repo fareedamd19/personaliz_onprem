@@ -5,7 +5,7 @@ const WaitingModal = ({handleGoBack,targetSrc}) => {
   return (
    <>
     <section className='w-full h-full flex flex-col items-center justify-center p-4 bg-white gap-7'>
-    <Image src="/edc/chrome/Personaliz_Black_Logo_With_Text.png" alt="brand logo" width={200} height={200} />
+    <Image src="/onprem/chrome/Personaliz_Black_Logo_With_Text.png" alt="brand logo" width={200} height={200} />
     <h1 className='text-black text-xl font-semibold text-center'>{`⏳ We're waiting for you to give us access to your ${targetSrc==="screen"?'screen &':targetSrc==="video"?"camera &":""} microphone...`}</h1>
     <p className='text-black text-base text-center'>{`Please follow your browser's instructions.`}</p>
 

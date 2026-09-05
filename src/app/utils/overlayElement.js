@@ -394,14 +394,23 @@ export function normalizeVariants(config) {
   if (!Array.isArray(variants) || variants.length === 0) return [];
   return variants
     .filter((v) => v && v.lang)
-    .map((v) => ({
-      lang: String(v.lang),
-      label: v.label || String(v.lang).toUpperCase(),
-      rtl: Boolean(v.rtl),
-      videoUrl: v.videoUrl || null,
-      elements: Array.isArray(v.elements) ? v.elements : [],
-      chapters: Array.isArray(v.chapters) ? v.chapters : [],
-    }));
+    .map((v) => {
+      const elements = Array.isArray(v.elements) ? v.elements : [];
+      return {
+        lang: String(v.lang),
+        label: v.label || String(v.lang).toUpperCase(),
+        rtl: Boolean(v.rtl),
+        videoUrl: v.videoUrl || null,
+        elements,
+        // The player reads a variant's own overlay from `config`, not from
+        // `elements`. Normalising to `elements` alone dropped it silently, so
+        // a variant could only ever swap the film: switching to Arabic left
+        // the English wording on screen over an Arabic video. Both spellings
+        // are accepted and both are carried through.
+        config: Array.isArray(v.config) ? v.config : elements,
+        chapters: Array.isArray(v.chapters) ? v.chapters : [],
+      };
+    });
 }
 
 /**

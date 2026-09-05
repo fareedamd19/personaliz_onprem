@@ -17,13 +17,13 @@
  * The stock player asks Google for whatever family the config names. That is a
  * third-party request on every view - and on a government page, a request that
  * tells Google who is reading a statutory report. Here the faces are in
- * public/edc/fonts, declared by fonts.css, which layout.js links once.
+ * public/onprem/fonts, declared by fonts.css, which layout.js links once.
  *
  * The consequence to know about: a config naming a family that was not bundled
  * falls back to a system face rather than fetching it. Bundling is done by
  * localise_fonts.cjs, and adding a family to a design means re-running it.
  */
-const LOCAL_STYLESHEET = "/edc/fonts/fonts.css";
+const LOCAL_STYLESHEET = "/onprem/fonts/fonts.css";
 
 const REQUESTED = new Set();
 

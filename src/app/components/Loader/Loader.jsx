@@ -42,7 +42,7 @@ const Loader = ({ server_personaliz_branding }) => {
           {server_personaliz_branding === "none" ? (
             <Image
               src={
-                "/edc/chrome/Personaliz_custom_loader.gif"
+                "/onprem/chrome/Personaliz_custom_loader.gif"
               }
               height={117}
               width={117}
@@ -52,7 +52,7 @@ const Loader = ({ server_personaliz_branding }) => {
             <video
               className={styles.videoElm}
               src={
-                "/edc/chrome/PersonalizBlackLogoAnimatedForLoading.mp4"
+                "/onprem/chrome/PersonalizBlackLogoAnimatedForLoading.mp4"
               }
               playsInline
               muted

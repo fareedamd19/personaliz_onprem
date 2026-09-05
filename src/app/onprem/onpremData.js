@@ -23,7 +23,7 @@
  */
 
 /** Where the two files live, relative to wherever the player is hosted. */
-const BASE = process.env.NEXT_PUBLIC_EDC_BASE || "/edc";
+const BASE = process.env.NEXT_PUBLIC_ONPREM_BASE || "/edc";
 
 /** Which recipient to load when the host has not wired their own API yet. */
 const SAMPLE_RECIPIENT = "contact1";
@@ -104,6 +104,14 @@ export async function loadFirstLoad(campaignId, contactId) {
         type: campaign.dynamic_text_display?.type || "web",
         config: campaign.dynamic_text_display?.config || [],
         variables: recipient.variables || {},
+        // Language variants, each carrying its own film and its own wording.
+        // The switch button only renders when there is more than one, so a
+        // single-language campaign is unaffected by this being passed through.
+        languages: campaign.dynamic_text_display?.languages || [],
+        defaultLang:
+          campaign.defaultLang ||
+          campaign.dynamic_text_display?.defaultLang ||
+          null,
       },
       chapters: campaign.chapters || [],
       // GlobalStoreContext JSON.parse()s these and dereferences the result

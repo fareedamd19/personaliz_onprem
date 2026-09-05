@@ -43,7 +43,7 @@ else{
        {tempVideoUrl.current&& <div className='w-full h-full relative cursor-pointer'>
       
             <video onClick={handleVideoClick} ref={videoRef} src={tempVideoUrl.current} className='w-full h-full object-cover'/>
-            {!isPlaying&&<Image onClick={handleVideoClick} className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' src='/edc/chrome/personaliz_play_Icon.svg' height={80} width={80} alt='personaliz play icon'/>}
+            {!isPlaying&&<Image onClick={handleVideoClick} className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' src='/onprem/chrome/personaliz_play_Icon.svg' height={80} width={80} alt='personaliz play icon'/>}
 
             <div className='flex flex-col gap-3 absolute bottom-3 left-1/2 -translate-x-1/2'>
                 <p className='text-white text-lg font-semibold text-center'>Ready to send ?</p>

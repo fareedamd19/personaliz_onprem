@@ -12,7 +12,7 @@ import RecordedVideoPreviewer from './RecordedVideoPreviewer'
 function CameraRecorder({optionData,handleGoBack}) {
     const {personaliz_branding,getUrlForUploadedFile}=useGlobalStoreContext()
 // console.log("optionData",optionData)
-const posterUrl=personaliz_branding==="none"?"/edc/chrome/Personaliz_custom_loader.gif":"/edc/chrome/Personaliz_Logo_ANimation_For_Video_Poster.gif"
+const posterUrl=personaliz_branding==="none"?"/onprem/chrome/Personaliz_custom_loader.gif":"/onprem/chrome/Personaliz_Logo_ANimation_For_Video_Poster.gif"
 const [showErrorModal,setShowErrorModal]=useState(false)
 const [showWaitingModal,setShowWaitingModal]=useState(false)
 const [loading,setLoading]=useState(false)

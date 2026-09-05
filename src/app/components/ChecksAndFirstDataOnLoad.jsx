@@ -8,7 +8,7 @@ import {
 } from "../utils/Functions";
 import { useGlobalStoreContext } from "../context/GlobalStoreContext";
 import { useAlert } from "../context/AlertContext";
-import { loadFirstLoad } from "../edc/edcData";
+import { loadFirstLoad } from "../onprem/onpremData";
 
 const ChecksAndFirstDataOnLoad = () => {
   const {
@@ -73,7 +73,7 @@ const ChecksAndFirstDataOnLoad = () => {
           setShowErrorModal([
             "Contact not found for this personalized video",
             null,
-            "/edc/chrome/noStripeSubscription.jpg",
+            "/onprem/chrome/noStripeSubscription.jpg",
           ]);
         }
       }
@@ -155,7 +155,7 @@ const ChecksAndFirstDataOnLoad = () => {
     // not things a government host should be sending anywhere regardless.
     //
     // Both halves now come from the host's own domain instead. See
-    // edc/edcData.js: one file for the campaign, one for the recipient, and a
+    // onprem/onpremData.js: one file for the campaign, one for the recipient, and a
     // single function to swap for their own service.
     const interactlyResponseData = await loadFirstLoad(campaignId, contact_id);
     if (interactlyResponseData.status) {
@@ -195,7 +195,7 @@ const ChecksAndFirstDataOnLoad = () => {
       setShowErrorModal([
         "Contact not found for this personalized video",
         null,
-        "/edc/chrome/noStripeSubscription.jpg",
+        "/onprem/chrome/noStripeSubscription.jpg",
       ]);
     } else if (
       interactlyResponseData.status === false &&
@@ -205,7 +205,7 @@ const ChecksAndFirstDataOnLoad = () => {
       setShowErrorModal([
         "uid is requred!",
         "Please add uid in url and try again",
-        "/edc/chrome/noStripeSubscription.jpg",
+        "/onprem/chrome/noStripeSubscription.jpg",
       ]);
     } else if (
       interactlyResponseData.status === false &&
@@ -215,7 +215,7 @@ const ChecksAndFirstDataOnLoad = () => {
       setShowErrorModal([
         "No question available to display for this Personalized video!",
         null,
-        "/edc/chrome/no_first_question_available_imageFinal.jpg",
+        "/onprem/chrome/no_first_question_available_imageFinal.jpg",
       ]);
     } else if (
       interactlyResponseData.status === false &&
@@ -225,7 +225,7 @@ const ChecksAndFirstDataOnLoad = () => {
       setShowErrorModal([
         "Content is temporarily unavailable!",
         "Please try after some time",
-        "/edc/chrome/noStripeSubscription.jpg",
+        "/onprem/chrome/noStripeSubscription.jpg",
       ]);
     }
   }

@@ -210,7 +210,7 @@ const GlobalStoreProvider = ({ children }) => {
             // same reason the overlay's does - see utils/overlayFonts.js. The
             // family named in videoConfig has to be one that was bundled.
             let style = window.document.createElement("style");
-            style.textContent = `@import url("/edc/fonts/fonts.css")`;
+            style.textContent = `@import url("/onprem/fonts/fonts.css")`;
             window.document.head.appendChild(style);
           }
         }

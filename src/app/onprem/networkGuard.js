@@ -18,11 +18,11 @@
  * than take on trust, that nothing left.
  *
  * To let the page reach the host's own data API on another origin, list it:
- *   NEXT_PUBLIC_EDC_ALLOWED_ORIGINS=https://api.edc.example
+ *   NEXT_PUBLIC_ONPREM_ALLOWED_ORIGINS=https://api.edc.example
  */
 
 const allowList = () =>
-  (process.env.NEXT_PUBLIC_EDC_ALLOWED_ORIGINS || "")
+  (process.env.NEXT_PUBLIC_ONPREM_ALLOWED_ORIGINS || "")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
@@ -66,8 +66,8 @@ function isPermitted(rawUrl) {
 
 export function installOnPremiseNetworkGuard() {
   if (typeof window === "undefined") return;
-  if (window.__edcGuardInstalled) return;
-  window.__edcGuardInstalled = true;
+  if (window.__onpremGuardInstalled) return;
+  window.__onpremGuardInstalled = true;
 
   const blocked = [];
   window.__blockedCalls = blocked;
@@ -104,15 +104,15 @@ export function installOnPremiseNetworkGuard() {
     const realSend = RealXHR.prototype.send;
 
     RealXHR.prototype.open = function (method, url, ...rest) {
-      this.__edcBlocked = !isPermitted(url);
-      this.__edcMethod = method;
-      this.__edcUrl = url;
+      this.__onpremBlocked = !isPermitted(url);
+      this.__onpremMethod = method;
+      this.__onpremUrl = url;
       return realOpen.call(this, method, url, ...rest);
     };
 
     RealXHR.prototype.send = function (...args) {
-      if (this.__edcBlocked) {
-        note("xhr", this.__edcMethod || "GET", this.__edcUrl || "");
+      if (this.__onpremBlocked) {
+        note("xhr", this.__onpremMethod || "GET", this.__onpremUrl || "");
         // A finished request carrying parseable JSON, for the same reason as
         // above: an empty responseText throws in anything that JSON.parses it.
         const body = JSON.stringify({ status: false, blocked: "on-premise" });
