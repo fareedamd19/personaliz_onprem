@@ -22,8 +22,16 @@
  * from.
  */
 
-/** Where the two files live, relative to wherever the player is hosted. */
-const BASE = process.env.NEXT_PUBLIC_ONPREM_BASE || "/edc";
+/**
+ * Where the two files live, relative to wherever the player is hosted.
+ *
+ * The default is the real folder name, not a placeholder: a clone of this
+ * repository has no .env of its own (they are gitignored, and rightly), so a
+ * default that named anything else would 404 on both files and render an
+ * empty player. Every setting in this build works the same way - correct with
+ * no configuration, overridable when a host needs something different.
+ */
+const BASE = process.env.NEXT_PUBLIC_ONPREM_BASE || "/onprem";
 
 /** Which recipient to load when the host has not wired their own API yet. */
 const SAMPLE_RECIPIENT = "contact1";
@@ -82,7 +90,12 @@ export async function loadFirstLoad(campaignId, contactId) {
     // object-fit: cover, which crops a 16:9 film to the player box and takes
     // the overlay's measurements with it.
     personaliz_video_url: null,
-    original_s: video,
+    // The name matters: handleVideoError falls back to `original_s3url`, and
+    // reading a field that is not there sets the src to the string
+    // "undefined" - so a recoverable CDN hiccup turns into a dead player
+    // rather than a retry. Same film either way; there is no second copy to
+    // fall back to in this build.
+    original_s3url: video,
     type: "video",
     text: "",
     options: [],

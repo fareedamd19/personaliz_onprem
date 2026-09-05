@@ -50,8 +50,16 @@ const websiteSrollContShape = {
   square: "rounded-md",
 };
 
-// Feature flag for overlay engine v2 — defaults to OFF (legacy engine)
-const USE_OVERLAY_V2 = process.env.NEXT_PUBLIC_OVERLAY_V2 === "1";
+// Feature flag for overlay engine v2.
+//
+// Upstream defaults this OFF, because there the legacy engine still serves
+// live campaigns and v2 is the path being rolled out. This build inverts it:
+// it exists to render a v2 overlay and has no legacy campaigns at all, so OFF
+// is never the right answer here - it yields a bare video with no
+// personalisation drawn on it, which looks like a working deployment and is
+// not one. A clone carries no .env, so the default is what a host gets.
+// Set NEXT_PUBLIC_OVERLAY_V2=0 to fall back deliberately.
+const USE_OVERLAY_V2 = process.env.NEXT_PUBLIC_OVERLAY_V2 !== "0";
 
 const VideoContainer = () => {
   const {
