@@ -106,46 +106,46 @@
       {
         "uniq_id": "companynamear",
         "type": "text",
-        "fontsize": 0.0903,
+        "fontsize": 0.075,
         "fontcolor": "#B2832C",
         "alignment": "right",
         "fontname": "Cairo",
         "wrap_text": false,
-        "textbox_x": 0.236,
+        "textbox_x": 0.116,
         "textbox_y": 0.4256,
-        "textbox_w": 0.68,
+        "textbox_w": 0.8,
         "textbox_h": 0.0785,
         "start_time": 0,
         "end_time": 19.9667,
         "keyframes": [
           {
             "t": 0,
-            "x": 0.236,
+            "x": 0.116,
             "y": 0.635,
             "opacity": 1
           },
           {
             "t": 10.2,
-            "x": 0.236,
+            "x": 0.116,
             "y": 0.635,
             "opacity": 1
           },
           {
             "t": 12.1667,
-            "x": 0.236,
+            "x": 0.116,
             "y": 0.4256,
             "opacity": 1,
             "ease": "easeOutCubic"
           },
           {
             "t": 18.2667,
-            "x": 0.236,
+            "x": 0.116,
             "y": 0.4256,
             "opacity": 1
           },
           {
             "t": 19.9667,
-            "x": -0.79525,
+            "x": -0.91525,
             "y": 0.4256,
             "opacity": 1,
             "ease": "easeInCubic"
@@ -219,41 +219,41 @@
         "alignment": "right",
         "fontname": "Cairo",
         "wrap_text": false,
-        "textbox_x": 0.7,
+        "textbox_x": 0.6767,
         "textbox_y": 0.5413,
-        "textbox_w": 0.0667,
+        "textbox_w": 0.09,
         "textbox_h": 0.0317,
         "start_time": 0,
         "end_time": 19.9667,
         "keyframes": [
           {
             "t": 0,
-            "x": 0.7,
+            "x": 0.6767,
             "y": 0.7507,
             "opacity": 1
           },
           {
             "t": 10.2,
-            "x": 0.7,
+            "x": 0.6767,
             "y": 0.7507,
             "opacity": 1
           },
           {
             "t": 12.1667,
-            "x": 0.7,
+            "x": 0.6767,
             "y": 0.5413,
             "opacity": 1,
             "ease": "easeOutCubic"
           },
           {
             "t": 18.2667,
-            "x": 0.7,
+            "x": 0.6767,
             "y": 0.5413,
             "opacity": 1
           },
           {
             "t": 19.9667,
-            "x": -0.33125000000000004,
+            "x": -0.35455,
             "y": 0.5413,
             "opacity": 1,
             "ease": "easeInCubic"
