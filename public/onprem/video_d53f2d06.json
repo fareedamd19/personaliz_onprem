@@ -2,7 +2,7 @@
   "campaign_id": "d53f2d06",
   "name": "Establishment Executive Summary",
   "defaultLang": "ar",
-  "video_url": "/onprem/media/mohre_ar.mp4",
+  "video_url": "https://personaliz-uploads.s3.ap-south-1.amazonaws.com/company_b66a33/videos/video_5d53da02_d5ce_4ab2_90c7_8e4540d1eaed_arabic_mohre.mp4",
   "rtl": true,
   "dynamic_text_display": {
     "type": "web",
@@ -2796,7 +2796,7 @@
         "lang": "ar",
         "label": "العربية",
         "rtl": true,
-        "videoUrl": "/onprem/media/mohre_ar.mp4",
+        "videoUrl": "https://personaliz-uploads.s3.ap-south-1.amazonaws.com/company_b66a33/videos/video_5d53da02_d5ce_4ab2_90c7_8e4540d1eaed_arabic_mohre.mp4",
         "config": [
           {
             "uniq_id": "intro_card_banner",
