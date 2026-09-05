@@ -1,7 +1,7 @@
 {
   "campaign_id": "d53f2d06",
-  "name": "Establishment Executive Summary",
-  "defaultLang": "ar",
+  "name": "Establishment Executive Summary — Arabic",
+  "lang": "ar",
   "video_url": "https://d311yj556j5ydo.cloudfront.net/company_b66a33/videos/video_5d53da02_d5ce_4ab2_90c7_8e4540d1eaed_arabic_mohre.mp4",
   "rtl": true,
   "dynamic_text_display": {
