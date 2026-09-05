@@ -1058,6 +1058,63 @@ export function VideoCaptioner({
     return () => cancelAnimationFrame(frame);
   }, [elements, videoRef, videoHeight, videoWidth, variables, chapters]);
 
+  // Shrink any single-line text that does not fit the box it was given.
+  //
+  // A box is designed against one recipient's values and then shown to every
+  // other one. Establishment names are the obvious case - the design was
+  // measured against a 26-character name, the next recipient had 34, and it
+  // clipped at both ends. Widening the box only moves the threshold: there is
+  // always a longer name, and picking a size that never clips means picking
+  // one far too small for the ordinary case.
+  //
+  // So the size in the config is a maximum rather than a fixed value. Text
+  // that fits is left alone; text that would overflow is scaled down until it
+  // fits, and no further.
+  //
+  // Runs on layout rather than per frame: font size depends on the box and the
+  // text, neither of which changes while the film plays, and reading
+  // scrollWidth forces layout - doing that for 87 elements every frame would
+  // be expensive for no benefit.
+  useEffect(() => {
+    if (videoWidth <= 1 || videoHeight <= 1) return;
+
+    // How small the text may get, as a fraction of the designed size.
+    //
+    // Low on purpose. A complete name set small is better than half a name at
+    // a comfortable size - the reader can still read it, and nothing looks
+    // broken. At 0.25 a pathological 86-character establishment name still
+    // fits; ordinary ones never come close to the floor and render at the
+    // size they were designed at.
+    const FLOOR = 0.25;
+
+    const id = requestAnimationFrame(() => {
+      elRefs.current.forEach((node) => {
+        if (!node) return;
+        if (getComputedStyle(node).whiteSpace !== "nowrap") return;
+
+        // The size the config asked for, kept so repeated passes measure
+        // against the original rather than compounding their own reductions.
+        let base = node.dataset.baseFontPx;
+        if (base === undefined) {
+          base = String(parseFloat(getComputedStyle(node).fontSize) || 0);
+          node.dataset.baseFontPx = base;
+        }
+        const basePx = parseFloat(base);
+        if (!basePx) return;
+
+        node.style.fontSize = `${basePx}px`;
+        const available = node.clientWidth;
+        const needed = node.scrollWidth;
+        if (!available || needed <= available) return;
+
+        const scale = Math.max(FLOOR, available / needed);
+        node.style.fontSize = `${(basePx * scale).toFixed(2)}px`;
+      });
+    });
+
+    return () => cancelAnimationFrame(id);
+  }, [elements, variables, videoWidth, videoHeight, activeLang]);
+
 
   useEffect(() => {
     const video = videoRef.current;

@@ -106,7 +106,7 @@
       {
         "uniq_id": "companynamear",
         "type": "text",
-        "fontsize": 0.075,
+        "fontsize": 0.0903,
         "fontcolor": "#B2832C",
         "alignment": "right",
         "fontname": "Cairo",
