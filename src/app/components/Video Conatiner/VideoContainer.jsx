@@ -399,7 +399,7 @@ const VideoContainer = () => {
         firstLoadData?.dynamic_text_display.type === "web" && USE_OVERLAY_V2 && (
           <VideoCaptioner
             currentQuestionData={currentQuestionData}
-            videoSrc={`${currentQuestionData.current?.video_url}#t=0.001}`}
+            videoSrc={`${currentQuestionData.current?.video_url}#t=0.001`}
             captions={
               isFixtureMode()
                 ? fixtureCaptions
@@ -428,7 +428,7 @@ const VideoContainer = () => {
         firstLoadData?.dynamic_text_display.type === "web" && !USE_OVERLAY_V2 && (
           <VideoCaptionerLegacy
             currentQuestionData={currentQuestionData}
-            videoSrc={`${currentQuestionData.current?.video_url}#t=0.001}`}
+            videoSrc={`${currentQuestionData.current?.video_url}#t=0.001`}
             captions={
               isFixtureMode()
                 ? fixtureCaptions

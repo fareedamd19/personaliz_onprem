@@ -73,7 +73,15 @@ export async function loadFirstLoad(campaignId, contactId) {
   const video = campaign.video_url;
   const question = {
     video_url: video,
-    personaliz_video_url: video,
+    // Deliberately absent.
+    //
+    // personaliz_video_url is the per-recipient film the old render path
+    // produced with ffmpeg. A web-overlay campaign has no such thing - the
+    // template is the same for everyone and the personalisation is drawn over
+    // it live. Populating it anyway mounts a second <video> above the first,
+    // object-fit: cover, which crops a 16:9 film to the player box and takes
+    // the overlay's measurements with it.
+    personaliz_video_url: null,
     original_s: video,
     type: "video",
     text: "",
