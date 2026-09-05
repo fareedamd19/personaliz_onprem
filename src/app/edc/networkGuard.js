@@ -38,6 +38,15 @@ function isPermitted(rawUrl) {
 
   // Relative, and the data: and blob: the player uses for media it made itself.
   if (/^(data:|blob:)/i.test(url)) return true;
+
+  // ...except a call built from an unset API base. `${undefined}/video/x`
+  // is the string "undefined/video/x", which is relative, so it would sail
+  // through the same-origin rule above and land on the HOST's server as a
+  // 404 or 501 in their logs. It never reaches us, but "nothing leaves" is
+  // not the same claim as "nothing is attempted", and a government host
+  // reading their access log should not find our endpoint names in it.
+  if (/(^|\/)undefined(\/|$)/.test(url)) return false;
+
   if (!/^https?:\/\//i.test(url)) return true;
 
   try {
