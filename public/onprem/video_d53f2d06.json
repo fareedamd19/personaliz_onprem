@@ -57,41 +57,41 @@
         "alignment": "right",
         "fontname": "Cairo",
         "wrap_text": false,
-        "textbox_x": 0.5663,
+        "textbox_x": 0.6178,
         "textbox_y": 0.35949999999999993,
-        "textbox_w": 0.35,
+        "textbox_w": 0.2985,
         "textbox_h": 0.0427,
         "start_time": 0,
         "end_time": 19.9667,
         "keyframes": [
           {
             "t": 0,
-            "x": 0.5663,
+            "x": 0.6178,
             "y": 0.5689,
             "opacity": 1
           },
           {
             "t": 10.2,
-            "x": 0.5663,
+            "x": 0.6178,
             "y": 0.5689,
             "opacity": 1
           },
           {
             "t": 12.1667,
-            "x": 0.5663,
+            "x": 0.6178,
             "y": 0.35949999999999993,
             "opacity": 1,
             "ease": "easeOutCubic"
           },
           {
             "t": 18.2667,
-            "x": 0.5663,
+            "x": 0.6178,
             "y": 0.35949999999999993,
             "opacity": 1
           },
           {
             "t": 19.9667,
-            "x": -0.46495,
+            "x": -0.41345,
             "y": 0.35949999999999993,
             "opacity": 1,
             "ease": "easeInCubic"
@@ -165,41 +165,41 @@
         "alignment": "right",
         "fontname": "Cairo",
         "wrap_text": false,
-        "textbox_x": 0.7563,
+        "textbox_x": 0.7915,
         "textbox_y": 0.5413,
-        "textbox_w": 0.16,
+        "textbox_w": 0.1248,
         "textbox_h": 0.0413,
         "start_time": 0,
         "end_time": 19.9667,
         "keyframes": [
           {
             "t": 0,
-            "x": 0.7563,
+            "x": 0.7915,
             "y": 0.7507,
             "opacity": 1
           },
           {
             "t": 10.2,
-            "x": 0.7563,
+            "x": 0.7915,
             "y": 0.7507,
             "opacity": 1
           },
           {
             "t": 12.1667,
-            "x": 0.7563,
+            "x": 0.7915,
             "y": 0.5413,
             "opacity": 1,
             "ease": "easeOutCubic"
           },
           {
             "t": 18.2667,
-            "x": 0.7563,
+            "x": 0.7915,
             "y": 0.5413,
             "opacity": 1
           },
           {
             "t": 19.9667,
-            "x": -0.27495,
+            "x": -0.23975,
             "y": 0.5413,
             "opacity": 1,
             "ease": "easeInCubic"
